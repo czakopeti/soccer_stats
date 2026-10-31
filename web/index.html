@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PL X-ray</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap" id="app"><p class="note">Loading…</p></div>
+<script id="data" type="application/json"></script>
+<script>
+  const DATA_URL = new URLSearchParams(location.search).get("data") || "../data/pl.json";
+  fetch(DATA_URL, { cache: "no-cache" })
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
+    .then(t => { document.getElementById("data").textContent = t; const s = document.createElement("script"); s.src = "pl_xray.js"; document.body.appendChild(s); })
+    .catch(e => { document.getElementById("app").innerHTML = '<p class="note">The data file could not be loaded (' + DATA_URL + '): ' + e.message + '. Open this page through a local server: python3 -m http.server</p>'; });
+</script>
+</body>
+</html>
