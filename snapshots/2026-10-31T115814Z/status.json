@@ -1,0 +1,129 @@
+{
+  "ok": true,
+  "timestamp": "2026-10-31T11:58:14Z",
+  "season": "2026/27",
+  "gameweek": 8,
+  "no_new_round": true,
+  "summary": "No new Premier League round (still gameweek 8). Fixtures were checked again and the site was refreshed. This is not an error.",
+  "data_dates": {
+    "catalogue_commit": "740df5c518abec442583009288d25c545e819d88",
+    "catalogue_exported_at": "2026-10-28T01:47:07",
+    "fpl_fetched_at": "2026-10-31T11:56:50Z",
+    "history_fetched_at": "2026-10-31T11:57:16Z",
+    "europe_fetched_at": "2026-10-31T11:57:30Z",
+    "generated_at": "2026-10-31T11:57:44Z"
+  },
+  "checks": [
+    {
+      "name": "League shape",
+      "pass": true,
+      "detail": "20 clubs, 38 gameweeks, 380 fixtures. A home-and-away league should have 38 gameweeks and 380 fixtures."
+    },
+    {
+      "name": "Every club plays every other club home and away",
+      "pass": true,
+      "detail": "Each club has 38 fixtures, one home and one away against each opponent."
+    },
+    {
+      "name": "Finished matches have a score, xG and shots",
+      "pass": true,
+      "detail": "All finished matches in this file have a score, xG and at least one shot."
+    },
+    {
+      "name": "Shot xG adds up to the match xG",
+      "pass": true,
+      "detail": "Within 0.05 on every match."
+    },
+    {
+      "name": "Goals from shots and own goals match the score",
+      "pass": true,
+      "detail": "Every score matches the shot list."
+    },
+    {
+      "name": "No unmapped club",
+      "pass": true,
+      "detail": "Every club in the matches is on the season list and has a pre-season strength."
+    },
+    {
+      "name": "Shots link to a player",
+      "pass": true,
+      "detail": "14 of 2192 shots have no player id (0.6%). Limit 2%."
+    },
+    {
+      "name": "No empty values in the required fields",
+      "pass": true,
+      "detail": "Scores, xG, names, minutes and goals are filled in."
+    },
+    {
+      "name": "Player totals did not shrink",
+      "pass": true,
+      "detail": "Minutes and goals are the same or higher for every player who was already listed."
+    },
+    {
+      "name": "Gameweek did not go backwards",
+      "pass": true,
+      "detail": "Was gameweek 8, now 8."
+    },
+    {
+      "name": "Sources were refreshed, or the pause is explained",
+      "pass": true,
+      "detail": "No new Premier League round, and pl-catalogue's commit is unchanged. That is expected on an international break. Premier League fixtures were downloaded again. European fixtures were downloaded again. Historical results: 16 files. No new round. Still on gameweek 8. Fixtures were refreshed anyway."
+    },
+    {
+      "name": "Official scores match the match file",
+      "pass": true,
+      "detail": "Every finished score matches the Premier League feed."
+    },
+    {
+      "name": "Fixture changes are recorded",
+      "pass": true,
+      "detail": "No kickoff or gameweek changes since the previous build."
+    },
+    {
+      "name": "Bookmaker prices are not in the data",
+      "pass": true,
+      "detail": "The page data has no bookmaker block."
+    },
+    {
+      "name": "European fixtures loaded",
+      "pass": true,
+      "detail": "European kickoffs are loaded automatically (72 matches, 9 Premier League clubs). Domestic cup ties are not included, so a midweek cup game will not show up in the rest-day count. Clubs with no European tie this season are treated as not playing in Europe."
+    },
+    {
+      "name": "Penalty xG was measured from this season's penalties",
+      "pass": true,
+      "detail": "Average of 12 penalties is 0.7612."
+    },
+    {
+      "name": "Cross-check against the Premier League feed",
+      "pass": true,
+      "detail": "Official scores were checked against the downloaded fixture file."
+    },
+    {
+      "name": "The page text is English",
+      "pass": true,
+      "detail": "No Hungarian phrases and no bookmaker branding in the page code."
+    },
+    {
+      "name": "The page opens and every tab has content",
+      "pass": true,
+      "detail": "Opened in a browser with no script errors. 81 views have English text and no Hungarian leftovers."
+    }
+  ],
+  "fixture_changes": [],
+  "europe": {
+    "fixtures": 72,
+    "teams": [
+      "Arsenal",
+      "Aston Villa",
+      "Bournemouth",
+      "Brighton",
+      "Crystal Palace",
+      "Liverpool",
+      "Man City",
+      "Man Utd",
+      "Sunderland"
+    ],
+    "note": "European kickoffs are loaded automatically (72 matches, 9 Premier League clubs). Domestic cup ties are not included, so a midweek cup game will not show up in the rest-day count. Clubs with no European tie this season are treated as not playing in Europe."
+  }
+}
