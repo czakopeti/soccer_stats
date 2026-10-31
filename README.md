@@ -2,7 +2,7 @@
 
 A weekly Premier League page. It shows what the scoreline leaves out: chances, luck, strength, and the run of fixtures ahead. The page is in English. It rebuilds itself every Wednesday. You do not need to check the numbers by hand. If a check fails, the old page stays up and GitHub opens an issue that says what went wrong, in plain language.
 
-The address, once publishing is switched on, is:
+The page is published at:
 
 **https://czakopeti.github.io/soccer_stats/**
 
@@ -58,8 +58,8 @@ You do not need to. If someone technical does:
 
 ```bash
 pip install -r requirements.txt
-python -m playwright install chromium
-python scripts/run_pipeline.py
+python3 -m playwright install chromium
+python3 scripts/run_pipeline.py
 ```
 
 Then open `site/index.html`. Checks that do not need a download:

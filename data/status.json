@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "timestamp": "2026-10-31T10:32:21Z",
+  "timestamp": "2026-10-31T11:07:55Z",
   "season": "2026/27",
   "gameweek": 8,
   "no_new_round": true,
@@ -8,10 +8,10 @@
   "data_dates": {
     "catalogue_commit": "740df5c518abec442583009288d25c545e819d88",
     "catalogue_exported_at": "2026-10-28T01:47:07",
-    "fpl_fetched_at": "2026-10-31T10:31:26Z",
-    "history_fetched_at": "2026-10-31T10:31:51Z",
-    "europe_fetched_at": "2026-10-31T10:32:04Z",
-    "generated_at": "2026-10-31T10:32:19Z"
+    "fpl_fetched_at": "2026-10-31T11:06:56Z",
+    "history_fetched_at": "2026-10-31T11:07:23Z",
+    "europe_fetched_at": "2026-10-31T11:07:26Z",
+    "generated_at": "2026-10-31T11:07:34Z"
   },
   "checks": [
     {
@@ -107,7 +107,7 @@
     {
       "name": "The page opens and every tab has content",
       "pass": true,
-      "detail": "Opened in a browser with no script errors. All 15 tabs have content."
+      "detail": "Opened in a browser with no script errors. 81 views have English text and no Hungarian leftovers."
     }
   ],
   "fixture_changes": [],

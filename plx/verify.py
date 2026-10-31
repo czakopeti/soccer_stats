@@ -3,18 +3,12 @@ from __future__ import annotations
 
 import json
 import re
+import shutil
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
-HUNGARIAN = [
-    "röntgen", "forduló", "fordulónként", "csapat", "tabella", "rablás", "fölény",
-    "előzetes", "menetrend", "döntetlen", "vendég", "hazai", "lövés", "lövések",
-    "gól", "esély", "játékos", "kapus", "bajnokság", "kiesik", "érdemelt",
-    "tisztított", "helyezés", "pihenő", "szerencse", "szöglet", "öngól", "idény",
-    "meccs", "fordítás", "támadás", "védekezés", "igazság", "koppints", "pontrúgás",
-    "szabadrúgás", "helyzet", "győzelem", "vereség", "bajnok",
-]
+from plx.language import find_hits, scan_user_facing
 
 
 def _check(checks: list, name: str, ok: bool, detail: str) -> None:
@@ -338,7 +332,7 @@ def verify(root: Path, data: dict, meta: dict, previous: dict | None, browser: b
     js = (root / "web" / "pl_xray.js").read_text(encoding="utf-8")
     html_shell = (root / "web" / "index.html").read_text(encoding="utf-8") if (root / "web" / "index.html").exists() else ""
     blob = (js + "\n" + html_shell).lower()
-    found = sorted({word for word in HUNGARIAN if re.search(rf"\b{re.escape(word)}\b", blob)})
+    found = scan_user_facing(root)
     banned_brands = ("bet" + "365", "club" + "elo", "rönt" + "gen", "xga" + "bora")
     leftovers = [w for w in banned_brands if w in blob]
     _check(
@@ -347,11 +341,15 @@ def verify(root: Path, data: dict, meta: dict, previous: dict | None, browser: b
         not found and not leftovers,
         "No Hungarian phrases and no bookmaker branding in the page code."
         if not found and not leftovers
-        else f"Still present: {found + leftovers}",
+        else "Still present: " + "; ".join((found + leftovers)[:8]),
     )
 
+    names = list(data.get("short") or [])
+    names += [p.get("n") or "" for p in data.get("players") or []]
+    names += [p.get("full") or "" for p in data.get("players") or []]
+    names += [row[3] for row in data.get("euro") or [] if len(row) > 3]
     if browser:
-        b_ok, b_detail = _browser(root / "site" / "index.html", HUNGARIAN)
+        b_ok, b_detail = _browser(root / "site" / "index.html", names, root / "review" / "rendered-copy.txt")
         _check(checks, "The page opens and every tab has content", b_ok, b_detail)
     else:
         _check(checks, "The page opens and every tab has content", False, "Browser check was skipped, so this build cannot be published.")
@@ -395,7 +393,24 @@ def verify(root: Path, data: dict, meta: dict, previous: dict | None, browser: b
     }
 
 
-def _browser(html: Path, hungarian: list[str]) -> tuple[bool, str]:
+_COLLECT = """() => {
+  const bits = [];
+  document.querySelectorAll("details").forEach(d => { d.open = true; });
+  const root = document.getElementById("app") || document.body;
+  bits.push(root.innerText || "");
+  root.querySelectorAll("[title],[aria-label],[placeholder],[alt]").forEach(el => {
+    for (const attr of ["title", "aria-label", "placeholder", "alt"]) {
+      const value = el.getAttribute(attr);
+      if (value) bits.push(value);
+    }
+  });
+  root.querySelectorAll("title").forEach(el => { if (el.textContent) bits.push(el.textContent); });
+  root.querySelectorAll("option").forEach(el => bits.push(el.textContent || ""));
+  return bits.join("\\n");
+}"""
+
+
+def _browser(html: Path, names: list[str], dump_path: Path) -> tuple[bool, str]:
     if not html.exists():
         return False, "The page file was not built."
     try:
@@ -403,7 +418,23 @@ def _browser(html: Path, hungarian: list[str]) -> tuple[bool, str]:
     except ImportError:
         return False, "The browser checker (Playwright) is not installed, so the page was not opened."
     errors: list[str] = []
+    sections: list[tuple[str, str]] = []
     seen = 0
+    language_hits: list[str] = []
+
+    def grab(page, label: str) -> None:
+        nonlocal seen
+        seen += 1
+        text = page.evaluate(_COLLECT)
+        sections.append((label, text))
+        if len(text) < 80:
+            errors.append(f"{label} was almost empty.")
+        if re.search(r"\bNaN\b", text) or re.search(r"\bundefined\b", text):
+            errors.append(f"{label} shows NaN or undefined.")
+        hits = find_hits(text, names)
+        if hits:
+            language_hits.append(f"{label}: {hits[0]}")
+
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch()
@@ -416,40 +447,144 @@ def _browser(html: Path, hungarian: list[str]) -> tuple[bool, str]:
             title = page.locator("h1").inner_text()
             if "X-RAY" not in title.upper():
                 errors.append(f"The title does not say X-ray (saw {title!r}).")
-            mains = page.locator("[data-main]")
-            main_count = mains.count()
+            main_count = page.locator("[data-main]").count()
             if main_count < 3:
                 errors.append(f"Only {main_count} sections were found.")
-            empty = []
-            hung = []
             for m in range(main_count):
-                mains.nth(m).click()
-                subs = page.locator("[data-tab]")
-                sub_count = subs.count()
+                page.locator("[data-main]").nth(m).click()
+                main_label = page.locator("[data-main]").nth(m).inner_text().strip()
+                sub_count = page.locator("[data-tab]").count()
                 for i in range(sub_count):
-                    # Re-query after each render; the buttons are replaced.
                     subs = page.locator("[data-tab]")
                     label = subs.nth(i).inner_text().strip()
                     subs.nth(i).click()
-                    seen += 1
-                    text = page.locator("#app").inner_text()
-                    if len(text) < 80:
-                        empty.append(label or f"tab {seen}")
-                    if re.search(r"\bNaN\b", text) or re.search(r"\bundefined\b", text):
-                        hung.append(label or f"tab {seen}")
-                    low = text.lower()
-                    hit = [w for w in hungarian if re.search(rf"\b{re.escape(w)}\b", low)]
-                    if hit:
-                        errors.append(f"Tab {label} still has Hungarian: {hit[:4]}")
+                    grab(page, f"{main_label} / {label}")
+                    low = label.lower()
+                    if "justice table" in low:
+                        for mode in range(page.locator("[data-mode]").count()):
+                            page.locator("[data-mode]").nth(mode).click()
+                            grab(page, f"{label} / mode {mode + 1}")
+                    elif low == "schedule":
+                        for tick in range(page.locator("[data-tick]").count()):
+                            page.locator("[data-tick]").nth(tick).click()
+                            grab(page, f"{label} / range {tick + 1}")
+                    elif low == "players":
+                        for grp in range(page.locator("[data-pg]").count()):
+                            page.locator("[data-pg]").nth(grp).click()
+                            grab(page, f"Players / group {grp + 1}")
+                        if page.locator("#p90").count():
+                            page.locator("#p90").click()
+                            grab(page, "Players / per 90")
+                            page.locator("#p90").click()
+                        if page.locator("#pmin").count():
+                            page.select_option("#pmin", "0")
+                            grab(page, "Players / any minutes")
+                        if page.locator("[data-p]").count():
+                            page.locator("[data-p]").first.click()
+                            grab(page, "Players / profile")
+                    elif low == "matches":
+                        for tag in range(page.locator("[data-mft]").count()):
+                            page.locator("[data-mft]").nth(tag).click()
+                            grab(page, f"Matches / filter {tag + 1}")
+                            if page.locator("[data-mo]").count():
+                                page.locator("[data-mo]").first.click()
+                                grab(page, f"Matches / filter {tag + 1} open")
+                                page.locator("[data-mo]").first.click()
+                    elif low == "shots":
+                        for key in ("res:G", "sit:penalty", "body:Head", "zone:six", "zone:box", "zone:out"):
+                            if page.locator("#sf-reset").count():
+                                page.locator("#sf-reset").click()
+                            btn = page.locator(f'[data-sfc="{key}"]')
+                            if btn.count():
+                                btn.first.click()
+                                grab(page, f"Shots / {key}")
+                    elif "x-ray" in low or "xray" in low:
+                        options = page.locator("#tsel option")
+                        for n in range(options.count()):
+                            name = options.nth(n).inner_text().strip()
+                            page.select_option("#tsel", label=name)
+                            grab(page, f"Club X-ray / {name}")
+            # Edge cases the filters do not guarantee: own goals, draws, a player with no minutes, gameweek 1.
+            page.evaluate("""() => {
+              const D = JSON.parse(document.getElementById("data").textContent);
+              const plr = window.__plr;
+              const og = (D.shots || []).find(s => s[10] === "O");
+              const draw = (D.matches || []).find(m => m.hs === m.as);
+              const pen = (D.shots || []).find(s => s[11] === "penalty");
+              const quiet = (D.players || []).slice().sort((a, b) => a.min - b.min)[0];
+              const keeper = (D.players || []).find(p => p.pos === "GKP");
+              plr.S.gw = 1; plr.S.tab = "fordulo"; plr.S.open = null; plr.render();
+              window.__edge = { og: og && og[1], draw: draw && draw.id, pen: pen && pen[1], quiet: quiet && quiet.id, keeper: keeper && keeper.id, gw: D.gw };
+            }""")
+            grab(page, "Gameweek 1 / Results")
+            page.evaluate("""() => { const plr = window.__plr; plr.S.tab = "elozetes"; plr.render(); }""")
+            grab(page, "Gameweek 1 / Preview")
+            page.evaluate("""() => {
+              const plr = window.__plr;
+              const edge = window.__edge;
+              plr.S.gw = edge.gw;
+              plr.S.tab = "meccsek";
+              plr.S.mf = { team: "", venue: "", tag: "", from: 1, sort: "date", lim: 400 };
+              plr.S.open = edge.og || edge.draw;
+              plr.render();
+            }""")
+            grab(page, "Edge / own goal or draw")
+            page.evaluate("""() => {
+              const plr = window.__plr;
+              const edge = window.__edge;
+              plr.S.open = edge.draw;
+              plr.render();
+            }""")
+            grab(page, "Edge / draw")
+            page.evaluate("""() => {
+              const plr = window.__plr;
+              const edge = window.__edge;
+              plr.S.tab = "jatekos";
+              plr.S.grp = "gol";
+              plr.S.pmin = 0;
+              plr.S.ppos = "";
+              plr.S.q = "";
+              plr.S.psel = edge.quiet;
+              plr.S.pcmp = edge.keeper;
+              plr.S.plim = 25;
+              plr.render();
+            }""")
+            grab(page, "Edge / low-minute player")
+            page.evaluate("""() => {
+              const plr = window.__plr;
+              const edge = window.__edge;
+              plr.S.grp = "concedes";
+              plr.S.psel = edge.keeper;
+              plr.S.pcmp = null;
+              plr.render();
+            }""")
+            grab(page, "Edge / goalkeeper")
+            if page.locator(".mc").count():
+                page.locator("[data-main]").first.click()
+                page.locator("[data-tab]").first.click()
+                for i in range(min(10, page.locator(".mc").count())):
+                    page.locator(".mc").nth(i).click()
+                    grab(page, f"Results / match {i + 1}")
+                    page.locator(".mc").nth(i).click()
             if seen < 12:
-                errors.append(f"Only {seen} tabs were opened.")
+                errors.append(f"Only {seen} views were opened.")
             browser.close()
     except Exception as exc:  # noqa: BLE001
         return False, f"The page did not open cleanly: {exc}"
-    if empty:
-        errors.append("These tabs were almost empty: " + ", ".join(empty))
-    if hung:
-        errors.append("These tabs show NaN or undefined: " + ", ".join(hung))
+    dump_path.parent.mkdir(parents=True, exist_ok=True)
+    body = []
+    for label, text in sections:
+        body.append(f"\n===== {label} =====\n")
+        body.append(text.rstrip() + "\n")
+    dump_path.write_text("".join(body), encoding="utf-8")
+    artifact = Path("/opt/cursor/artifacts/copy-review.txt")
+    try:
+        artifact.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(dump_path, artifact)
+    except OSError:
+        pass
+    if language_hits:
+        errors.append("Hungarian or mixed English still on the page: " + " | ".join(language_hits[:6]))
     if errors:
-        return False, " ".join(errors[:6])
-    return True, f"Opened in a browser with no script errors. All {seen} tabs have content."
+        return False, " ".join(errors[:8])
+    return True, f"Opened in a browser with no script errors. {seen} views have English text and no Hungarian leftovers."
