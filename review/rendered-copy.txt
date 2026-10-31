@@ -32,7 +32,7 @@ Nott'm Forest sit 18th. The shots put them 3rd: 9.1 points short of the chances.
 
 3 · FINISHING
 
-Haaland (Man City) has 9 goals from 6.1 xG, +2.9, the best finishing in the league. At the other end, Thiago: 1 goal from 3.8 xG.
+Haaland (Man City) has 9 goals from 6.1 xG, 2.9 ahead of the chances, the best finishing in the league. At the other end, Thiago: 1 goal from 3.8 xG, 2.8 short of the chances.
 
 GAMEWEEK 8
 home
@@ -209,7 +209,7 @@ Mateta · Crystal Palace
 BIGGEST SWING
 15%
 Spurs
-Chelsea 0–2 Spurs. That was the win probability at one point (75', 0–0), and they still won.
+Chelsea 0–2 Spurs. At 75', with the score 0–0, Spurs' win probability was only 15%, and they still won.
 MOST EXCITING MATCH
 2.6
 Aston Villa 2–1 Man City
@@ -226,7 +226,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -931,7 +931,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -1610,7 +1610,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -2113,7 +2113,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -2736,7 +2736,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -3059,7 +3059,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -3281,7 +3281,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -3473,12 +3473,12 @@ Efficient and explosive: plenty of good chances, and plenty of big ones.
 4
 1.97
 Nott'm Forest
-Chance quality ranks 13th in the league, explosiveness 7th.
+13th for chance quality, 7th for explosiveness.
 +0.38
 5
 1.87
 Arsenal
-Chance quality ranks 9th in the league, explosiveness 6th.
+9th for chance quality, 6th for explosiveness.
 +0.28
 6
 1.81
@@ -3498,7 +3498,7 @@ Efficient and explosive: plenty of good chances, and plenty of big ones.
 9
 1.56
 Chelsea
-Chance quality ranks 7th in the league, explosiveness 12th.
+7th for chance quality, 12th for explosiveness.
 −0.02
 10
 1.54
@@ -3513,50 +3513,50 @@ Explosive: fewer shots, but they tend to be big chances.
 12
 1.47
 Liverpool
-Chance quality ranks 15th in the league, explosiveness 15th.
+15th for chance quality, 15th for explosiveness.
 −0.12
 13
 1.46
 Leeds
-Chance quality ranks 14th in the league, explosiveness 12th.
+14th for chance quality, 12th for explosiveness.
 −0.13
 14
 1.38
 Fulham
-Chance quality ranks 6th in the league, explosiveness 10th.
+6th for chance quality, 10th for explosiveness.
 −0.21
 15
 1.33
 Ipswich Town
-Chance quality ranks 8th in the league, explosiveness 10th.
+8th for chance quality, 10th for explosiveness.
 −0.25
 16
 1.27
 Newcastle
-Chance quality ranks 18th in the league, explosiveness 15th.
+18th for chance quality, 15th for explosiveness.
 −0.31
 17
 1.21
 Spurs
-Chance quality ranks 17th in the league, explosiveness 18th.
+17th for chance quality, 18th for explosiveness.
 −0.38
 18
 1.16
 Aston Villa
-Stronger when the score is level than across the full match.
+Better when the score is level than over the match as a whole.
 −0.43
 19
 1.13
 Hull City
-Stronger when the score is level than across the full match.
+Better when the score is level than over the match as a whole.
 −0.46
 20
 1.05
 Coventry City
-Stronger when the score is level than across the full match.
+Better when the score is level than over the match as a whole.
 −0.54
 DETAILS
-#	CLUB	ADJUSTED XG / MATCH ▼	XG PER 90, LEVEL SCORE	GOOD CHANCES %	BIG CHANCES / MATCH	XG / SHOT	SHOTS / MATCH	SET-PIECE XG / MATCH	LAST 3, ADJUSTED	TOUCHES IN THE BOX°
+#	CLUB	ADJUSTED XG / MATCH ▼	XG/90 WHEN LEVEL	GOOD CHANCES %	BIG CHANCES / MATCH	XG / SHOT	SHOTS / MATCH	SET-PIECE XG / MATCH	LAST 3, ADJ. XG	TOUCHES IN THE BOX°
 1	Brighton	2.44	2.25	31	2.88	0.128	17.8	0.58	1.75	230
 2	Man City	2.24	1.78	37	3.25	0.162	14.6	0.42	2.40	284
 3	Bournemouth	2.01	1.93	35	2.63	0.145	14.5	0.57	2.70	205
@@ -3578,13 +3578,13 @@ DETAILS
 19	Hull City	1.13	1.44	20	1.25	0.106	10.6	0.34	1.10	146
 20	Coventry City	1.05	1.30	18	1.00	0.089	10.6	0.11	0.93	145
 
-Read it the way an NFL efficiency table is read. Level score: only the minutes when the score was level. A side in front sits off, and a side behind throws numbers forward, so the scoreline changes the chances. Good chances: the share of shots that were worth at least 0.10 xG, penalties excluded. Big chances: shots of at least 0.30 xG, per match. Green is better in the league, red is worse. A ° marks an Opta season total. Click a column heading to sort.
+Read it the way an NFL efficiency table is read. When level: only the minutes the score was level. A side in front sits off, and a side behind commits players forward, so the score changes the chances they get. Good chances: the share of shots worth at least 0.10 xG, penalties excluded. Big chances: shots of at least 0.30 xG, per match. Green is better in the league, red is worse. A ° marks an Opta season total. Click a column heading to sort.
 
 HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -3670,17 +3670,17 @@ Allows a lot of ordinary chances, and rarely a big one.
 3
 1.21
 Leeds
-Chance quality ranks 3rd in the league, explosiveness 7th.
+3rd for chance quality, 7th for explosiveness.
 +0.37
 4
 1.22
 Liverpool
-Weaker when the score is level. The overall numbers are flattered by the game state.
+Weaker when the score is level. The overall numbers are flattered by the state of the game.
 +0.36
 5
 1.24
 Nott'm Forest
-Chance quality ranks 7th in the league, explosiveness 3rd.
+7th for chance quality, 3rd for explosiveness.
 +0.34
 6
 1.39
@@ -3705,7 +3705,7 @@ Tightening up: the last three matches are better than the season average.
 10
 1.58
 Everton
-Chance quality ranks 10th in the league, explosiveness 9th.
+10th for chance quality, 9th for explosiveness.
 0.00
 11
 1.60
@@ -3720,7 +3720,7 @@ Tightening up: the last three matches are better than the season average.
 13
 1.69
 Sunderland
-Chance quality ranks 19th in the league, explosiveness 17th.
+19th for chance quality, 17th for explosiveness.
 −0.11
 14
 1.69
@@ -3735,7 +3735,7 @@ Tightening up: the last three matches are better than the season average.
 16
 1.83
 Man Utd
-Chance quality ranks 20th in the league, explosiveness 20th.
+20th for chance quality, 20th for explosiveness.
 −0.25
 17
 1.89
@@ -3745,20 +3745,20 @@ Looser lately: the last three matches are worse than the season average.
 18
 2.10
 Newcastle
-Chance quality ranks 5th in the league, explosiveness 11th.
+5th for chance quality, 11th for explosiveness.
 −0.52
 19
 2.11
 Crystal Palace
-Chance quality ranks 17th in the league, explosiveness 17th.
+17th for chance quality, 17th for explosiveness.
 −0.53
 20
 2.14
 Ipswich Town
-Chance quality ranks 15th in the league, explosiveness 19th.
+15th for chance quality, 19th for explosiveness.
 −0.56
 DETAILS
-#	CLUB	ADJUSTED XGA / MATCH ▲	XGA PER 90, LEVEL SCORE	GOOD CHANCES ALLOWED %	BIG CHANCES ALLOWED / MATCH	XG PER SHOT FACED	SHOTS FACED / MATCH	SET-PIECE XG ALLOWED / MATCH	LAST 3, ADJUSTED	PPDA°	HIGH TURNOVERS°
+#	CLUB	ADJUSTED XGA / MATCH ▲	XGA/90 WHEN LEVEL	GOOD CHANCES ALLOWED %	BIG CHANCES ALLOWED / MATCH	XG PER SHOT FACED	SHOTS FACED / MATCH	SET-PIECE XG ALLOWED / MATCH	LAST 3, ADJ. XGA	PPDA°	HIGH TURNOVERS°
 1	Arsenal	0.98	0.87	13	1.13	0.088	10.8	0.24	0.92	10.7	44
 2	Bournemouth	1.08	1.27	33	1.38	0.112	10.5	0.28	0.71	11.0	73
 3	Leeds	1.21	1.23	18	1.50	0.097	14.3	0.32	1.24	11.1	53
@@ -3780,13 +3780,13 @@ DETAILS
 19	Crystal Palace	2.11	1.76	33	2.63	0.132	16.9	0.42	2.28	14.4	59
 20	Ipswich Town	2.14	2.17	31	2.75	0.137	16.9	0.22	2.39	13.3	54
 
-Read it the way an NFL efficiency table is read. Level score: only the minutes when the score was level. A side in front sits off, and a side behind throws numbers forward, so the scoreline changes the chances. Good chances: the share of shots that were worth at least 0.10 xG, penalties excluded. Big chances: shots of at least 0.30 xG, per match. Green is better in the league, red is worse. A ° marks an Opta season total. Click a column heading to sort.
+Read it the way an NFL efficiency table is read. When level: only the minutes the score was level. A side in front sits off, and a side behind commits players forward, so the score changes the chances they get. Good chances: the share of shots worth at least 0.10 xG, penalties excluded. Big chances: shots of at least 0.30 xG, per match. Green is better in the league, red is worse. A ° marks an Opta season total. Click a column heading to sort.
 
 HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -3987,7 +3987,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -4372,7 +4372,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -4753,7 +4753,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -5077,7 +5077,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -5295,7 +5295,7 @@ ON THE CHANCES
 5	Brighton	4	6	6.2	−0.2	10	7.6	6	7.1	
 6	Chelsea	4	6	4.8	+1.2	6	5.5	7	7.6	
 7	Newcastle	4	6	4.1	+1.9	6	5.3	8	7.3	
-8	Leeds	4	5	5.0	−0.0	3	5.8	3	6.3	
+8	Leeds	4	5	5.0	0.0	3	5.8	3	6.3	
 9	Nott'm Forest	4	5	9.7	−4.7	6	12.2	7	5.7	
 10	Spurs	4	5	6.1	−1.1	3	5.3	4	6.3	
 11	Brentford	4	4	4.2	−0.2	6	5.5	6	7.6	
@@ -5305,7 +5305,7 @@ ON THE CHANCES
 15	Crystal Palace	4	4	4.8	−0.8	3	6.5	9	8.0	
 16	Man Utd	4	3	5.3	−2.3	4	5.9	6	6.0	
 17	Everton	4	3	5.7	−2.7	3	7.0	5	6.9	
-18	Ipswich Town	4	3	3.0	−0.0	7	6.4	11	12.6	
+18	Ipswich Town	4	3	3.0	0.0	7	6.4	11	12.6	
 19	Coventry City	4	3	3.6	−0.6	2	3.9	7	6.4	
 20	Sunderland	4	1	4.6	−3.6	5	6.8	10	10.3	
 
@@ -5378,7 +5378,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -5631,7 +5631,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -5895,7 +5895,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -5979,26 +5979,26 @@ AFTER GAMEWEEK 8 · 300 MATCHES LEFT
 The remaining 300 matches were played 6,000 times using the Power ratings (opponent-adjusted, with recent matches counting for more). Bad luck so far does not drag a club's chances down. Only the points already dropped do.
 
 #	CLUB	NOW	EXPECTED	TITLE	TOP 4	TOP 6	RELEGATED
-1	Arsenal	21	82	52%	99%	100%	0%
-2	Man City	21	82	45%	99%	>99%	0%
-3	Brighton	16	67	2%	67%	89%	0%
-4	Liverpool	15	65	1%	59%	85%	0%
-5	Bournemouth	9	62	<1%	38%	72%	<1%
-6	Aston Villa	11	55	0%	9%	30%	1%
+1	Arsenal	21	82	52%	99%	>99%	0%
+2	Man City	21	82	44%	99%	>99%	0%
+3	Brighton	16	67	2%	66%	89%	<1%
+4	Liverpool	15	66	1%	60%	86%	<1%
+5	Bournemouth	9	62	<1%	36%	72%	<1%
+6	Aston Villa	11	55	<1%	9%	30%	1%
 7	Leeds	11	54	<1%	8%	29%	1%
-8	Chelsea	13	54	<1%	8%	28%	1%
-9	Brentford	11	53	<1%	5%	23%	2%
-10	Man Utd	7	51	<1%	4%	17%	3%
-11	Nott'm Forest	6	50	0%	2%	12%	5%
+8	Chelsea	13	54	<1%	8%	27%	1%
+9	Brentford	11	53	<1%	6%	24%	2%
+10	Man Utd	7	51	0%	4%	16%	3%
+11	Nott'm Forest	6	50	0%	3%	12%	5%
 12	Everton	10	47	0%	1%	6%	8%
-13	Newcastle	11	45	0%	<1%	3%	13%
-14	Fulham	8	45	0%	<1%	3%	15%
+13	Newcastle	11	45	0%	1%	3%	13%
+14	Fulham	8	45	0%	1%	3%	14%
 15	Spurs	9	42	0%	<1%	1%	24%
-16	Sunderland	5	41	0%	<1%	1%	29%
-17	Crystal Palace	7	41	0%	<1%	1%	32%
-18	Ipswich Town	10	39	0%	<1%	<1%	44%
+16	Sunderland	5	42	0%	<1%	1%	28%
+17	Crystal Palace	7	41	0%	<1%	1%	33%
+18	Ipswich Town	10	39	0%	<1%	<1%	45%
 19	Coventry City	6	38	0%	<1%	<1%	48%
-20	Hull City	10	34	0%	0%	0%	74%
+20	Hull City	10	34	0%	0%	<1%	73%
 
 This is a simple model. It uses home advantage and a Poisson spread of goals. It does not know about injuries or a change of manager. Pick an earlier gameweek above to see what the model said at the time.
 
@@ -6006,7 +6006,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -6108,7 +6108,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -6186,7 +6186,7 @@ Spurs
 Sunderland
 IN SHORT
 
-They sit 18th. On the chances they would be 3rd (−9.1 points). On the Power list they are 7th (attack 8th, defence 7th). Finishing is the worst in the league: 9.8 goals short of the chances. They have dropped 7 points from winning positions (4th most). They have conceded 0.8 goals more than the xG (16th in the league). Steady: an xG difference of +1.0 per match over the last three.
+They sit 18th. On the chances they would be 3rd (−9.1 points). On the Power list they are 7th (attack 8th, defence 7th). Finishing is the worst in the league: 9.8 goals short of the chances. They have dropped 7 points from winning positions (4th most). They have conceded 0.8 goals more than the chances allowed (16th in the league). Steady: an xG difference of +1.0 per match over the last three.
 
 NEXT MATCHES · EXPECTED POINTS FROM THE MODEL
 
@@ -6295,7 +6295,7 @@ GW	OPPONENT	SCORE	XG	AVG. SIDE	ADJ.	XGA	AVG. SIDE	ADJ.
 7	Arsenal H · Power 2nd	0–1	0.75	1.12	1.08	0.92	2.01	0.74
 8	Ipswich Town A · Power 19th	1–1	2.76	2.10	2.12	0.86	1.43	0.97
 
-Avg. side is what an average club would have created, or allowed, in that same match at that same ground. Adj. rescales the actual xG to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
+Avg. side is what a typical club would have created, or allowed, in that same match at that ground. Adj. is the actual xG rescaled to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
 
 GAME STATE, MATCH BY MATCH
 
@@ -6325,7 +6325,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -6803,7 +6803,7 @@ GW	OPPONENT	SCORE	XG	AVG. SIDE	ADJ.	XGA	AVG. SIDE	ADJ.
 7	Nott'm Forest A · Power 5th	1–0	0.92	1.36	1.09	0.75	1.96	0.62
 8	Everton H · Power 11th	2–0	2.29	1.75	2.11	0.72	1.46	0.80
 
-Avg. side is what an average club would have created, or allowed, in that same match at that same ground. Adj. rescales the actual xG to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
+Avg. side is what a typical club would have created, or allowed, in that same match at that ground. Adj. is the actual xG rescaled to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
 
 GAME STATE, MATCH BY MATCH
 
@@ -6833,7 +6833,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -7180,7 +7180,7 @@ Spurs
 Sunderland
 IN SHORT
 
-They sit 9th. On the chances they would be 16th (+2.6 points). On the Power list they are 8th (attack 9th, defence 8th). Set pieces are barely a threat: only 9% of their xG comes from them, the lowest share in the league. They have had the 2nd hardest run in the league so far. That belongs in any reading of the points. They have conceded 3.4 goals fewer than the xG (6th in the league). Improving: an xG difference of +0.0 per match over the last three, after −1.2 before that.
+They sit 9th. On the chances they would be 16th (+2.6 points). On the Power list they are 8th (attack 9th, defence 8th). Set pieces are barely a threat: only 9% of their xG comes from them, the lowest share in the league. They have had the 2nd hardest run in the league so far. That belongs in any reading of the points. They have conceded 3.4 goals fewer than the chances allowed (6th in the league). Improving: an xG difference of 0.0 per match over the last three, after −1.2 before that.
 
 NEXT MATCHES · EXPECTED POINTS FROM THE MODEL
 
@@ -7289,7 +7289,7 @@ GW	OPPONENT	SCORE	XG	AVG. SIDE	ADJ.	XGA	AVG. SIDE	ADJ.
 7	Newcastle A · Power 18th	1–0	2.09	1.90	1.78	0.92	1.46	1.02
 8	Man City H · Power 1st	2–1	0.65	1.34	0.78	2.29	2.22	1.67
 
-Avg. side is what an average club would have created, or allowed, in that same match at that same ground. Adj. rescales the actual xG to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
+Avg. side is what a typical club would have created, or allowed, in that same match at that ground. Adj. is the actual xG rescaled to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
 
 GAME STATE, MATCH BY MATCH
 
@@ -7319,7 +7319,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -7696,7 +7696,7 @@ Spurs
 Sunderland
 IN SHORT
 
-They sit 13th. On the chances they would be 4th (−5.9 points). On the Power list they are 3rd (attack 4th, defence 4th). Leaky at the back: they have conceded 3.6 goals more than the xG, the worst record in the league. They have dropped 9 points from winning positions, the 2nd most in the league. Finishing is the 3rd worst in the league: 4.8 goals short of the chances. They pick their shots: 0.15 xG per shot, the 3rd best chance quality in the league. Improving: an xG difference of +2.1 per match over the last three, after +0.2 before that.
+They sit 13th. On the chances they would be 4th (−5.9 points). On the Power list they are 3rd (attack 4th, defence 4th). Leaky at the back: they have conceded 3.6 goals more than the chances allowed, the worst record in the league. They have dropped 9 points from winning positions, the 2nd most in the league. Finishing is the 3rd worst in the league: 4.8 goals short of the chances. They pick their shots: 0.15 xG per shot, the 3rd best chance quality in the league. Improving: an xG difference of +2.1 per match over the last three, after +0.2 before that.
 
 NEXT MATCHES · EXPECTED POINTS FROM THE MODEL
 
@@ -7805,7 +7805,7 @@ GW	OPPONENT	SCORE	XG	AVG. SIDE	ADJ.	XGA	AVG. SIDE	ADJ.
 7	Sunderland H · Power 12th	2–0	4.42	1.89	3.79	0.09	1.53	0.10
 8	Man Utd A · Power 7th	3–0	2.56	1.58	2.63	0.84	1.87	0.73
 
-Avg. side is what an average club would have created, or allowed, in that same match at that same ground. Adj. rescales the actual xG to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
+Avg. side is what a typical club would have created, or allowed, in that same match at that ground. Adj. is the actual xG rescaled to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
 
 GAME STATE, MATCH BY MATCH
 
@@ -7835,7 +7835,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -8203,7 +8203,7 @@ Spurs
 Sunderland
 IN SHORT
 
-They sit 6th. On the chances they would be 7th (−0.5 points). On the Power list they are 10th (attack 7th, defence 11th). They have dropped 11 points from winning positions, the most in the league. They have conceded 3.9 goals fewer than the xG (4th in the league). They have rescued 3 points from losing positions (6th most). Falling off: an xG difference of −0.5 per match over the last three, after +0.7 before that.
+They sit 6th. On the chances they would be 7th (−0.5 points). On the Power list they are 10th (attack 7th, defence 11th). They have dropped 11 points from winning positions, the most in the league. They have conceded 3.9 goals fewer than the chances allowed (4th in the league). They have rescued 3 points from losing positions (6th most). Falling off: an xG difference of −0.5 per match over the last three, after +0.7 before that.
 
 NEXT MATCHES · EXPECTED POINTS FROM THE MODEL
 
@@ -8312,7 +8312,7 @@ GW	OPPONENT	SCORE	XG	AVG. SIDE	ADJ.	XGA	AVG. SIDE	ADJ.
 7	Liverpool H · Power 6th	1–2	0.86	1.35	1.03	1.55	1.57	1.59
 8	Hull City A · Power 20th	1–1	1.71	2.00	1.38	1.94	1.21	2.60
 
-Avg. side is what an average club would have created, or allowed, in that same match at that same ground. Adj. rescales the actual xG to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
+Avg. side is what a typical club would have created, or allowed, in that same match at that ground. Adj. is the actual xG rescaled to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
 
 GAME STATE, MATCH BY MATCH
 
@@ -8342,7 +8342,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -8745,7 +8745,7 @@ Spurs
 Sunderland
 IN SHORT
 
-They sit 3rd. On the chances they would be 5th (+1.2 points). On the Power list they are 4th (attack 3rd, defence 6th). The press is the most aggressive in the league by PPDA, and they rank 1st for winning the ball high. Finishing is the 2nd best in the league: 4.3 goals above the chances. Excellent at the back: they have conceded 5.4 goals fewer than the xG (the 2nd best goal prevention in the league). They have led for 46% of playing time, the 2nd most in the league. Steady: an xG difference of +0.9 per match over the last three.
+They sit 3rd. On the chances they would be 5th (+1.2 points). On the Power list they are 4th (attack 3rd, defence 6th). The press is the most aggressive in the league by PPDA, and they rank 1st for winning the ball high. Finishing is the 2nd best in the league: 4.3 goals above the chances. Excellent at the back: they have conceded 5.4 goals fewer than the chances allowed, the 2nd best record in the league. They have led for 46% of playing time, the 2nd most in the league. Steady: an xG difference of +0.9 per match over the last three.
 
 NEXT MATCHES · EXPECTED POINTS FROM THE MODEL
 
@@ -8854,7 +8854,7 @@ GW	OPPONENT	SCORE	XG	AVG. SIDE	ADJ.	XGA	AVG. SIDE	ADJ.
 7	Crystal Palace H · Power 16th	5–0	2.59	2.13	1.97	0.63	1.52	0.67
 8	Liverpool A · Power 6th	0–2	1.31	1.23	1.73	1.28	1.73	1.20
 
-Avg. side is what an average club would have created, or allowed, in that same match at that same ground. Adj. rescales the actual xG to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
+Avg. side is what a typical club would have created, or allowed, in that same match at that ground. Adj. is the actual xG rescaled to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
 
 GAME STATE, MATCH BY MATCH
 
@@ -8884,7 +8884,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -9401,7 +9401,7 @@ GW	OPPONENT	SCORE	XG	AVG. SIDE	ADJ.	XGA	AVG. SIDE	ADJ.
 7	Everton A · Power 11th	2–0	1.61	1.60	1.63	0.57	1.60	0.58
 8	Spurs H · Power 15th	0–2	0.46	1.76	0.42	0.98	1.21	1.31
 
-Avg. side is what an average club would have created, or allowed, in that same match at that same ground. Adj. rescales the actual xG to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
+Avg. side is what a typical club would have created, or allowed, in that same match at that ground. Adj. is the actual xG rescaled to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
 
 GAME STATE, MATCH BY MATCH
 
@@ -9431,7 +9431,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -9820,7 +9820,7 @@ Spurs
 Sunderland
 IN SHORT
 
-They sit 19th. On the chances they would be 17th (−2.1 points). On the Power list they are 18th (attack 19th, defence 15th). The press is the most passive in the league: they sit off and wait. Set pieces are barely a threat: only 10% of their xG comes from them, the 2nd lowest share in the league. Leaky at the back: they have conceded 2.6 goals more than the xG, the 2nd worst record in the league. A lot of poor chances: only 0.10 xG per shot, the 3rd lowest chance quality in the league. Improving: an xG difference of −0.2 per match over the last three, after −0.7 before that.
+They sit 19th. On the chances they would be 17th (−2.1 points). On the Power list they are 18th (attack 19th, defence 15th). The press is the most passive in the league: they sit off and wait. Set pieces are barely a threat: only 10% of their xG comes from them, the 2nd lowest share in the league. Leaky at the back: they have conceded 2.6 goals more than the chances allowed, the 2nd worst record in the league. A lot of poor chances: only 0.10 xG per shot, the 3rd lowest chance quality in the league. Improving: an xG difference of −0.2 per match over the last three, after −0.7 before that.
 
 NEXT MATCHES · EXPECTED POINTS FROM THE MODEL
 
@@ -9929,7 +9929,7 @@ GW	OPPONENT	SCORE	XG	AVG. SIDE	ADJ.	XGA	AVG. SIDE	ADJ.
 7	Spurs A · Power 15th	1–3	1.14	1.61	1.15	0.97	1.32	1.19
 8	Fulham H · Power 14th	0–1	0.40	1.81	0.36	0.58	1.43	0.65
 
-Avg. side is what an average club would have created, or allowed, in that same match at that same ground. Adj. rescales the actual xG to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
+Avg. side is what a typical club would have created, or allowed, in that same match at that ground. Adj. is the actual xG rescaled to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
 
 GAME STATE, MATCH BY MATCH
 
@@ -9959,7 +9959,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -10338,7 +10338,7 @@ Spurs
 Sunderland
 IN SHORT
 
-They sit 17th. On the chances they would be 15th (−1.4 points). On the Power list they are 17th (attack 12th, defence 18th). They have rescued 6 points from losing positions, the 2nd most in the league. They keep coming back. They pick their shots: 0.15 xG per shot, the 2nd best chance quality in the league. Leaky at the back: they have conceded 1.2 goals more than the xG, the 3rd worst record in the league. They have led for only 10% of playing time, the 3rd least in the league. Steady: an xG difference of −0.8 per match over the last three.
+They sit 17th. On the chances they would be 15th (−1.4 points). On the Power list they are 17th (attack 12th, defence 18th). They have rescued 6 points from losing positions, the 2nd most in the league. They keep coming back. They pick their shots: 0.15 xG per shot, the 2nd best chance quality in the league. Leaky at the back: they have conceded 1.2 goals more than the chances allowed, the 3rd worst record in the league. They have led for only 10% of playing time, the 3rd least in the league. Steady: an xG difference of −0.8 per match over the last three.
 
 NEXT MATCHES · EXPECTED POINTS FROM THE MODEL
 
@@ -10447,7 +10447,7 @@ GW	OPPONENT	SCORE	XG	AVG. SIDE	ADJ.	XGA	AVG. SIDE	ADJ.
 7	Brighton A · Power 4th	0–5	0.63	1.54	0.66	2.59	2.31	1.82
 8	Newcastle H · Power 18th	0–2	2.20	2.08	1.71	1.30	1.33	1.58
 
-Avg. side is what an average club would have created, or allowed, in that same match at that same ground. Adj. rescales the actual xG to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
+Avg. side is what a typical club would have created, or allowed, in that same match at that ground. Adj. is the actual xG rescaled to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
 
 GAME STATE, MATCH BY MATCH
 
@@ -10477,7 +10477,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -10874,7 +10874,7 @@ Spurs
 Sunderland
 IN SHORT
 
-They sit 11th. On the chances they would be 10th (−0.8 points). On the Power list they are 13th (attack 14th, defence 12th). The run so far has been about average (4th easiest). Finishing is −4.6 goals against the chances (16th in the league). They have conceded 3.7 goals fewer than the xG (5th in the league). Falling off: an xG difference of −0.4 per match over the last three, after +0.2 before that.
+They sit 11th. On the chances they would be 10th (−0.8 points). On the Power list they are 13th (attack 14th, defence 12th). The run so far has been about average (4th easiest). Finishing is 4.6 goals short of the chances (16th in the league). They have conceded 3.7 goals fewer than the chances allowed (5th in the league). Falling off: an xG difference of −0.4 per match over the last three, after +0.2 before that.
 
 NEXT MATCHES · EXPECTED POINTS FROM THE MODEL
 
@@ -10983,7 +10983,7 @@ GW	OPPONENT	SCORE	XG	AVG. SIDE	ADJ.	XGA	AVG. SIDE	ADJ.
 7	Chelsea H · Power 10th	0–2	0.57	1.76	0.53	1.61	1.56	1.67
 8	Arsenal A · Power 2nd	0–2	0.72	1.02	1.14	2.29	2.21	1.68
 
-Avg. side is what an average club would have created, or allowed, in that same match at that same ground. Adj. rescales the actual xG to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
+Avg. side is what a typical club would have created, or allowed, in that same match at that ground. Adj. is the actual xG rescaled to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
 
 GAME STATE, MATCH BY MATCH
 
@@ -11013,7 +11013,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -11499,7 +11499,7 @@ GW	OPPONENT	SCORE	XG	AVG. SIDE	ADJ.	XGA	AVG. SIDE	ADJ.
 7	Hull City H · Power 20th	1–0	2.31	2.19	1.70	0.13	1.10	0.19
 8	Coventry City A · Power 17th	1–0	0.58	1.55	0.61	0.40	1.23	0.53
 
-Avg. side is what an average club would have created, or allowed, in that same match at that same ground. Adj. rescales the actual xG to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
+Avg. side is what a typical club would have created, or allowed, in that same match at that ground. Adj. is the actual xG rescaled to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
 
 GAME STATE, MATCH BY MATCH
 
@@ -11529,7 +11529,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -11909,7 +11909,7 @@ Spurs
 Sunderland
 IN SHORT
 
-They sit 10th. On the chances they would be 18th (+2.1 points). On the Power list they are 20th (attack 20th, defence 20th). Excellent at the back: they have conceded 6.2 goals fewer than the xG (the best goal prevention in the league). The next five matches are the hardest run in the league. The press is the 2nd most passive in the league: they sit off and wait. They have had the 3rd easiest run in the league so far, which flatters the points. Falling off: an xG difference of −1.1 per match over the last three, after −0.2 before that.
+They sit 10th. On the chances they would be 18th (+2.1 points). On the Power list they are 20th (attack 20th, defence 20th). Excellent at the back: they have conceded 6.2 goals fewer than the chances allowed, the best record in the league. The next five matches are the hardest run in the league. The press is the 2nd most passive in the league: they sit off and wait. They have had the 3rd easiest run in the league so far, which flatters the points. Falling off: an xG difference of −1.1 per match over the last three, after −0.2 before that.
 
 NEXT MATCHES · EXPECTED POINTS FROM THE MODEL
 
@@ -12018,7 +12018,7 @@ GW	OPPONENT	SCORE	XG	AVG. SIDE	ADJ.	XGA	AVG. SIDE	ADJ.
 7	Fulham A · Power 14th	0–1	0.13	1.65	0.13	2.31	1.57	2.38
 8	Brentford H · Power 9th	1–1	1.94	1.79	1.75	1.71	1.73	1.60
 
-Avg. side is what an average club would have created, or allowed, in that same match at that same ground. Adj. rescales the actual xG to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
+Avg. side is what a typical club would have created, or allowed, in that same match at that ground. Adj. is the actual xG rescaled to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
 
 GAME STATE, MATCH BY MATCH
 
@@ -12048,7 +12048,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -12510,7 +12510,7 @@ GW	OPPONENT	SCORE	XG	AVG. SIDE	ADJ.	XGA	AVG. SIDE	ADJ.
 7	Man City A · Power 1st	2–3	1.37	1.22	1.82	4.01	2.44	2.66
 8	Nott'm Forest H · Power 5th	1–1	0.86	1.50	0.93	2.76	1.79	2.50
 
-Avg. side is what an average club would have created, or allowed, in that same match at that same ground. Adj. rescales the actual xG to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
+Avg. side is what a typical club would have created, or allowed, in that same match at that ground. Adj. is the actual xG rescaled to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
 
 GAME STATE, MATCH BY MATCH
 
@@ -12540,7 +12540,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -12933,7 +12933,7 @@ Spurs
 Sunderland
 IN SHORT
 
-They sit 7th. On the chances they would be 8th (−0.4 points). On the Power list they are 9th (attack 11th, defence 5th). 32% of their xG comes from set pieces, the highest share in the league. Excellent at the back: they have conceded 5.0 goals fewer than the xG (the 3rd best goal prevention in the league). The run so far has been about average (15th easiest). Falling off: an xG difference of −0.2 per match over the last three, after +0.3 before that.
+They sit 7th. On the chances they would be 8th (−0.4 points). On the Power list they are 9th (attack 11th, defence 5th). 32% of their xG comes from set pieces, the highest share in the league. Excellent at the back: they have conceded 5.0 goals fewer than the chances allowed, the 3rd best record in the league. The run so far has been about average (15th easiest). Falling off: an xG difference of −0.2 per match over the last three, after +0.3 before that.
 
 NEXT MATCHES · EXPECTED POINTS FROM THE MODEL
 
@@ -13042,7 +13042,7 @@ GW	OPPONENT	SCORE	XG	AVG. SIDE	ADJ.	XGA	AVG. SIDE	ADJ.
 7	Man Utd H · Power 7th	1–1	1.43	1.73	1.34	1.08	1.70	1.03
 8	Sunderland A · Power 12th	0–0	1.06	1.72	1.00	1.03	1.68	0.99
 
-Avg. side is what an average club would have created, or allowed, in that same match at that same ground. Adj. rescales the actual xG to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
+Avg. side is what a typical club would have created, or allowed, in that same match at that ground. Adj. is the actual xG rescaled to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
 
 GAME STATE, MATCH BY MATCH
 
@@ -13072,7 +13072,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -13538,7 +13538,7 @@ GW	OPPONENT	SCORE	XG	AVG. SIDE	ADJ.	XGA	AVG. SIDE	ADJ.
 7	Brentford A · Power 9th	2–1	1.55	1.63	1.54	0.86	1.90	0.73
 8	Brighton H · Power 4th	2–0	1.28	1.69	1.22	1.31	2.10	1.01
 
-Avg. side is what an average club would have created, or allowed, in that same match at that same ground. Adj. rescales the actual xG to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
+Avg. side is what a typical club would have created, or allowed, in that same match at that ground. Adj. is the actual xG rescaled to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
 
 GAME STATE, MATCH BY MATCH
 
@@ -13568,7 +13568,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -14056,7 +14056,7 @@ GW	OPPONENT	SCORE	XG	AVG. SIDE	ADJ.	XGA	AVG. SIDE	ADJ.
 7	Ipswich Town H · Power 19th	3–2	4.01	2.31	2.81	1.37	1.30	1.70
 8	Aston Villa A · Power 13th	1–2	2.29	1.62	2.29	0.65	1.54	0.68
 
-Avg. side is what an average club would have created, or allowed, in that same match at that same ground. Adj. rescales the actual xG to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
+Avg. side is what a typical club would have created, or allowed, in that same match at that ground. Adj. is the actual xG rescaled to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
 
 GAME STATE, MATCH BY MATCH
 
@@ -14086,7 +14086,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -14576,7 +14576,7 @@ GW	OPPONENT	SCORE	XG	AVG. SIDE	ADJ.	XGA	AVG. SIDE	ADJ.
 7	Leeds A · Power 8th	1–1	1.08	1.33	1.32	1.43	1.59	1.46
 8	Bournemouth H · Power 3rd	0–3	0.84	1.31	1.04	2.56	1.94	2.14
 
-Avg. side is what an average club would have created, or allowed, in that same match at that same ground. Adj. rescales the actual xG to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
+Avg. side is what a typical club would have created, or allowed, in that same match at that ground. Adj. is the actual xG rescaled to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
 
 GAME STATE, MATCH BY MATCH
 
@@ -14606,7 +14606,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -15121,7 +15121,7 @@ GW	OPPONENT	SCORE	XG	AVG. SIDE	ADJ.	XGA	AVG. SIDE	ADJ.
 7	Aston Villa H · Power 13th	0–1	0.92	1.78	0.84	2.09	1.40	2.41
 8	Crystal Palace A · Power 16th	2–0	1.30	1.94	1.08	2.20	1.66	2.14
 
-Avg. side is what an average club would have created, or allowed, in that same match at that same ground. Adj. rescales the actual xG to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
+Avg. side is what a typical club would have created, or allowed, in that same match at that ground. Adj. is the actual xG rescaled to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
 
 GAME STATE, MATCH BY MATCH
 
@@ -15151,7 +15151,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -15555,7 +15555,7 @@ Spurs
 Sunderland
 IN SHORT
 
-They sit 18th. On the chances they would be 3rd (−9.1 points). On the Power list they are 7th (attack 8th, defence 7th). Finishing is the worst in the league: 9.8 goals short of the chances. They have dropped 7 points from winning positions (4th most). They have conceded 0.8 goals more than the xG (16th in the league). Steady: an xG difference of +1.0 per match over the last three.
+They sit 18th. On the chances they would be 3rd (−9.1 points). On the Power list they are 7th (attack 8th, defence 7th). Finishing is the worst in the league: 9.8 goals short of the chances. They have dropped 7 points from winning positions (4th most). They have conceded 0.8 goals more than the chances allowed (16th in the league). Steady: an xG difference of +1.0 per match over the last three.
 
 NEXT MATCHES · EXPECTED POINTS FROM THE MODEL
 
@@ -15664,7 +15664,7 @@ GW	OPPONENT	SCORE	XG	AVG. SIDE	ADJ.	XGA	AVG. SIDE	ADJ.
 7	Arsenal H · Power 2nd	0–1	0.75	1.12	1.08	0.92	2.01	0.74
 8	Ipswich Town A · Power 19th	1–1	2.76	2.10	2.12	0.86	1.43	0.97
 
-Avg. side is what an average club would have created, or allowed, in that same match at that same ground. Adj. rescales the actual xG to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
+Avg. side is what a typical club would have created, or allowed, in that same match at that ground. Adj. is the actual xG rescaled to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
 
 GAME STATE, MATCH BY MATCH
 
@@ -15694,7 +15694,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -16172,7 +16172,7 @@ GW	OPPONENT	SCORE	XG	AVG. SIDE	ADJ.	XGA	AVG. SIDE	ADJ.
 7	Coventry City H · Power 17th	3–1	0.97	1.70	0.92	1.14	1.12	1.65
 8	Chelsea A · Power 10th	2–0	0.98	1.60	0.99	0.46	1.71	0.44
 
-Avg. side is what an average club would have created, or allowed, in that same match at that same ground. Adj. rescales the actual xG to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
+Avg. side is what a typical club would have created, or allowed, in that same match at that ground. Adj. is the actual xG rescaled to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
 
 GAME STATE, MATCH BY MATCH
 
@@ -16202,7 +16202,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -16687,7 +16687,7 @@ GW	OPPONENT	SCORE	XG	AVG. SIDE	ADJ.	XGA	AVG. SIDE	ADJ.
 7	Bournemouth A · Power 3rd	0–2	0.09	1.19	0.12	4.42	2.13	3.36
 8	Leeds H · Power 8th	0–0	1.03	1.46	1.14	1.06	1.45	1.18
 
-Avg. side is what an average club would have created, or allowed, in that same match at that same ground. Adj. rescales the actual xG to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
+Avg. side is what a typical club would have created, or allowed, in that same match at that ground. Adj. is the actual xG rescaled to an average opponent on a neutral pitch. Green is better than the league average of 1.62 xG.
 
 GAME STATE, MATCH BY MATCH
 
@@ -16716,7 +16716,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -17276,7 +17276,7 @@ Per 90
 254 players · season totals
 Show 25 more
 
-Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth: without them, the club would have fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
+Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth. Without them, the club would have had fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
 
 MAN CITY · FWD · 709 MINUTES · 26 YEARS OLD
 
@@ -17342,7 +17342,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -17706,7 +17706,7 @@ Per 90
 254 players · season totals
 Show 25 more
 
-Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth: without them, the club would have fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
+Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth. Without them, the club would have had fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
 
 MAN CITY · FWD · 709 MINUTES · 26 YEARS OLD
 
@@ -17772,7 +17772,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -18136,7 +18136,7 @@ Per 90
 254 players · season totals
 Show 25 more
 
-Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth: without them, the club would have fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
+Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth. Without them, the club would have had fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
 
 MAN CITY · FWD · 709 MINUTES · 26 YEARS OLD
 
@@ -18202,7 +18202,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -18566,7 +18566,7 @@ Per 90
 254 players · season totals
 Show 25 more
 
-Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth: without them, the club would have fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
+Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth. Without them, the club would have had fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
 
 BRIGHTON · MID · 700 MINUTES · 35 YEARS OLD
 
@@ -18722,7 +18722,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -19159,7 +19159,7 @@ Per 90
 254 players · season totals
 Show 25 more
 
-Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth: without them, the club would have fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
+Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth. Without them, the club would have had fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
 
 MAN CITY · DEF · 720 MINUTES · 29 YEARS OLD
 
@@ -19301,7 +19301,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -19716,7 +19716,7 @@ Per 90
 254 players · season totals
 Show 25 more
 
-Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth: without them, the club would have fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
+Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth. Without them, the club would have had fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
 
 BOURNEMOUTH · DEF · 720 MINUTES · 24 YEARS OLD
 
@@ -19858,7 +19858,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -20261,7 +20261,7 @@ Per 90
 22	RushworthCOV · GKP	720	-4.2	17	53	10.8	15	1
 22 players · season totals · goalkeepers only
 
-Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth: without them, the club would have fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
+Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth. Without them, the club would have had fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
 
 BRIGHTON · GKP · 720 MINUTES · 24 YEARS OLD
 
@@ -20327,7 +20327,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -20660,7 +20660,7 @@ Per 90
 254 players · season totals
 Show 25 more
 
-Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth: without them, the club would have fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
+Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth. Without them, the club would have had fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
 
 MAN CITY · FWD · 709 MINUTES · 26 YEARS OLD
 
@@ -20726,7 +20726,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -21090,7 +21090,7 @@ Per 90
 254 players · season totals
 Show 25 more
 
-Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth: without them, the club would have fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
+Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth. Without them, the club would have had fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
 
 MAN CITY · FWD · 709 MINUTES · 26 YEARS OLD
 
@@ -21156,7 +21156,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -21520,7 +21520,7 @@ Per 90
 254 players · scaled to 90 minutes
 Show 25 more
 
-Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth: without them, the club would have fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
+Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth. Without them, the club would have had fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
 
 MAN CITY · MID · 437 MINUTES · 23 YEARS OLD
 
@@ -21676,7 +21676,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -22115,7 +22115,7 @@ Per 90
 451 players · season totals
 Show 25 more
 
-Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth: without them, the club would have fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
+Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth. Without them, the club would have had fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
 
 MAN CITY · FWD · 709 MINUTES · 26 YEARS OLD
 
@@ -22181,7 +22181,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -22545,7 +22545,7 @@ Per 90
 451 players · season totals
 Show 25 more
 
-Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth: without them, the club would have fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
+Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth. Without them, the club would have had fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
 
 MAN CITY · FWD · 709 MINUTES · 26 YEARS OLD
 
@@ -22611,7 +22611,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -22912,13 +22912,13 @@ COMEBACK
 Click a match for the xG chart, the win-probability chart and every shot. The gameweek buttons at the top set the latest round included (now gameweek 8).
 Show 20 more
 
-A robbery is a win the shots priced below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and the win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
+A robbery is a win the shots rated below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and their win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
 
 HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -23188,13 +23188,13 @@ COMEBACK
 Click a match for the xG chart, the win-probability chart and every shot. The gameweek buttons at the top set the latest round included (now gameweek 8).
 Show 20 more
 
-A robbery is a win the shots priced below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and the win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
+A robbery is a win the shots rated below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and their win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
 
 HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -23576,13 +23576,13 @@ COMEBACK
 Click a match for the xG chart, the win-probability chart and every shot. The gameweek buttons at the top set the latest round included (now gameweek 8).
 Show 20 more
 
-A robbery is a win the shots priced below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and the win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
+A robbery is a win the shots rated below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and their win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
 
 HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -23861,13 +23861,13 @@ ROBBERY
 ⚡1.0
 Click a match for the xG chart, the win-probability chart and every shot. The gameweek buttons at the top set the latest round included (now gameweek 8).
 
-A robbery is a win the shots priced below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and the win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
+A robbery is a win the shots rated below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and their win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
 
 HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -24054,7 +24054,7 @@ Crystal Palace win
 draw
 Newcastle win
 
-At kick-off: Crystal Palace 42%, the draw 23%, Newcastle 35%. The goal that moved the match most: Osula (46') took a win probability from 31% to 65% (+0.91 expected points). Excitement index: 1.1.
+At kick-off: Crystal Palace 42%, the draw 23%, Newcastle 35%. The goal that moved the match most: Osula's goal (46') lifted Newcastle's win probability from 31% to 65% (+0.91 expected points). Excitement index: 1.1.
 
 CRYSTAL PALACE · 17 SHOTS · 2 BIG CHANCES
 
@@ -24204,13 +24204,13 @@ ROBBERY
 ⚡1.0
 Click a match for the xG chart, the win-probability chart and every shot. The gameweek buttons at the top set the latest round included (now gameweek 8).
 
-A robbery is a win the shots priced below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and the win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
+A robbery is a win the shots rated below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and their win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
 
 HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -24261,8 +24261,8 @@ Excitement index
 Excitement index
 46' goal
 57' goal
-46'. Osula: win probability 31% → 65%
-57'. Barnes: win probability 67% → 90%
+46'. Osula's goal: Newcastle's win probability 31% → 65%
+57'. Barnes' goal: Newcastle's win probability 67% → 90%
 0': Crystal Palace 42% · draw 23% · Newcastle 35%
 5': Crystal Palace 41% · draw 24% · Newcastle 35%
 10': Crystal Palace 41% · draw 25% · Newcastle 34%
@@ -24485,13 +24485,13 @@ BLOWN WIN
 ⚡3.4
 Click a match for the xG chart, the win-probability chart and every shot. The gameweek buttons at the top set the latest round included (now gameweek 8).
 
-A robbery is a win the shots priced below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and the win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
+A robbery is a win the shots rated below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and their win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
 
 HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -24677,7 +24677,7 @@ Ipswich Town win
 draw
 Nott'm Forest win
 
-At kick-off: Ipswich Town 28%, the draw 23%, Nott'm Forest 49%. The goal that moved the match most: Enciso (40') took a win probability from 8% to 26% (+0.69 expected points). Nott'm Forest reached a 74% chance of winning, and the match still finished level. Excitement index: 1.7.
+At kick-off: Ipswich Town 28%, the draw 23%, Nott'm Forest 49%. The goal that moved the match most: Enciso's goal (40') lifted Ipswich Town's win probability from 8% to 26% (+0.69 expected points). Nott'm Forest reached a 74% chance of winning, and the match still finished level. Excitement index: 1.7.
 
 IPSWICH TOWN · 7 SHOTS · 1 BIG CHANCE
 
@@ -24816,13 +24816,13 @@ BLOWN WIN
 ⚡3.4
 Click a match for the xG chart, the win-probability chart and every shot. The gameweek buttons at the top set the latest round included (now gameweek 8).
 
-A robbery is a win the shots priced below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and the win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
+A robbery is a win the shots rated below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and their win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
 
 HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -24873,8 +24873,8 @@ Excitement index
 Excitement index
 12' goal
 40' goal
-12'. N.Williams: win probability 47% → 72%
-40'. Enciso: win probability 8% → 26%
+12'. N.Williams' goal: Nott'm Forest's win probability 47% → 72%
+40'. Enciso's goal: Ipswich Town's win probability 8% → 26%
 0': Ipswich Town 28% · draw 23% · Nott'm Forest 49%
 5': Ipswich Town 28% · draw 24% · Nott'm Forest 48%
 10': Ipswich Town 28% · draw 25% · Nott'm Forest 47%
@@ -25134,13 +25134,13 @@ DESERVED
 ⚡0.4
 Click a match for the xG chart, the win-probability chart and every shot. The gameweek buttons at the top set the latest round included (now gameweek 8).
 
-A robbery is a win the shots priced below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and the win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
+A robbery is a win the shots rated below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and their win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
 
 HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -25334,7 +25334,7 @@ Man Utd win
 draw
 Bournemouth win
 
-At kick-off: Man Utd 39%, the draw 25%, Bournemouth 37%. The goal that moved the match most: Rayan (37') took a win probability from 33% to 66% (+0.88 expected points). Excitement index: 1.1.
+At kick-off: Man Utd 39%, the draw 25%, Bournemouth 37%. The goal that moved the match most: Rayan's goal (37') lifted Bournemouth's win probability from 33% to 66% (+0.88 expected points). Excitement index: 1.1.
 
 MAN UTD · 17 SHOTS · 0 BIG CHANCES
 
@@ -25523,13 +25523,13 @@ DESERVED
 ⚡0.4
 Click a match for the xG chart, the win-probability chart and every shot. The gameweek buttons at the top set the latest round included (now gameweek 8).
 
-A robbery is a win the shots priced below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and the win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
+A robbery is a win the shots rated below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and their win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
 
 HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -25589,9 +25589,9 @@ Excitement index
 37' goal
 42' goal
 70' goal
-37'. Rayan: win probability 33% → 66%
-42'. Tavernier: win probability 67% → 89%
-70'. Evanilson: win probability 96% → 99%
+37'. Rayan's goal: Bournemouth's win probability 33% → 66%
+42'. Tavernier's goal: Bournemouth's win probability 67% → 89%
+70'. Evanilson's goal: Bournemouth's win probability 96% → 99%
 0': Man Utd 39% · draw 25% · Bournemouth 37%
 5': Man Utd 38% · draw 25% · Bournemouth 36%
 10': Man Utd 38% · draw 26% · Bournemouth 36%
@@ -25795,13 +25795,13 @@ COMEBACK
 ⚡3.1
 Click a match for the xG chart, the win-probability chart and every shot. The gameweek buttons at the top set the latest round included (now gameweek 8).
 
-A robbery is a win the shots priced below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and the win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
+A robbery is a win the shots rated below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and their win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
 
 HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -25985,7 +25985,7 @@ Brentford win
 draw
 Liverpool win
 
-At kick-off: Brentford 36%, the draw 25%, Liverpool 39%. The goal that moved the match most: Isak (69') took a win probability from 24% to 78% (+1.26 expected points). Liverpool came from behind. At one point (60', 1–0) the win probability was only 7%. Excitement index: 2.5.
+At kick-off: Brentford 36%, the draw 25%, Liverpool 39%. The goal that moved the match most: Isak's goal (69') lifted Liverpool's win probability from 24% to 78% (+1.26 expected points). Liverpool came from behind. At 60', with the score 1–0, their win probability was only 7%. Excitement index: 2.5.
 
 BRENTFORD · 10 SHOTS · 0 BIG CHANCES
 
@@ -26126,13 +26126,13 @@ COMEBACK
 ⚡3.1
 Click a match for the xG chart, the win-probability chart and every shot. The gameweek buttons at the top set the latest round included (now gameweek 8).
 
-A robbery is a win the shots priced below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and the win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
+A robbery is a win the shots rated below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and their win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
 
 HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -26180,9 +26180,9 @@ Excitement index
 43' goal
 61' goal
 69' goal
-43'. Lewis-Potter: win probability 31% → 67%
-61'. Munoz: win probability 6% → 28%
-69'. Isak: win probability 24% → 78%
+43'. Lewis-Potter's goal: Brentford's win probability 31% → 67%
+61'. Munoz's goal: Liverpool's win probability 6% → 28%
+69'. Isak's goal: Liverpool's win probability 24% → 78%
 0': Brentford 36% · draw 25% · Liverpool 39%
 5': Brentford 35% · draw 26% · Liverpool 39%
 10': Brentford 35% · draw 27% · Liverpool 38%
@@ -26402,13 +26402,13 @@ COMEBACK
 ⚡2.9
 Click a match for the xG chart, the win-probability chart and every shot. The gameweek buttons at the top set the latest round included (now gameweek 8).
 
-A robbery is a win the shots priced below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and the win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
+A robbery is a win the shots rated below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and their win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
 
 HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -26594,7 +26594,7 @@ Crystal Palace win
 draw
 Ipswich Town win
 
-At kick-off: Crystal Palace 56%, the draw 21%, Ipswich Town 23%. The goal that moved the match most: Flemming (89') took a win probability from 6% to 90% (+1.78 expected points). Ipswich Town came from behind. At one point (88', 2–2) the win probability was only 7%. Excitement index: 3.8.
+At kick-off: Crystal Palace 56%, the draw 21%, Ipswich Town 23%. The goal that moved the match most: Flemming's goal (89') lifted Ipswich Town's win probability from 6% to 90% (+1.78 expected points). Ipswich Town came from behind. At 88', with the score 2–2, their win probability was only 7%. Excitement index: 3.8.
 
 CRYSTAL PALACE · 11 SHOTS · 1 BIG CHANCE
 
@@ -26723,13 +26723,13 @@ COMEBACK
 ⚡2.9
 Click a match for the xG chart, the win-probability chart and every shot. The gameweek buttons at the top set the latest round included (now gameweek 8).
 
-A robbery is a win the shots priced below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and the win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
+A robbery is a win the shots rated below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and their win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
 
 HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -26782,11 +26782,11 @@ Excitement index
 44' goal
 74' goal
 89' goal
-13'. Khalaili: win probability 53% → 77%
-22'. Emersonn: win probability 8% → 23%
-44'. Davis: win probability 22% → 55%
-74'. Strand Larsen: win probability 6% → 28%
-89'. Flemming: win probability 6% → 90%
+13'. Khalaili's goal: Crystal Palace's win probability 53% → 77%
+22'. Emersonn's goal: Ipswich Town's win probability 8% → 23%
+44'. Davis' goal: Ipswich Town's win probability 22% → 55%
+74'. Strand Larsen's goal: Crystal Palace's win probability 6% → 28%
+89'. Flemming's goal: Ipswich Town's win probability 6% → 90%
 0': Crystal Palace 56% · draw 21% · Ipswich Town 23%
 5': Crystal Palace 55% · draw 22% · Ipswich Town 23%
 10': Crystal Palace 54% · draw 23% · Ipswich Town 23%
@@ -27048,13 +27048,13 @@ DESERVED
 Click a match for the xG chart, the win-probability chart and every shot. The gameweek buttons at the top set the latest round included (now gameweek 8).
 Show 20 more
 
-A robbery is a win the shots priced below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and the win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
+A robbery is a win the shots rated below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and their win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
 
 HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -27249,7 +27249,7 @@ Spurs win
 draw
 Coventry City win
 
-At kick-off: Spurs 39%, the draw 26%, Coventry City 35%. The goal that moved the match most: Marmoush (57') took a win probability from 29% to 74% (+1.10 expected points). Excitement index: 2.2.
+At kick-off: Spurs 39%, the draw 26%, Coventry City 35%. The goal that moved the match most: Marmoush's goal (57') lifted Spurs' win probability from 29% to 74% (+1.10 expected points). Excitement index: 2.2.
 
 SPURS · 16 SHOTS · 0 BIG CHANCES
 
@@ -27444,13 +27444,13 @@ DESERVED
 Click a match for the xG chart, the win-probability chart and every shot. The gameweek buttons at the top set the latest round included (now gameweek 8).
 Show 20 more
 
-A robbery is a win the shots priced below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and the win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
+A robbery is a win the shots rated below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and their win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
 
 HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -27511,10 +27511,10 @@ Excitement index
 48' goal
 57' goal
 95' goal
-13'. Maddison: win probability 38% → 66%
-48'. Rudoni: win probability 8% → 29%
-57'. Marmoush: win probability 29% → 74%
-95'. Davies: win probability 99% → 100%
+13'. Maddison's goal: Spurs' win probability 38% → 66%
+48'. Rudoni's goal: Coventry City's win probability 8% → 29%
+57'. Marmoush's goal: Spurs' win probability 29% → 74%
+95'. Davies' goal: Spurs' win probability 99% → 100%
 0': Spurs 39% · draw 26% · Coventry City 35%
 5': Spurs 39% · draw 27% · Coventry City 34%
 10': Spurs 38% · draw 28% · Coventry City 34%
@@ -27761,13 +27761,13 @@ ROBBERY
 ⚡1.0
 Click a match for the xG chart, the win-probability chart and every shot. The gameweek buttons at the top set the latest round included (now gameweek 8).
 
-A robbery is a win the shots priced below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and the win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
+A robbery is a win the shots rated below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and their win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
 
 HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -27958,7 +27958,7 @@ Liverpool win
 draw
 Brighton win
 
-At kick-off: Liverpool 42%, the draw 24%, Brighton 34%. The goal that moved the match most: Groß (own goal) (16') took a win probability from 40% to 67% (+0.74 expected points). Excitement index: 1.0.
+At kick-off: Liverpool 42%, the draw 24%, Brighton 34%. The goal that moved the match most: Groß's own goal (16') lifted Liverpool's win probability from 40% to 67% (+0.74 expected points). Excitement index: 1.0.
 
 LIVERPOOL · 13 SHOTS · 1 BIG CHANCE
 
@@ -28141,13 +28141,13 @@ ROBBERY
 ⚡1.0
 Click a match for the xG chart, the win-probability chart and every shot. The gameweek buttons at the top set the latest round included (now gameweek 8).
 
-A robbery is a win the shots priced below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and the win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
+A robbery is a win the shots rated below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and their win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
 
 HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -28202,8 +28202,8 @@ Excitement index
 Excitement index
 16' own goal
 20' goal
-16'. Groß (own goal): win probability 40% → 67%
-20'. Isak: win probability 68% → 87%
+16'. Groß's own goal: Liverpool's win probability 40% → 67%
+20'. Isak's goal: Liverpool's win probability 68% → 87%
 0': Liverpool 42% · draw 24% · Brighton 34%
 5': Liverpool 41% · draw 25% · Brighton 34%
 10': Liverpool 41% · draw 26% · Brighton 33%
@@ -28488,7 +28488,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -30964,7 +30964,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -31451,7 +31451,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -31757,7 +31757,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -32413,7 +32413,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -32898,7 +32898,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -34572,7 +34572,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -35680,7 +35680,7 @@ Mateta · Crystal Palace
 BIGGEST COMEBACK
 3%
 Man City
-Man City 2–1 Bournemouth. That was the win probability at one point (82', 0–1), and they still won.
+Man City 2–1 Bournemouth. At 82', with the score 0–1, Man City's win probability was only 3%, and they still won.
 MOST EXCITING MATCH
 3.4
 Newcastle 2–2 Liverpool
@@ -35697,7 +35697,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -36021,7 +36021,7 @@ Man City
 W
 5.3 days' rest
 
-What happened: 1–4. The model gave that scoreline a 55% chance. The favourite delivered.
+What happened: 1–4. The model gave the away win a 55% chance. The favourite delivered.
 
 SAT 29 AUG, 12:30
 POWER 3RD – 13TH
@@ -36052,7 +36052,7 @@ Nott'm Forest
 L
 6.9 days' rest
 
-What happened: 2–2. The model gave that scoreline a 21% chance.
+What happened: 2–2. The model gave the draw a 21% chance.
 
 SAT 29 AUG, 15:00
 POWER 6TH – 15TH
@@ -36083,7 +36083,7 @@ Everton
 W
 7 days' rest
 
-What happened: 1–1. The model gave that scoreline a 23% chance.
+What happened: 1–1. The model gave the draw a 23% chance.
 
 SAT 29 AUG, 15:00
 POWER 16TH – 20TH
@@ -36114,7 +36114,7 @@ Hull City
 W
 7.1 days' rest
 
-What happened: 0–1. The model gave that scoreline a 17% chance.
+What happened: 0–1. The model gave the away win a 17% chance.
 
 SAT 29 AUG, 17:30
 POWER 19TH – 11TH
@@ -36145,7 +36145,7 @@ Newcastle
 D
 6 days' rest
 
-What happened: 0–2. The model gave that scoreline a 40% chance. The favourite delivered.
+What happened: 0–2. The model gave the away win a 40% chance. The favourite delivered.
 
 SUN 30 AUG, 14:00
 POWER 8TH – 4TH
@@ -36176,7 +36176,7 @@ Brighton
 W
 7 days' rest
 
-What happened: 4–3. The model gave that scoreline a 42% chance. The favourite delivered.
+What happened: 4–3. The model gave the home win a 42% chance. The favourite delivered.
 
 SUN 30 AUG, 14:00
 POWER 10TH – 7TH
@@ -36207,7 +36207,7 @@ Brentford
 W
 7.9 days' rest
 
-What happened: 1–1. The model gave that scoreline a 27% chance.
+What happened: 1–1. The model gave the draw a 27% chance.
 
 SUN 30 AUG, 14:00
 POWER 17TH – 14TH
@@ -36238,7 +36238,7 @@ Fulham
 L
 5.8 days' rest
 
-What happened: 1–0. The model gave that scoreline a 44% chance. The favourite delivered.
+What happened: 1–0. The model gave the home win a 44% chance. The favourite delivered.
 
 SUN 30 AUG, 16:30
 POWER 5TH – 18TH
@@ -36269,7 +36269,7 @@ Ipswich Town
 W
 8.1 days' rest
 
-What happened: 5–2. The model gave that scoreline a 68% chance. The favourite delivered.
+What happened: 5–2. The model gave the home win a 68% chance. The favourite delivered.
 
 MON 31 AUG, 20:00
 POWER 9TH – 1ST
@@ -36300,13 +36300,13 @@ Arsenal
 W
 10 days' rest
 
-What happened: 0–1. The model gave that scoreline a 51% chance. The favourite delivered.
+What happened: 0–1. The model gave the away win a 51% chance. The favourite delivered.
 
 HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -36848,7 +36848,7 @@ Brighton win
 draw
 Aston Villa win
 
-At kick-off: Brighton 35%, the draw 24%, Aston Villa 40%. The goal that moved the match most: Lindelöf (own goal) (7') took a win probability from 35% to 60% (+0.72 expected points). Excitement index: 1.1.
+At kick-off: Brighton 35%, the draw 24%, Aston Villa 40%. The goal that moved the match most: Lindelöf's own goal (7') lifted Brighton's win probability from 35% to 60% (+0.72 expected points). Excitement index: 1.1.
 
 BRIGHTON · 21 SHOTS · 5 BIG CHANCES
 
@@ -36974,13 +36974,13 @@ DESERVED
 ⚡0.4
 Click a match for the xG chart, the win-probability chart and every shot. The gameweek buttons at the top set the latest round included (now gameweek 8).
 
-A robbery is a win the shots priced below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and the win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
+A robbery is a win the shots rated below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and their win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
 
 HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -37101,10 +37101,10 @@ Excitement index
 17' goal
 29' goal
 30' goal
-7'. Lindelöf (own goal): win probability 35% → 60%
-17'. De Cuyper: win probability 61% → 83%
-29'. Hinshelwood: win probability 85% → 96%
-30'. Hinshelwood: win probability 96% → 99%
+7'. Lindelöf's own goal: Brighton's win probability 35% → 60%
+17'. De Cuyper's goal: Brighton's win probability 61% → 83%
+29'. Hinshelwood's goal: Brighton's win probability 85% → 96%
+30'. Hinshelwood's goal: Brighton's win probability 96% → 99%
 0': Brighton 35% · draw 24% · Aston Villa 40%
 5': Brighton 35% · draw 25% · Aston Villa 40%
 10': Brighton 61% · draw 21% · Aston Villa 18%
@@ -37653,7 +37653,7 @@ Newcastle win
 draw
 Liverpool win
 
-At kick-off: Newcastle 31%, the draw 24%, Liverpool 45%. The goal that moved the match most: Willock (56') took a win probability from 26% to 66% (+1.04 expected points). Newcastle reached a 97% chance of winning, and the match still finished level. Excitement index: 3.4.
+At kick-off: Newcastle 31%, the draw 24%, Liverpool 45%. The goal that moved the match most: Willock's goal (56') lifted Newcastle's win probability from 26% to 66% (+1.04 expected points). Newcastle reached a 97% chance of winning, and the match still finished level. Excitement index: 3.4.
 
 NEWCASTLE · 13 SHOTS · 2 BIG CHANCES
 
@@ -37826,13 +37826,13 @@ DESERVED
 ⚡0.4
 Click a match for the xG chart, the win-probability chart and every shot. The gameweek buttons at the top set the latest round included (now gameweek 8).
 
-A robbery is a win the shots priced below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and the win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
+A robbery is a win the shots rated below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and their win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.
 
 HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -37953,10 +37953,10 @@ Excitement index
 54' goal
 56' goal
 98' goal
-4'. Elanga: win probability 31% → 56%
-54'. Gakpo: win probability 11% → 35%
-56'. Willock: win probability 26% → 66%
-98'. Szoboszlai: win probability 0% → 2%
+4'. Elanga's goal: Newcastle's win probability 31% → 56%
+54'. Gakpo's goal: Liverpool's win probability 11% → 35%
+56'. Willock's goal: Newcastle's win probability 26% → 66%
+98'. Szoboszlai's goal: Liverpool's win probability 0% → 2%
 0': Newcastle 31% · draw 24% · Liverpool 45%
 5': Newcastle 56% · draw 22% · Liverpool 22%
 10': Newcastle 56% · draw 22% · Liverpool 22%
@@ -38297,7 +38297,7 @@ Per 90
 451 players · season totals
 Show 25 more
 
-Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth: without them, the club would have fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
+Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth. Without them, the club would have had fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
 
 COVENTRY CITY · DEF · 1 MINUTES · 26 YEARS OLD
 
@@ -38452,7 +38452,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 
@@ -38866,7 +38866,7 @@ Per 90
 25	RushworthCOV · GKP	720	-4.2	17	53	10.8	15	1
 25 players · season totals · goalkeepers only
 
-Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth: without them, the club would have fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
+Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth. Without them, the club would have had fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.
 
 ARSENAL · GKP · 720 MINUTES · 31 YEARS OLD
 
@@ -38932,7 +38932,7 @@ HOW THIS IS CALCULATED
 
 xG is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.
 
-The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a 30% chance.
+The chance bar and points deserved. From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below 30%.
 
 Power and the forecast. Each club has an attack rating and a defence rating, fit to chances created and conceded (80% xG, 20% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played 6,000 times.
 

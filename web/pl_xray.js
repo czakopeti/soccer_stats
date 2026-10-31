@@ -8,7 +8,13 @@ const M = D.matches, SH = D.shots, OP = D.opta, PL = D.players, FX = D.fx, EURO 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const nf = (v, d = 1) => v == null || Number.isNaN(+v) ? "–" : (+v).toFixed(d);
-const sg = (v, d = 1) => v == null ? "–" : (v > 0.005 ? "+" : v < -0.005 ? "−" : "") + Math.abs(v).toFixed(d);
+const sg = (v, d = 1) => {
+  if (v == null) return "–";
+  const shown = Math.abs(v).toFixed(d);
+  if (+shown === 0) return shown;
+  return (v > 0 ? "+" : "−") + shown;
+};
+const poss = (name) => /s$/i.test(name) ? name + "'" : name + "'s";
 const pc = (v) => Math.round(v * 100) + "%";
 const pc1 = (v) => v > 0 && v < 0.005 ? "<1%" : v > 0.995 && v < 1 ? ">99%" : Math.round(v * 100) + "%";
 function qty(n, one, many, digits) {
@@ -92,7 +98,7 @@ function insights() {
   const pick = gw % 3;
   if (pick === 0) out.push({ c: "var(--away)", h: "Form", t: `Over the last three matches <b>${esc(l3[0].t)}</b> have the best chance difference in the league: ${sg(l3[0].d, 1)} xG. The worst is ${esc(l3[l3.length - 1].t)} (${sg(l3[l3.length - 1].d, 1)}).` });
   else if (pick === 1) out.push({ c: "var(--away)", h: "Set pieces", t: `<b>${esc(spShare[0].t)}</b> get ${pc(spShare[0].f)} of their xG from set pieces, the highest share in the league. ${esc(spShare[spShare.length - 1].t)} rely on them least (${pc(spShare[spShare.length - 1].f)}).` });
-  else { const fin = PL.filter(p => p.min >= TH.min_minutes_default).map(p => ({ p, d: p.g - p.xg })).sort((a, b) => b.d - a.d); const top = fin[0], bot = fin[fin.length - 1]; out.push({ c: "var(--away)", h: "Finishing", t: `<b>${esc(top.p.n)}</b> (${esc(top.p.t)}) has ${qty(top.p.g, "goal", "goals")} from ${nf(top.p.xg, 1)} xG, ${sg(top.d, 1)}, the best finishing in the league. At the other end, ${esc(bot.p.n)}: ${qty(bot.p.g, "goal", "goals")} from ${nf(bot.p.xg, 1)} xG.` }); }
+  else { const fin = PL.filter(p => p.min >= TH.min_minutes_default).map(p => ({ p, d: p.g - p.xg })).sort((a, b) => b.d - a.d); const top = fin[0], bot = fin[fin.length - 1]; const versus = (d) => `${nf(Math.abs(d), 1)} ${d >= 0 ? "ahead of" : "short of"} the chances`; out.push({ c: "var(--away)", h: "Finishing", t: `<b>${esc(top.p.n)}</b> (${esc(top.p.t)}) has ${qty(top.p.g, "goal", "goals")} from ${nf(top.p.xg, 1)} xG, ${versus(top.d)}, the best finishing in the league. At the other end, ${esc(bot.p.n)}: ${qty(bot.p.g, "goal", "goals")} from ${nf(bot.p.xg, 1)} xG, ${versus(bot.d)}.` }); }
   return `<div class="insights">${out.map((o, i) => `<div class="ins" style="--c:${o.c};animation-delay:${i * 60}ms"><span class="n">${i + 1} · ${esc(o.h)}</span><p>${o.t}</p></div>`).join("")}</div>`;
 }
 
@@ -274,7 +280,7 @@ function cleanMatches(t) {
   const R = cleanR(S.gw), ms = teamMatches(t, S.gw).map(m => adjMatch(m, t, R)); if (!ms.length) return "";
   return `<div class="panel"><p class="kicker">Match by match, adjusted for the opponent and the ground</p><div class="tw"><table><thead><tr><th class="l">GW</th><th class="l">Opponent</th><th>Score</th><th>xG</th><th class="hm">Avg. side</th><th>Adj.</th><th>xGA</th><th class="hm">Avg. side</th><th>Adj.</th></tr></thead><tbody>
     ${ms.map(x => `<tr><td class="l mono" style="color:var(--muted)">${x.gw}</td><td class="l">${esc(nm(x.o))} <span class="note">${x.home ? "H" : "A"} · Power ${ord(R.rank[x.o])}</span></td><td class="${x.p === 3 ? "pos" : x.p === 0 ? "neg" : ""}">${x.gf}–${x.ga}</td><td style="color:var(--muted)">${nf(x.xg, 2)}</td><td class="hm" style="color:var(--muted)">${nf(x.eF, 2)}</td><td><b class="${x.ax >= R.lgFit ? "pos" : "neg"}">${nf(x.ax, 2)}</b></td><td style="color:var(--muted)">${nf(x.xga, 2)}</td><td class="hm" style="color:var(--muted)">${nf(x.eA, 2)}</td><td><b class="${x.axa <= R.lgFit ? "pos" : "neg"}">${nf(x.axa, 2)}</b></td></tr>`).join("")}</tbody></table></div>
-    <p class="note">Avg. side is what an average club would have created, or allowed, in that same match at that same ground. Adj. rescales the actual xG to an average opponent on a neutral pitch. Green is better than the league average of ${nf(R.lgFit, 2)} xG.</p></div>`;
+    <p class="note">Avg. side is what a typical club would have created, or allowed, in that same match at that ground. Adj. is the actual xG rescaled to an average opponent on a neutral pitch. Green is better than the league average of ${nf(R.lgFit, 2)} xG.</p></div>`;
 }
 
 /* ---------- Justice: actual strong with points decomposition ---------- */
@@ -362,8 +368,8 @@ function adTable(upto) {
   });
 }
 const ADC = {
-  att: { title: "Attack", key: "ax", low: false, cols: [["ax", "Adjusted xG / match", 2], ["lx", "xG per 90, level score", 2], ["sr", "Good chances %", 0], ["bc", "Big chances / match", 2], ["xgs", "xG / shot", 3], ["sh", "Shots / match", 1], ["sp", "Set-piece xG / match", 2], ["f3", "Last 3, adjusted", 2], ["box", "Touches in the box°", 0]] },
-  def: { title: "Defence", key: "axa", low: true, cols: [["axa", "Adjusted xGA / match", 2, 1], ["lxa", "xGA per 90, level score", 2, 1], ["sra", "Good chances allowed %", 0, 1], ["bca", "Big chances allowed / match", 2, 1], ["xgsa", "xG per shot faced", 3, 1], ["sha", "Shots faced / match", 1, 1], ["spa", "Set-piece xG allowed / match", 2, 1], ["a3", "Last 3, adjusted", 2, 1], ["ppda", "PPDA°", 1, 1], ["hto", "High turnovers°", 0]] },
+  att: { title: "Attack", key: "ax", low: false, cols: [["ax", "Adjusted xG / match", 2], ["lx", "xG/90 when level", 2], ["sr", "Good chances %", 0], ["bc", "Big chances / match", 2], ["xgs", "xG / shot", 3], ["sh", "Shots / match", 1], ["sp", "Set-piece xG / match", 2], ["f3", "Last 3, adj. xG", 2], ["box", "Touches in the box°", 0]] },
+  def: { title: "Defence", key: "axa", low: true, cols: [["axa", "Adjusted xGA / match", 2, 1], ["lxa", "xGA/90 when level", 2, 1], ["sra", "Good chances allowed %", 0, 1], ["bca", "Big chances allowed / match", 2, 1], ["xgsa", "xG per shot faced", 3, 1], ["sha", "Shots faced / match", 1, 1], ["spa", "Set-piece xG allowed / match", 2, 1], ["a3", "Last 3, adj. xGA", 2, 1], ["ppda", "PPDA°", 1, 1], ["hto", "High turnovers°", 0]] },
 };
 function adBlurb(r, rk, side) {
   const A = side === "att", g = rk[A ? "sr" : "sra"], b = rk[A ? "bc" : "bca"], tr = A ? r.f3 - r.ax : r.axa - r.a3, lv = rk[A ? "lx" : "lxa"], mn = rk[A ? "ax" : "axa"];
@@ -371,9 +377,9 @@ function adBlurb(r, rk, side) {
   else { if (g <= 5 && b <= 5 && mn <= 8) return "A wall: few good chances and few big ones."; if (b >= 14 && g <= 8) return "Rarely carved open, but the mistakes are expensive."; if (g >= 14 && b <= 8) return "Allows a lot of ordinary chances, and rarely a big one."; }
   if (tr > 0.35) return A ? "On the rise: the last three matches are better than the season average." : "Tightening up: the last three matches are better than the season average.";
   if (tr < -0.35) return A ? "Dropped off: the last three matches are below the season average." : "Looser lately: the last three matches are worse than the season average.";
-  if (lv - mn >= 6) return "Weaker when the score is level. The overall numbers are flattered by the game state.";
-  if (mn - lv >= 6) return "Stronger when the score is level than across the full match.";
-  return `Chance quality ranks ${ord(g)} in the league, explosiveness ${ord(b)}.`;
+  if (lv - mn >= 6) return "Weaker when the score is level. The overall numbers are flattered by the state of the game.";
+  if (mn - lv >= 6) return "Better when the score is level than over the match as a whole.";
+  return `${ord(g)} for chance quality, ${ord(b)} for explosiveness.`;
 }
 function viewAD(side) {
   const C = ADC[side], rows = adTable(S.gw), A = side === "att";
@@ -402,7 +408,7 @@ function viewAD(side) {
     <div class="panel plist">${list}</div></section>
     <section class="sec"><div class="sechead"><h2>Details</h2></div><div class="panel"><div class="tw"><table class="sticky1 wrapth" id="adt"><thead><tr><th class="l">#</th><th class="l">Club</th>${C.cols.map(([k, l]) => `<th data-ak="${k}" data-side="${side}" ${sk.k === k ? `aria-sort="${sk.asc ? "ascending" : "descending"}"` : ""}>${esc(l)}${sk.k === k ? (sk.asc ? " ▲" : " ▼") : ""}</th>`).join("")}</tr></thead><tbody>
     ${sorted.map((r, i) => `<tr class="click ${S.team === r.t ? "sel" : ""}" data-t="${esc(r.t)}"><td class="l mono" style="color:var(--muted)">${i + 1}</td><td class="l"><b>${esc(nm(r.t))}</b></td>${C.cols.map(([k, , d]) => { const u = heats[k][r.t]; return `<td style="${u != null ? `background:${heatRGB(u, k === sk.k ? .32 : .14)}` : ""}">${r[k] == null ? "–" : nf(r[k], d)}</td>`; }).join("")}</tr>`).join("")}</tbody></table></div>
-    <p class="note">Read it the way an NFL efficiency table is read. <b style="color:var(--ink)">Level score:</b> only the minutes when the score was level. A side in front sits off, and a side behind throws numbers forward, so the scoreline changes the chances. <b style="color:var(--ink)">Good chances:</b> the share of shots that were worth at least 0.10 xG, penalties excluded. <b style="color:var(--ink)">Big chances:</b> shots of at least 0.30 xG, per match. Green is better in the league, red is worse. A ° marks an Opta season total. Click a column heading to sort.</p></div></section>`;
+    <p class="note">Read it the way an NFL efficiency table is read. <b style="color:var(--ink)">When level:</b> only the minutes the score was level. A side in front sits off, and a side behind commits players forward, so the score changes the chances they get. <b style="color:var(--ink)">Good chances:</b> the share of shots worth at least 0.10 xG, penalties excluded. <b style="color:var(--ink)">Big chances:</b> shots of at least 0.30 xG, per match. Green is better in the league, red is worse. A ° marks an Opta season total. Click a column heading to sort.</p></div></section>`;
 }
 function closeGames(t, upto) { let n = 0, pts = 0, xp = 0; for (const m of teamMatches(t, upto)) { const z = persp(m, t); if (Math.abs(z.gf - z.ga) <= 1) { n++; pts += z.p; xp += z.xp; } } return { n, pts, xp, luck: pts - xp }; }
 
@@ -500,7 +506,7 @@ function wpTiles() {
   const ms = M.filter(m => m.gw === S.gw); if (!ms.length) return "";
   const cbm = ms.filter(m => wpCurve(m).minW != null).sort((a, b) => wpCurve(a).minW - wpCurve(b).minW)[0], ex = ms.slice().sort((a, b) => wpCurve(b).excite - wpCurve(a).excite)[0];
   const out = [];
-  if (cbm && wpCurve(cbm).minW < TH.exciting_dip_probability) { const C = wpCurve(cbm), w = C.res === 0 ? cbm.h : cbm.a; out.push(`<div class="tile"><span class="kicker">${C.trailed ? "Biggest comeback" : "Biggest swing"}</span><span class="big" style="color:var(--home)">${pc(C.minW)}</span><span class="who">${esc(w)}</span><span class="d">${esc(cbm.h)} ${cbm.hs}–${cbm.as} ${esc(cbm.a)}. That was the win probability at one point (${C.minT}', ${C.minScore[0]}–${C.minScore[1]}), and they still won.</span></div>`); }
+  if (cbm && wpCurve(cbm).minW < TH.exciting_dip_probability) { const C = wpCurve(cbm), w = C.res === 0 ? cbm.h : cbm.a; out.push(`<div class="tile"><span class="kicker">${C.trailed ? "Biggest comeback" : "Biggest swing"}</span><span class="big" style="color:var(--home)">${pc(C.minW)}</span><span class="who">${esc(w)}</span><span class="d">${esc(cbm.h)} ${cbm.hs}–${cbm.as} ${esc(cbm.a)}. At ${C.minT}', with the score ${C.minScore[0]}–${C.minScore[1]}, ${esc(poss(w))} win probability was only ${pc(C.minW)}, and they still won.</span></div>`); }
   const E = wpCurve(ex); out.push(`<div class="tile"><span class="kicker">Most exciting match</span><span class="big" style="color:var(--away)">${nf(E.excite, 1)}</span><span class="who">${esc(ex.h)} ${ex.hs}–${ex.as} ${esc(ex.a)}</span><span class="d">Excitement index: how far the two win probabilities swung during the match.</span></div>`);
   return out.join("");
 }
@@ -557,7 +563,7 @@ function wpCurve(m) {
   const R = ratings(Math.max(0, m.gw - 1)), lh = R.lg * R.att[m.h] * R.def[m.a] * R.hfH, la = R.lg * R.att[m.a] * R.def[m.h] * R.hfA;
   const end = Math.max(TH.regulation_minutes, ...m.shots.map(s => s[0] + 1));
   const ev = SH.filter(s => s[I.fid] === m.id && (s[I.res] === "G" || s[I.res] === "O")).sort((a, b) => a[I.min] - b[I.min])
-    .map(s => ({ we: s[I.min], side: s[I.res] === "G" ? (s[I.team] === m.h ? 0 : 1) : (s[I.team] === m.h ? 1 : 0), pid: s[I.res] === "G" ? s[I.pid] : -1, pl: s[I.res] === "G" ? s[I.pl] : s[I.pl] + " (own goal)" }));
+    .map(s => ({ we: s[I.min], side: s[I.res] === "G" ? (s[I.team] === m.h ? 0 : 1) : (s[I.team] === m.h ? 1 : 0), pid: s[I.res] === "G" ? s[I.pid] : -1, pl: s[I.pl], og: s[I.res] === "O" }));
   const pts = []; let d = 0, k = 0, excite = 0, prev = null;
   for (let t = 0; t <= end; t++) {
     while (k < ev.length && ev[k].we <= t) { const e = ev[k], fr = Math.max(0, (end - e.we) / end), before = wpAt(lh, la, fr, d); d += e.side === 0 ? 1 : -1; const after = wpAt(lh, la, fr, d);
@@ -582,15 +588,15 @@ function wpChart(m) {
   g += `<path d="${P(top)}${rev(mid)}Z" fill="#59607e" fill-opacity=".7"/><path d="${P(mid)}L${x(C.end)},${y(1)}L${x(0)},${y(1)}Z" fill="var(--away)" fill-opacity=".75"/>`;
   g += `<line x1="${x(45)}" x2="${x(45)}" y1="${T}" y2="${H - B}" stroke="#0a0d18" stroke-dasharray="2 3" stroke-opacity=".7"/><text x="${x(45)}" y="${H - 3}" text-anchor="middle">45'</text><text x="${x(90)}" y="${H - 3}" text-anchor="middle">90'</text>`;
   g += `<line x1="${x(0)}" x2="${x(C.end)}" y1="${y(.5)}" y2="${y(.5)}" stroke="#0a0d18" stroke-opacity=".25"/>`;
-  for (const e of C.ev) { const xx = x(e.we); g += `<line x1="${xx}" x2="${xx}" y1="${T - 2}" y2="${H - B}" stroke="var(--ink)" stroke-width="1" stroke-opacity=".55"/><circle cx="${xx}" cy="${T - 6}" r="3.6" fill="${e.side === 0 ? "var(--home)" : "var(--away)"}" stroke="var(--ink)" stroke-width="1"><title>${e.we}'. ${esc(e.pl)}: win probability ${pc(e.wBefore)} → ${pc(e.wAfter)}</title></circle>`; }
+  for (const e of C.ev) { const xx = x(e.we), team = e.side === 0 ? m.h : m.a; g += `<line x1="${xx}" x2="${xx}" y1="${T - 2}" y2="${H - B}" stroke="var(--ink)" stroke-width="1" stroke-opacity=".55"/><circle cx="${xx}" cy="${T - 6}" r="3.6" fill="${e.side === 0 ? "var(--home)" : "var(--away)"}" stroke="var(--ink)" stroke-width="1"><title>${e.we}'. ${esc(poss(e.pl))} ${e.og ? "own goal" : "goal"}: ${esc(poss(team))} win probability ${pc(e.wBefore)} → ${pc(e.wAfter)}</title></circle>`; }
   for (let t = 0; t < C.end; t += 5) { const q = C.pts[t]; g += `<rect x="${x(t)}" y="${T}" width="${x(5) - x(0)}" height="${H - T - B}" fill="transparent"><title>${t}': ${esc(m.h)} ${pc(q[1])} · draw ${pc(q[2])} · ${esc(m.a)} ${pc(q[3])}</title></rect>`; }
   return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Win probability by minute">${g}</svg>`;
 }
 function wpSummary(m) {
   const C = wpCurve(m), key = C.ev.slice().sort((a, b) => Math.abs(b.d3) - Math.abs(a.d3))[0], win = C.res === 0 ? m.h : C.res === 2 ? m.a : null;
   const parts = [`At kick-off: ${esc(m.h)} ${pc(C.pre[1])}, the draw ${pc(C.pre[2])}, ${esc(m.a)} ${pc(C.pre[3])}.`];
-  if (key) parts.push(`The goal that moved the match most: <b>${esc(key.pl)}</b> (${key.we}') took a win probability from ${pc(key.wBefore)} to ${pc(key.wAfter)} (${sg(key.d3, 2)} expected ${Math.abs(+nf(key.d3, 2)) === 1 ? "point" : "points"}).`);
-  if (win && C.minW < TH.comeback_win_probability) parts.push(C.trailed ? `<b>${esc(win)}</b> came from behind. At one point (${C.minT}', ${C.minScore[0]}–${C.minScore[1]}) the win probability was only ${pc(C.minW)}.` : `<b>${esc(win)}</b> saw their win probability fall to ${pc(C.minW)} (${C.minT}', ${C.minScore[0]}–${C.minScore[1]}) and still won.`);
+  if (key) { const team = key.side === 0 ? m.h : m.a, verb = key.wAfter + 0.005 >= key.wBefore ? "lifted" : "cut"; parts.push(`The goal that moved the match most: <b>${esc(poss(key.pl))} ${key.og ? "own goal" : "goal"}</b> (${key.we}') ${verb} ${esc(poss(team))} win probability from ${pc(key.wBefore)} to ${pc(key.wAfter)} (${sg(key.d3, 2)} expected ${Math.abs(+nf(key.d3, 2)) === 1 ? "point" : "points"}).`); }
+  if (win && C.minW < TH.comeback_win_probability) parts.push(C.trailed ? `<b>${esc(win)}</b> came from behind. At ${C.minT}', with the score ${C.minScore[0]}–${C.minScore[1]}, their win probability was only ${pc(C.minW)}.` : `<b>${esc(win)}</b> saw their win probability fall to ${pc(C.minW)} at ${C.minT}' (${C.minScore[0]}–${C.minScore[1]}) and still won.`);
   else if (!win && Math.max(C.maxH, C.maxA) > TH.dominance_win_probability) parts.push(`<b>${esc(C.maxH > C.maxA ? m.h : m.a)}</b> reached a ${pc(Math.max(C.maxH, C.maxA))} chance of winning, and the match still finished level.`);
   parts.push(`Excitement index: <b>${nf(C.excite, 1)}</b>.`);
   return parts.join(" ");
@@ -624,7 +630,7 @@ function previewCard(f, R, k) {
     <p class="mkt"><span class="kicker">Model</span> ${ps.map(pc).join(" · ")}</p>
     <div class="pvstats"><span><b>${pc(p.o25)}</b> over 2.5 goals</span><span><b>${pc(p.btts)}</b> both teams to score</span><span><b>${p.top.map(s => s[0] + "–" + s[1]).join(", ")}</b> most likely</span><span><b>${pc(p.csH)} / ${pc(p.csA)}</b> clean sheet, home / away</span></div>
     ${side(h)}${side(a)}
-    ${real ? `<p class="verdict">What happened: <b>${real.hs}–${real.as}</b>. The model gave that scoreline a ${pc(ps[res])} chance${ps.indexOf(Math.max(...ps)) === res ? ". <b style=\"color:var(--good)\">The favourite delivered.</b>" : "."}</p>` : ""}</div>`;
+    ${real ? `<p class="verdict">What happened: <b>${real.hs}–${real.as}</b>. The model gave ${["the home win", "the draw", "the away win"][res]} a ${pc(ps[res])} chance${ps.indexOf(Math.max(...ps)) === res ? ". <b style=\"color:var(--good)\">The favourite delivered.</b>" : "."}</p>` : ""}</div>`;
 }
 function previewInsights(fx, R) {
   const P = fx.map(f => ({ f, h: f[1], a: f[2], p: predict(f[1], f[2], R) })), out = [];
@@ -832,7 +838,7 @@ function viewMeccsek() {
       <button class="chip" id="mf-reset">Clear filters</button></div>
     <div class="panel mlist">${shown.length ? shown.map(row).join("") : `<p class="empty">No matches of this kind.</p>`}</div>
     <div class="row" style="justify-content:space-between"><span class="note">Click a match for the xG chart, the win-probability chart and every shot. The gameweek buttons at the top set the latest round included (now gameweek ${S.gw}).</span>${list.length > F.lim ? `<button class="chip" id="mf-more">Show 20 more</button>` : ""}</div>
-    <p class="note">A robbery is a win the shots priced below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and the win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.</p></section>`;
+    <p class="note">A robbery is a win the shots rated below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and their win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.</p></section>`;
 }
 
 /* ---------- Database: shot finder ---------- */
@@ -922,7 +928,7 @@ function viewJatekos() {
     <div class="panel"><div class="tw"><table class="sticky1 wrapth" id="pt"><thead><tr><th class="l">#</th><th class="l">Player</th><th class="hm">Min</th>${cols.map(([k, l]) => `<th data-pk="${k}" ${sk.k === k ? `aria-sort="${sk.asc ? "ascending" : "descending"}"` : ""}>${esc(l)}${sk.k === k ? (sk.asc ? " ▲" : " ▼") : ""}</th>`).join("")}</tr></thead><tbody>
     ${shown.length ? shown.map((r, i) => `<tr class="click ${sel && r.id === sel.id ? "sel" : ""}" data-p="${r.id}"><td class="l mono" style="color:var(--muted)">${i + 1}</td><td class="l pn"><b>${esc(r.p.n)}</b><span class="note">${esc(short(r.p.t))} · ${r.p.pos}</span></td><td class="hm">${r.p.min}</td>${cols.map(([k, , d]) => `<td style="${k === sk.k && heat[r.id] != null ? `background:${heatRGB(heat[r.id], .3)}` : ""}">${k === sk.k ? `<b>${fmt(r, k, d)}</b>` : fmt(r, k, d)}</td>`).join("")}</tr>`).join("") : `<tr><td colspan="${cols.length + 3}" class="l empty">No players match.</td></tr>`}</tbody></table></div>
     <div class="row" style="justify-content:space-between"><span class="note">${qty(sorted.length, "player", "players")} · ${S.p90 ? "scaled to 90 minutes" : "season totals"}${S.grp === "concedes" ? " · goalkeepers only" : ""}</span>${sorted.length > S.plim ? `<button class="chip" id="pmore">Show 25 more</button>` : ""}</div>
-    <p class="note">Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth: without them, the club would have fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.</p></div></section>
+    <p class="note">Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth. Without them, the club would have had fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.</p></div></section>
     ${sel ? playerProfile(sel, cmp) : ""}`;
 }
 function playerProfile(sel, cmp) {
@@ -950,8 +956,8 @@ function trendSentences(t, r) {
   const howHigh = (rk, word) => rk === 1 ? `the ${word} in the league` : `the ${ord(rk)} ${word} in the league`;
   const howLow = (rk, word) => { const fromEnd = n + 1 - rk; return fromEnd === 1 ? `the ${word} in the league` : `the ${ord(fromEnd)} ${word} in the league`; };
   { const rk = rankIn(TM, "sp", t); if (me.sp != null) add(rk, n, rk <= 3 ? `${nf(me.sp, 0)}% of their xG comes from set pieces, ${howHigh(rk, "highest share")}.` : rk >= n - 2 ? `Set pieces are barely a threat: only ${nf(me.sp, 0)}% of their xG comes from them, ${howLow(rk, "lowest share")}.` : `${nf(me.sp, 0)}% of their xG comes from set pieces (${ord(rk)} in the league).`); }
-  { const rk = rankIn(TM, "fin", t); const gap = qty(nf(Math.abs(me.fin), 1), "goal", "goals"); add(rk, n, rk <= 3 ? `Finishing is ${howHigh(rk, "best")}: ${gap} ${me.fin >= 0 ? "above" : "short of"} the chances.` : rk >= n - 2 ? `Finishing is ${howLow(rk, "worst")}: ${gap} ${me.fin >= 0 ? "above" : "short of"} the chances.` : `Finishing is ${sg(me.fin, 1)} goals against the chances (${ord(rk)} in the league).`); }
-  { const rk = rankIn(TM, "keep", t); const versus = me.keep >= 0 ? `${qty(nf(me.keep, 1), "goal", "goals")} fewer than the xG` : `${qty(nf(-me.keep, 1), "goal", "goals")} more than the xG`; add(rk, n, rk <= 3 ? `Excellent at the back: they have conceded ${versus} (${howHigh(rk, "best goal prevention")}).` : rk >= n - 2 ? `Leaky at the back: they have conceded ${versus}, ${howLow(rk, "worst record")}.` : `They have conceded ${versus} (${ord(rk)} in the league).`); }
+  { const rk = rankIn(TM, "fin", t); const gap = qty(nf(Math.abs(me.fin), 1), "goal", "goals"); const side = me.fin >= 0 ? "above" : "short of"; add(rk, n, rk <= 3 ? `Finishing is ${howHigh(rk, "best")}: ${gap} ${side} the chances.` : rk >= n - 2 ? `Finishing is ${howLow(rk, "worst")}: ${gap} ${side} the chances.` : `Finishing is ${gap} ${side} the chances (${ord(rk)} in the league).`); }
+  { const rk = rankIn(TM, "keep", t); const versus = me.keep >= 0 ? `${qty(nf(me.keep, 1), "goal", "goals")} fewer than the chances allowed` : `${qty(nf(-me.keep, 1), "goal", "goals")} more than the chances allowed`; add(rk, n, rk <= 3 ? `Excellent at the back: they have conceded ${versus}, ${howHigh(rk, "best record")}.` : rk >= n - 2 ? `Leaky at the back: they have conceded ${versus}, ${howLow(rk, "worst record")}.` : `They have conceded ${versus} (${ord(rk)} in the league).`); }
   { const rk = rankIn(TM, "dropped", t); if (me.dropped > 0) add(rk, n, `They have dropped ${qty(me.dropped, "point", "points")} from winning positions${rk <= 3 ? `, ${rk === 1 ? "the most in the league" : `the ${ord(rk)} most in the league`}` : ` (${ord(rk)} most)`}.`); }
   { const rk = rankIn(TM, "won", t); if (me.won > 0) add(rk, n, `They have rescued ${qty(me.won, "point", "points")} from losing positions${rk <= 3 ? `, ${rk === 1 ? "the most in the league" : `the ${ord(rk)} most in the league`}. They keep coming back` : ` (${ord(rk)} most)`}.`); }
   { const rk = rankIn(TM, "lead", t); add(rk, n, rk <= 3 ? `They have led for ${nf(me.lead, 0)}% of playing time, ${howHigh(rk, "most")}.` : rk >= n - 2 ? `They have led for only ${nf(me.lead, 0)}% of playing time, ${howLow(rk, "least")}.` : `They have led for ${nf(me.lead, 0)}% of playing time (${ord(rk)} in the league).`); }
@@ -1026,7 +1032,7 @@ function method() {
   const runs = C.simulation.runs.toLocaleString("en-GB");
   return `<section class="sec"><details class="panel"><summary class="kicker" style="cursor:pointer">How this is calculated</summary><div class="note" style="max-width:86ch;display:flex;flex-direction:column;gap:8px;margin-top:10px">
     <p><b style="color:var(--ink)">xG</b> is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.</p>
-    <p><b style="color:var(--ink)">The chance bar and points deserved.</b> From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots gave less than a ${Math.round(TH.robbery_win_probability * 100)}% chance.</p>
+    <p><b style="color:var(--ink)">The chance bar and points deserved.</b> From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below ${Math.round(TH.robbery_win_probability * 100)}%.</p>
     <p><b style="color:var(--ink)">Power and the forecast.</b> Each club has an attack rating and a defence rating, fit to chances created and conceded (${Math.round(RTG.xg_blend * 100)}% xG, ${Math.round((1 - RTG.xg_blend) * 100)}% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played ${runs} times.</p>
     <p><b style="color:var(--ink)">Adjusted xG</b> divides a match's xG by what an average side would create against that opponent, at that ground. Opponent strength and home advantage come from this season's xG only. Early on, those ratings are pulled gently towards the pre-season figure so one match cannot swing them.</p>
     <p><b style="color:var(--ink)">True strength</b> turns adjusted xG into the points that performance would be worth against an average opponent on a neutral pitch. Schedule and venue are the gap between that and the same sum from raw xG. Finishing and goalkeeping turn the gap between goals and xG into points. Whatever is left is other luck, so the pieces add up to the real points total.</p>
