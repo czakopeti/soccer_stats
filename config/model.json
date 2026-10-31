@@ -1,5 +1,5 @@
 {
-  "documentation": "Tuning constants, source vocabulary, and competition rules. Nothing in this file is a measured fact about a season. Measured facts (season label, gameweek, teams, fixtures, goal rates, penalty xG, pre-season strength, European kickoffs) are computed on every run. If a value here is wrong, the build is wrong in a visible, documented way. It will not silently follow a previous season.",
+  "documentation": "Tuning constants, source vocabulary, and competition rules. Nothing in this file is a measured fact about a season. Measured facts (season label, gameweek, teams, fixtures, goal rates, penalty xG, European kickoffs) are computed on every run. A preseason_prior file for the season the fixtures imply, when one is present, replaces the computed pre-season strength. If a value here is wrong, the build is wrong in a visible, documented way. It will not silently follow a previous season.",
   "display_timezone": "Europe/London",
   "http_user_agent": "PL-Xray/1.0 (educational weekly build; +https://github.com/czakopeti/soccer_stats)",
   "sources": {
@@ -32,9 +32,12 @@
     "poisson_goals_max": 12
   },
   "ratings": {
-    "tau_rounds": 12,
-    "prior_matches": 8,
-    "xg_blend": 0.8,
+    "tau_rounds": 6,
+    "prior_matches": 4,
+    "xg_blend": 0.5,
+    "home_advantage": false,
+    "clean_home_advantage": true,
+    "goal_level_prior": 1.4,
     "home_prior_matches": 15,
     "iterations": 40,
     "goal_prior_matches": 50,
@@ -43,7 +46,7 @@
     "clean_xg_blend": 1
   },
   "prediction": {
-    "dixon_coles_rho": -0.12,
+    "dixon_coles_rho": -0.25,
     "max_goals": 10
   },
   "simulation": {

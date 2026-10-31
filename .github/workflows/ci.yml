@@ -14,5 +14,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
+      - name: Install the browser used by the model check
+        run: python -m playwright install --with-deps chromium
       - name: Checks that do not need a live download
         run: python -m unittest discover -s tests -v

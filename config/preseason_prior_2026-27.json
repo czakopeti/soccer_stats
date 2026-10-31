@@ -1,0 +1,25 @@
+{
+  "source": "ClubElo snapshot of 2026-08-15, converted to the strength number with the same Poisson formula at a goal level of 1.40.",
+  "prior": {
+    "Arsenal": 0.935,
+    "Aston Villa": 0.34,
+    "Bournemouth": 0.285,
+    "Brentford": 0.09,
+    "Brighton": 0.09,
+    "Chelsea": 0.125,
+    "Coventry City": -0.73,
+    "Crystal Palace": -0.07,
+    "Everton": -0.07,
+    "Fulham": -0.02,
+    "Hull City": -1.17,
+    "Ipswich Town": -0.775,
+    "Leeds": -0.085,
+    "Liverpool": 0.445,
+    "Man City": 0.775,
+    "Man Utd": 0.455,
+    "Newcastle": 0.045,
+    "Nott'm Forest": -0.04,
+    "Spurs": -0.24,
+    "Sunderland": -0.335
+  }
+}

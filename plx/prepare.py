@@ -19,11 +19,46 @@ import pandas as pd
 
 from plx.elo import build_priors, load_history_matches, season_code
 from plx.europe import EuropeError, to_team_rows
-from plx.names import link_feeds
+from plx.names import ClubIndex, NameError, link_feeds
 
 
 class PrepareError(RuntimeError):
     pass
+
+
+def _season_prior_file(root: Path, season_label: str, teams: list[str], cfg: dict) -> dict | None:
+    """Use config/preseason_prior_<season>.json when that season has one.
+
+    The season label is the one derived from kickoffs. A missing file means the
+    computed Elo prior stands. A file that does not cover the current clubs stops the build.
+    """
+    path = root / "config" / f"preseason_prior_{season_label.replace('/', '-')}.json"
+    if not path.is_file():
+        return None
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    block = raw.get("prior") if isinstance(raw, dict) and isinstance(raw.get("prior"), dict) else None
+    if block is None:
+        raise PrepareError(f"{path.name} has no prior object, so the pre-season strength was not guessed.")
+    index = ClubIndex(cfg)
+    for name in teams:
+        index.add(name, [name])
+    mapped: dict[str, float] = {}
+    for spelling, value in block.items():
+        try:
+            canonical = index.match(str(spelling))
+        except NameError as exc:
+            raise PrepareError(
+                f"{path.name} lists {spelling!r}, which does not match one current club. {exc}"
+            ) from exc
+        if canonical in mapped:
+            raise PrepareError(f"{path.name} maps more than one name onto {canonical}.")
+        mapped[canonical] = float(value)
+    missing = [name for name in teams if name not in mapped]
+    if missing:
+        raise PrepareError(
+            f"{path.name} is missing current clubs, so the pre-season strength was not filled in: " + ", ".join(missing) + "."
+        )
+    return mapped
 
 
 def _load_json(path: Path):
@@ -618,6 +653,9 @@ def prepare(root: Path, cfg: dict, previous: dict | None = None) -> tuple[dict, 
     first_local = datetime.fromisoformat(min(kickoffs).replace("Z", "+00:00")).astimezone(ZoneInfo(cfg["display_timezone"]))
     season_start = datetime(first_local.year, first_local.month, first_local.day)
     priors = build_priors(history, [name for name, _s in canonical], alias_sets, season_start, cfg)
+    supplied = _season_prior_file(root, season_label, [name for name, _s in canonical], cfg)
+    if supplied is not None:
+        priors["prior"] = supplied
 
     # Europe
     events_eu = _load_json(sources / "europe" / "events.json")

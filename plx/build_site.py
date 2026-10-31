@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 
-def write_site(root: Path, data: dict, report: dict | None = None) -> Path:
+def write_site(root: Path, data: dict, report: dict | None = None, out_dir: Path | None = None) -> Path:
     web = root / "web"
     css = (web / "style.css").read_text(encoding="utf-8")
     js = (web / "pl_xray.js").read_text(encoding="utf-8")
@@ -19,7 +19,7 @@ def write_site(root: Path, data: dict, report: dict | None = None) -> Path:
 <body><div class="wrap" id="app"></div>
 <script id="data" type="application/json">{payload}</script>
 <script>{js}</script></body></html>"""
-    site = root / "site"
+    site = out_dir or (root / "site")
     site.mkdir(parents=True, exist_ok=True)
     path = site / "index.html"
     path.write_text(html, encoding="utf-8")

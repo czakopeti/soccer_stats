@@ -196,15 +196,15 @@ function rolling(t) {
 const RT = {};
 function ord(n) { const s = ["th", "st", "nd", "rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
 function ratings(upto, opt) {
-  const o = Object.assign({ tau: RTG.tau_rounds, k: RTG.prior_matches, bl: RTG.xg_blend }, opt || {}), key = `${upto}|${o.tau}|${o.k}|${o.bl}`;
+  const o = Object.assign({ tau: RTG.tau_rounds, k: RTG.prior_matches, bl: RTG.xg_blend, home: RTG.home_advantage !== false }, opt || {}), key = `${upto}|${o.tau}|${o.k}|${o.bl}|${o.home}`;
   if (RT[key]) return RT[key];
   const ms = M.filter(m => m.gw <= upto), tau = o.tau, k = o.k, bl = o.bl, PR = D.prior || {};
   for (const t of TEAMS) if (PR[t] == null) throw new Error("No pre-season strength for " + t);
   const w = (m) => Math.exp(-(upto - m.gw) / tau), v = (x, g) => bl * x + (1 - bl) * g;
   let sw = 0, sh = 0, sa = 0; for (const m of ms) { const q = w(m); sw += q; sh += q * v(m.xh, m.hs); sa += q * v(m.xa, m.as); }
-  const lg = sw ? (sh + sa) / (2 * sw) : DER.league_gpg;
+  const lg = sw ? (sh + sa) / (2 * sw) : RTG.goal_level_prior;
   const homeN = RTG.home_prior_matches;
-  const ratio = (sh + homeN * lg * DER.home_factor) / (sa + homeN * lg * DER.away_factor), hfH = Math.sqrt(ratio), hfA = 1 / hfH;
+  const ratio = o.home ? (sh + homeN * lg * DER.home_factor) / (sa + homeN * lg * DER.away_factor) : 1, hfH = Math.sqrt(ratio), hfA = 1 / hfH;
   const att = {}, def = {}, by = {}; for (const t of TEAMS) { att[t] = 1; def[t] = 1; by[t] = []; }
   for (const m of ms) { const q = w(m); by[m.h].push({ o: m.a, q, f: v(m.xh, m.hs), a: v(m.xa, m.as), hf: hfH, ohf: hfA }); by[m.a].push({ o: m.h, q, f: v(m.xa, m.as), a: v(m.xh, m.hs), hf: hfA, ohf: hfH }); }
   const norm = (o) => { const g = Math.exp(TEAMS.reduce((s, t) => s + Math.log(o[t]), 0) / TEAMS.length); for (const t of TEAMS) o[t] /= g; };
@@ -216,7 +216,7 @@ function ratings(upto, opt) {
   }
   // goal scale: calibrated to real goals per team-match (prior 1.40), xG only sets the ratios
   let sg2 = 0; for (const m of ms) sg2 += w(m) * (m.hs + m.as);
-  const lgp = (sg2 + RTG.goal_prior_matches * DER.league_gpg) / (2 * sw + RTG.goal_prior_matches);
+  const lgp = (sg2 + RTG.goal_prior_matches * RTG.goal_level_prior) / (2 * sw + RTG.goal_prior_matches);
   const pw = {}; for (const t of TEAMS) pw[t] = lgp * (att[t] - def[t]);
   const order = TEAMS.slice().sort((a, b) => pw[b] - pw[a]), rank = {}, ar = {}, dr = {};
   order.forEach((t, i) => rank[t] = i + 1);
@@ -240,7 +240,7 @@ function predFor(t, o, home, R) { const p = home ? predict(t, o, R) : predict(o,
 
 /* ---------- cleaned xG: venue- and opponent-adjusted ---------- */
 // xG divided by what an average team creates against this opponent at this venue (xG-only model, no goals, no recency)
-const cleanR = (upto) => ratings(upto, { bl: RTG.clean_xg_blend, tau: RTG.clean_tau_rounds, k: RTG.clean_prior_matches });
+const cleanR = (upto) => ratings(upto, { bl: RTG.clean_xg_blend, tau: RTG.clean_tau_rounds, k: RTG.clean_prior_matches, home: RTG.clean_home_advantage !== false });
 function adjMatch(m, t, R) {
   const z = persp(m, t), o = z.o, hf = z.home ? R.hfH : R.hfA, ohf = z.home ? R.hfA : R.hfH;
   return { ...z, ax: z.xg / (R.def[o] * hf), axa: z.xga / (R.att[o] * ohf), eF: R.lgFit * R.def[o] * hf, eA: R.lgFit * R.att[o] * ohf };
@@ -548,7 +548,7 @@ function simSection() {
     <p class="note">The remaining ${rem} matches were played ${C.simulation.runs.toLocaleString("en-GB")} times using the Power ratings (opponent-adjusted, with recent matches counting for more). Bad luck so far does not drag a club's chances down. Only the points already dropped do.</p>
     <div class="panel"><div class="tw"><table class="probs sticky1"><thead><tr><th class="l">#</th><th class="l">Club</th><th>Now</th><th>Expected</th><th class="l">Title</th><th class="l">Top 4</th><th class="l hm">Top 6</th><th class="l">Relegated</th></tr></thead><tbody>
     ${r.map((x, i) => `<tr class="click ${S.team === x.t ? "sel" : ""}" data-t="${esc(x.t)}"><td class="l mono" style="color:var(--muted)">${i + 1}</td><td class="l"><b>${esc(narrow() ? D.short[x.t] : x.t)}</b></td><td>${x.now}</td><td><b>${nf(x.exp, 0)}</b></td>${cell(x.title, "var(--gold)")}${cell(x.top4, "var(--home)")}<td class="hm" style="text-align:left"><span class="mono" style="display:inline-block;width:38px;text-align:right">${pc1(x.top6)}</span></td>${cell(x.rel, "var(--bad)")}</tr>`).join("")}</tbody></table></div>
-    <p class="note">This is a simple model. It uses home advantage and a Poisson spread of goals. It does not know about injuries or a change of manager. Pick an earlier gameweek above to see what the model said at the time.</p></div></section>`;
+    <p class="note">This is a simple model. ${RTG.home_advantage === false ? "It does not use home advantage." : "It uses home advantage."} It uses a Poisson spread of goals. It does not know about injuries or a change of manager. Pick an earlier gameweek above to see what the model said at the time.</p></div></section>`;
 }
 /* ---------- win probability minute by minute (NFL-style) ---------- */
 // pre-match strength (Power model before the round) + score + time left; goals left ~ Poisson
@@ -625,7 +625,7 @@ function previewCard(f, R, k) {
   const side = (t) => `<div class="pvside"><div class="row" style="gap:6px;justify-content:space-between;flex-wrap:nowrap"><b style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(nm(t))}</b><span class="forms">${formChips(t)}</span></div><span class="note">${restLine(t, fid)}</span>${absent(t)}</div>`;
   return `<div class="mc pvw" style="animation-delay:${k * 35}ms">
     <div class="pvtop"><span class="kicker">${esc(KO.format(new Date(ko)))}</span><span class="kicker">Power ${ord(R.rank[h])} – ${ord(R.rank[a])}</span></div>
-    <div class="row1"><span class="tm">${esc(h)}<small>${tr[h] ? ord(tr[h]) : ""}</small></span><span class="sc pvx" title="Expected goals">${nf(p.lh, 1)}<i>–</i>${nf(p.la, 1)}</span><span class="tm r">${esc(a)}<small>${tr[a] ? ord(tr[a]) : ""}</small></span></div>
+    <div class="row1"><span class="tm">${esc(h)}<small>${tr[h] ? ord(tr[h]) : ""}</small></span><span class="sc pvx" title="Expected goals">${nf(p.lh, 2)}<i>–</i>${nf(p.la, 2)}</span><span class="tm r">${esc(a)}<small>${tr[a] ? ord(tr[a]) : ""}</small></span></div>
     <div class="jbar"><div class="h ${res === 0 ? "act" : ""}" style="width:${p.pw * 100}%">${p.pw > .12 ? pc(p.pw) : ""}</div><div class="d ${res === 1 ? "act" : ""}" style="width:${p.pd * 100}%">${p.pd > .12 ? pc(p.pd) : ""}</div><div class="a ${res === 2 ? "act" : ""}" style="width:${p.pl * 100}%">${p.pl > .12 ? pc(p.pl) : ""}</div></div>
     <p class="mkt"><span class="kicker">Model</span> ${ps.map(pc).join(" · ")}</p>
     <div class="pvstats"><span><b>${pc(p.o25)}</b> over 2.5 goals</span><span><b>${pc(p.btts)}</b> both teams to score</span><span><b>${p.top.map(s => s[0] + "–" + s[1]).join(", ")}</b> most likely</span><span><b>${pc(p.csH)} / ${pc(p.csA)}</b> clean sheet, home / away</span></div>
@@ -1033,14 +1033,14 @@ function method() {
   return `<section class="sec"><details class="panel"><summary class="kicker" style="cursor:pointer">How this is calculated</summary><div class="note" style="max-width:86ch;display:flex;flex-direction:column;gap:8px;margin-top:10px">
     <p><b style="color:var(--ink)">xG</b> is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.</p>
     <p><b style="color:var(--ink)">The chance bar and points deserved.</b> From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below ${Math.round(TH.robbery_win_probability * 100)}%.</p>
-    <p><b style="color:var(--ink)">Power and the forecast.</b> Each club has an attack rating and a defence rating, fit to chances created and conceded (${Math.round(RTG.xg_blend * 100)}% xG, ${Math.round((1 - RTG.xg_blend) * 100)}% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played ${runs} times.</p>
+    <p><b style="color:var(--ink)">Power and the forecast.</b> Each club has an attack rating and a defence rating, fit to chances created and conceded (${Math.round(RTG.xg_blend * 100)}% xG, ${Math.round((1 - RTG.xg_blend) * 100)}% actual goals), adjusted for the opponent${RTG.home_advantage === false ? "" : " and for home advantage"}. Recent matches count for more, with a ${RTG.tau_rounds}-round half-life. Early in the season the ratings lean on a pre-season strength (the season file when one is supplied, otherwise earlier league results), and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played ${runs} times.</p>
     <p><b style="color:var(--ink)">Adjusted xG</b> divides a match's xG by what an average side would create against that opponent, at that ground. Opponent strength and home advantage come from this season's xG only. Early on, those ratings are pulled gently towards the pre-season figure so one match cannot swing them.</p>
     <p><b style="color:var(--ink)">True strength</b> turns adjusted xG into the points that performance would be worth against an average opponent on a neutral pitch. Schedule and venue are the gap between that and the same sum from raw xG. Finishing and goalkeeping turn the gap between goals and xG into points. Whatever is left is other luck, so the pieces add up to the real points total.</p>
     <p><b style="color:var(--ink)">Win probability, minute by minute,</b> starts from the strength model before the round, then updates it for the score and the time left. Goals still to come follow a Poisson distribution. It does not see red cards or substitutions. The excitement index adds up how much the home and away win chances move.</p>
     <p><b style="color:var(--ink)">Schedule and rest.</b> The difficulty of a future match is the points the model expects from it. Rest is the time since a club's previous competitive match, including Champions League, Europa League and Conference League games loaded automatically. Domestic cups are not included, so a League Cup or FA Cup week can look quieter than it was. ${esc(D.europe_note || "")}</p>
     <p><b style="color:var(--ink)">Game state</b> is read from the goal times: how long a side led or trailed, points dropped from a winning position, points rescued from a losing one.</p>
     <p><b style="color:var(--ink)">Opta numbers.</b> PPDA is how many passes the opponent is allowed before a defensive action (lower means a more aggressive press). High turnovers are balls won within 40 metres of the opponent's goal. There are also directness and build-up counts.</p>
-    <p>Penalty xG used for non-penalty figures is the average of this season's ${DER.pen_n} penalties (${nf(DER.pen_xg, 2)}), not a fixed number. The league goal rate behind the ratings is ${nf(DER.league_gpg, 2)} per team per match, measured from recent Premier League seasons.</p></div></details></section>`;
+    <p>Penalty xG used for non-penalty figures is the average of this season's ${DER.pen_n} penalties (${nf(DER.pen_xg, 2)}), not a fixed number. The strength rating uses a goal level of ${nf(RTG.goal_level_prior, 2)} per team per match.</p></div></details></section>`;
 }
 function render() {
   if (!S.team) { const r = table(S.gw).slice().sort((a, b) => a.luck - b.luck)[0]; S.team = r.t; }
