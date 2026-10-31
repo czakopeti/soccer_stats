@@ -15,6 +15,7 @@ from pathlib import Path
 from plx.elo import EloError, build_priors, load_history_matches
 from plx.europe import EuropeError, to_team_rows
 from plx.names import ClubIndex, NameError, UnmappedName
+from plx.laliga_calendar import apply_official_rounds
 from plx.prepare import PrepareError, _fixture_changes, _outcome
 
 
@@ -33,43 +34,6 @@ def _iso(moment: datetime) -> str:
 def _fd_day(value: str) -> str:
     day, month, year = value.split("/")
     return f"{year}-{month}-{day}"
-
-
-def assign_rounds(fixtures: list[dict], window_days: float | None = None) -> dict[str, int]:
-    """Each club plays the next match in a later round. Derived from dates only.
-
-    window_days is a tuning limit: a match is not added to a round that already
-    started more than that many days earlier, so two weekends do not share a round.
-    """
-    ordered = sorted(fixtures, key=lambda row: (row["kick"], row["id"]))
-    rounds: list[set] = []
-    first: list[datetime] = []
-    last: dict[str, int] = {}
-    out: dict[str, int] = {}
-    window = None if window_days is None else timedelta(days=float(window_days))
-    for row in ordered:
-        start = 0
-        for team in (row["home"], row["away"]):
-            if team in last:
-                start = max(start, last[team] + 1)
-        placed = None
-        for index in range(start, len(rounds)):
-            if row["home"] in rounds[index] or row["away"] in rounds[index]:
-                continue
-            if window is not None and row["kick"] - first[index] > window:
-                continue
-            placed = index
-            break
-        if placed is None:
-            rounds.append(set())
-            first.append(row["kick"])
-            placed = len(rounds) - 1
-        rounds[placed].add(row["home"])
-        rounds[placed].add(row["away"])
-        last[row["home"]] = placed
-        last[row["away"]] = placed
-        out[row["id"]] = placed + 1
-    return out
 
 
 def learn_aliases(fd_rows: list[dict], matches: list[dict]) -> dict[str, str]:
@@ -114,7 +78,6 @@ def prepare_laliga(root: Path, model: dict, league: dict, previous: dict | None)
     th = model["thresholds"]
     res_map = model["shot_results"]
     sit_map = model["shot_situations"]
-    live_hours = float(league["live_window_hours"])
     now = datetime.now(timezone.utc)
 
     dates = payload["dates"]
@@ -145,9 +108,20 @@ def prepare_laliga(root: Path, model: dict, league: dict, previous: dict | None)
     teams = sorted(set(short))
     if len(teams) < 2:
         raise PrepareError("The shot feed did not name the clubs.")
-    rounds = assign_rounds(fixtures, window_days=league.get("round_window_days"))
+    calendar_text = (src / "matchdays.txt").read_text(encoding="utf-8")
+    espn_events = _load(src / "espn_fixtures.json")
+    official = apply_official_rounds(
+        fixtures,
+        calendar_text,
+        espn_events,
+        model,
+        slack_days=int(league.get("matchday_date_slack_days", 2)),
+    )
+    rounds = official["rounds"]
+    unresolved = official["unresolved"]
+    official_current = official["official_current"]
     expected_rounds = 2 * (len(teams) - 1)
-    assigned_rounds = max(rounds.values()) if rounds else 0
+    assigned_rounds = int(official["round_count"])
     played_by = {}
     for row in fixtures:
         played_by[row["home"]] = played_by.get(row["home"], 0) + 1
@@ -419,39 +393,35 @@ def prepare_laliga(root: Path, model: dict, league: dict, previous: dict | None)
     changes_seed = []
     for row in fixtures:
         gw = rounds[row["id"]]
-        stale = (not row["result"]) and row["kick"] < now - timedelta(hours=live_hours)
-        live = (not row["result"]) and now - timedelta(hours=live_hours) <= row["kick"] <= now
         fx.append([gw, row["home"], row["away"], _iso(row["kick"]), 1 if row["result"] else 0, int(row["id"])])
         status_rows.append(
             {
                 "event": gw,
-                "kickoff": None if stale else _iso(row["kick"]),
-                "finished": row["result"],
-                "started": live,
+                "kickoff": _iso(row["kick"]),
+                "finished": bool(row["result"]),
+                "started": bool(row.get("live")),
                 "home": row["home"],
                 "away": row["away"],
             }
         )
-        if stale:
+        if row.get("flag"):
             changes_seed.append(
-                {"kind": "postponed", "id": int(row["id"]), "gameweek": gw, "home": row["home"], "away": row["away"], "was": _iso(row["kick"]), "now": None}
+                {
+                    "kind": row["flag"],
+                    "id": int(row["id"]),
+                    "gameweek": gw,
+                    "home": row["home"],
+                    "away": row["away"],
+                    "was": None,
+                    "now": _iso(row["kick"]),
+                }
             )
     changes, _note = _fixture_changes(previous, fx)
     changes = changes_seed + changes
-    # Publish a round only when every match in it has a result, or is a stale
-    # postponement. One finished match must not pull an unfinished weekend onto the page.
-    by_gw: dict[int, list] = {}
-    for row in fixtures:
-        by_gw.setdefault(rounds[row["id"]], []).append(row)
-    horizon = now - timedelta(hours=live_hours)
-    played_gw = 0
-    for gw in range(1, assigned_rounds + 1):
-        still_open = [
-            row for row in by_gw.get(gw, []) if not row["result"] and row["kick"] >= horizon
-        ]
-        if still_open:
-            break
-        played_gw = gw
+    # A round is published only when every match in it has a result, or ESPN has
+    # flagged it (abandoned, postponed, cancelled, suspended). The shot feed being
+    # slow to update is not a flag.
+    played_gw = assigned_rounds if official_current is None else official_current - 1
     euro_events = _load(src / "europe_events.json")
     try:
         euro, coverage = to_team_rows(euro_events, teams, alias_sets, model)
@@ -541,6 +511,8 @@ def prepare_laliga(root: Path, model: dict, league: dict, previous: dict | None)
         "no_new_round": bool(previous) and int(previous.get("gw") or 0) == int(played_gw),
         "fixture_changes": changes,
         "status_fixtures": status_rows,
+        "unresolved": unresolved,
+        "official_current": official_current,
         "europe": coverage,
         "fetch": manifest,
         "shots": len(shot_rows),

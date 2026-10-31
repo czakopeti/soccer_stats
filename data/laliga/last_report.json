@@ -1,15 +1,15 @@
 {
   "ok": true,
-  "timestamp": "2026-10-31T15:02:18Z",
+  "timestamp": "2026-10-31T15:16:09Z",
   "season": "2026/27",
-  "gameweek": 14,
-  "no_new_round": true,
-  "summary": "Matchday 15 in progress (2 of 10 matches played) – the page will update once the round is complete. Rayo Vallecano v Athletic Club was postponed. 2026/27 through matchday 14: 99 matches, 380 fixtures.",
+  "gameweek": 10,
+  "no_new_round": false,
+  "summary": "Matchday 11 in progress (3 of 10 matches played) – the page will update once the round is complete. Rayo Vallecano v Athletic Club was abandoned. 2026/27 through matchday 10: 99 completed matches, 380 fixtures.",
   "checks": [
     {
       "name": "League shape",
       "pass": true,
-      "detail": "20 clubs, 42 derived matchdays, 380 fixtures."
+      "detail": "20 clubs, 38 matchdays, 380 fixtures."
     },
     {
       "name": "Every club plays every other club home and away",
@@ -34,7 +34,7 @@
     {
       "name": "Player totals did not shrink",
       "pass": true,
-      "detail": "Minutes and goals did not fall."
+      "detail": "First build: there is no earlier week to compare."
     },
     {
       "name": "Sources were refreshed",
@@ -44,12 +44,17 @@
     {
       "name": "The match file is not behind a completed round",
       "pass": true,
-      "detail": "Matchday 15 in progress (2 of 10 matches played) – the page will update once the round is complete."
+      "detail": "Matchday 11 in progress (3 of 10 matches played) – the page will update once the round is complete."
+    },
+    {
+      "name": "Matchdays add up",
+      "pass": true,
+      "detail": "Completed matches fill the completed rounds, and the current round matches the matchday file."
     },
     {
       "name": "The status line matches the fixtures",
       "pass": true,
-      "detail": "Matchday 15 in progress (2 of 10 matches played) – the page will update once the round is complete. Rayo Vallecano v Athletic Club was postponed. 2026/27 through matchday 14: 99 matches, 380 fixtures."
+      "detail": "Matchday 11 in progress (3 of 10 matches played) – the page will update once the round is complete. Rayo Vallecano v Athletic Club was abandoned. 2026/27 through matchday 10: 99 completed matches, 380 fixtures."
     },
     {
       "name": "The page text is English",
@@ -64,13 +69,13 @@
   ],
   "fixture_changes": [
     {
-      "kind": "postponed",
+      "kind": "abandoned",
       "id": 30847,
-      "gameweek": 11,
+      "gameweek": 8,
       "home": "Rayo Vallecano",
       "away": "Athletic Club",
-      "was": "2026-10-10T12:00:00Z",
-      "now": null
+      "was": null,
+      "now": "2026-12-09T19:00:00Z"
     }
   ],
   "europe": {

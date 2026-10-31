@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from plx.config import load_config
+from plx.laliga_calendar import audit_published_rounds
 from plx.language import find_hits
 from plx.round_status import describe_round, summary_problems
 from plx.verify import _browser, _check, _parse_time
@@ -17,25 +18,13 @@ def verify_laliga(root: Path, data: dict, meta: dict, previous: dict | None, bro
     teams = list(data["short"])
     n = len(teams)
     rounds = int(data["rounds"])
-    gws = {row[0] for row in data["fx"]}
-    doubled = False
-    for gw in gws:
-        clubs = [club for row in data["fx"] if row[0] == gw for club in row[1:3]]
-        if len(clubs) != len(set(clubs)):
-            doubled = True
-            break
     per_club = Counter(club for row in data["fx"] for club in row[1:3])
     full = 2 * (n - 1)
     _check(
         checks,
         "League shape",
-        n >= 2
-        and len(data["fx"]) == n * (n - 1)
-        and rounds == max(gws)
-        and gws == set(range(1, rounds + 1))
-        and not doubled
-        and all(count == full for count in per_club.values()),
-        f"{n} clubs, {rounds} derived matchdays, {len(data['fx'])} fixtures.",
+        n >= 2 and rounds == full and len(data["fx"]) == n * (n - 1) and all(count == full for count in per_club.values()),
+        f"{n} clubs, {rounds} matchdays, {len(data['fx'])} fixtures.",
     )
     pairs = Counter((row[1], row[2]) for row in data["fx"])
     _check(
@@ -93,18 +82,41 @@ def verify_laliga(root: Path, data: dict, meta: dict, previous: dict | None, bro
         note.kind != "lag",
         note.summary,
     )
+    round_problems = audit_published_rounds(
+        data["fx"],
+        data["matches"],
+        meta.get("unresolved") or [],
+        int(data["gw"]),
+        n,
+        meta.get("official_current"),
+        note.event,
+    )
+    _check(
+        checks,
+        "Matchdays add up",
+        not round_problems,
+        "Completed matches fill the completed rounds, and the current round matches the matchday file."
+        if not round_problems
+        else " ".join(round_problems),
+    )
+    verbs = {
+        "postponed": "was postponed",
+        "abandoned": "was abandoned",
+        "cancelled": "was cancelled",
+        "suspended": "was suspended",
+        "forfeited": "was forfeited",
+    }
     held = []
-    for change in meta.get("fixture_changes") or []:
-        if change.get("kind") != "postponed":
-            continue
-        label = f"{change.get('home')} v {change.get('away')}"
-        if label not in note.summary:
-            held.append(f"{label} was postponed.")
+    for item in meta.get("unresolved") or []:
+        verb = verbs.get(item.get("status") or "", "has no completed result")
+        sentence = f"{item.get('home')} v {item.get('away')} {verb}."
+        if sentence not in note.summary:
+            held.append(sentence)
     extra = (" " + " ".join(held[:3])) if held else ""
     published_matches = sum(1 for match in data["matches"] if match["gw"] <= data["gw"])
     summary = (
         f"{note.summary}{extra} {data['season']} through matchday {data['gw']}: "
-        f"{published_matches} matches, {len(data['fx'])} fixtures."
+        f"{published_matches} completed matches, {len(data['fx'])} fixtures."
     )
     problems = summary_problems(summary, note)
     _check(

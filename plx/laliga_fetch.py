@@ -7,6 +7,8 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
 
+from plx.laliga_calendar import parse_matchday_file
+
 from plx.elo import season_code
 from plx.europe import EuropeError, fetch_competitions
 from plx.http_client import DownloadError, get_bytes, get_json
@@ -36,6 +38,55 @@ def _season_year_from_league(payload: dict) -> int:
     year = int(first[:4])
     month = int(first[5:7])
     return year if month >= 7 else year - 1
+
+
+def _espn_fixtures(days: list[str], template: str, user_agent: str) -> list[dict]:
+    found: dict[str, dict] = {}
+
+    def one(day: str) -> list[dict]:
+        payload = get_json(template.format(day=day), user_agent)
+        rows = []
+        for event in payload.get("events") or []:
+            comp = (event.get("competitions") or [{}])[0]
+            sides = {}
+            for club in comp.get("competitors") or []:
+                score = club.get("score")
+                sides[club.get("homeAway")] = {
+                    "name": (club.get("team") or {}).get("displayName") or "",
+                    "score": None if score in (None, "") else int(score),
+                }
+            if "home" not in sides or "away" not in sides:
+                continue
+            status = ((comp.get("status") or {}).get("type") or {})
+            rows.append(
+                {
+                    "id": str(event.get("id") or ""),
+                    "date": event.get("date") or comp.get("date"),
+                    "status": status.get("name") or "",
+                    "completed": bool(status.get("completed")),
+                    "home": sides["home"]["name"],
+                    "away": sides["away"]["name"],
+                    "hs": sides["home"]["score"],
+                    "as": sides["away"]["score"],
+                }
+            )
+        return rows
+
+    failures = []
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        futures = {pool.submit(one, day): day for day in days}
+        for fut in as_completed(futures):
+            try:
+                for row in fut.result():
+                    found.setdefault(row["id"], row)
+            except Exception as exc:  # noqa: BLE001
+                failures.append(f"{futures[fut]}: {exc}")
+    if failures:
+        raise DownloadError(
+            f"ESPN did not return {len(failures)} La Liga dates. The build stopped rather than guess the jornada. "
+            + " ".join(failures[:3])
+        )
+    return list(found.values())
 
 
 def fetch_laliga(root: Path, model: dict, league: dict) -> dict:
@@ -115,6 +166,25 @@ def fetch_laliga(root: Path, model: dict, league: dict) -> dict:
     current_raw = get_bytes(current_url, ua)
     (dest / "current_results.csv").write_bytes(current_raw)
 
+    end = str(start_year + 1)[-2:]
+    calendar_url = league["openfootball_calendar"].format(start=start_year, end=end)
+    try:
+        calendar_raw = get_bytes(calendar_url, ua)
+    except DownloadError as exc:
+        raise DownloadError(f"The La Liga matchday file could not be downloaded. {exc}") from exc
+    calendar_text = calendar_raw.decode("utf-8")
+    (dest / "matchdays.txt").write_text(calendar_text, encoding="utf-8")
+    calendar_rows = parse_matchday_file(calendar_text)
+    days = {row["day"].replace("-", "") for row in calendar_rows}
+
+    board = get_json(league["espn_scoreboard"].format(day=min(days)), ua)
+    league_block = ((board.get("leagues") or [{}])[0]) if isinstance(board, dict) else {}
+    for stamp in league_block.get("calendar") or []:
+        if isinstance(stamp, str) and len(stamp) >= 10:
+            days.add(stamp[:10].replace("-", ""))
+    espn_rows = _espn_fixtures(sorted(days), league["espn_scoreboard"], ua)
+    (dest / "espn_fixtures.json").write_text(json.dumps(espn_rows), encoding="utf-8")
+
     europe_cfg = json.loads(json.dumps(model))
     europe_cfg["sources"]["espn_teams"] = league["espn_teams"]
     try:
@@ -133,6 +203,8 @@ def fetch_laliga(root: Path, model: dict, league: dict) -> dict:
         "finished": len(finished_ids),
         "history": {"files": saved, "season_codes": codes, "fetched_at": _now()},
         "europe": {"events": len(events), "fetched_at": _now()},
+        "matchdays": len(calendar_rows),
+        "espn_fixtures": len(espn_rows),
         "current_results_bytes": (dest / "current_results.csv").stat().st_size,
     }
     (dest / "fetch_manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")

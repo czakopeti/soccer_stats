@@ -15,8 +15,9 @@
   "top_division": "SP1",
   "current_results_division": "SP1",
   "espn_teams": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams?limit=40",
-  "live_window_hours": 3,
-  "round_window_days": 3,
+  "espn_scoreboard": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/scoreboard?dates={day}&limit=50",
+  "openfootball_calendar": "https://raw.githubusercontent.com/openfootball/espana/master/{start}-{end}/1-liga.txt",
+  "matchday_date_slack_days": 2,
   "places": {
     "title": 1,
     "european": 4,
@@ -38,5 +39,5 @@
   "absence_note": "Injury news is not listed. No free La Liga injury feed was reliable enough to publish.",
   "omitted_note": "Possession, carry counts, goalkeeper logs, transfer values and the Fantasy-style price list are not in the free shot feed, so those sections are hidden. Pressing volume is shown only when the shot feed publishes it.",
   "banner": "Same ideas as the Premier League page, fed by the public shot file and historical league results. Sections that those feeds do not cover are hidden, not filled in.",
-  "credit": "Shots, xG and the fixture list: Understat (public site, no key; the JSON is what their own page requests). Scores are checked against football-data.co.uk La Liga results, and bookmaker columns in that file are not read. Pre-season strength uses La Liga and Segunda results from the same site. European dates: ESPN's public football schedule. No bookmaker prices. Independent, unofficial."
+  "credit": "Shots and xG: Understat (public site, no key; the JSON is what their own page requests). Matchdays: openfootball España, public domain. Kickoffs, and whether a match was abandoned or postponed, come from ESPN's public schedule and are checked against that matchday list. Scores are also checked against football-data.co.uk La Liga results; bookmaker columns in that file are not read. Pre-season strength uses La Liga and Segunda results from the same site. European dates: ESPN. No bookmaker prices. Independent, unofficial."
 }
