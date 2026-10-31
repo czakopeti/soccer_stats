@@ -10,17 +10,17 @@ class DownloadError(RuntimeError):
     pass
 
 
-def get_bytes(url: str, user_agent: str, timeout: int = 60, attempts: int = 6) -> bytes:
+def get_bytes(url: str, user_agent: str, timeout: int = 60, attempts: int = 6, extra_headers: dict | None = None) -> bytes:
     last = "no attempt"
+    headers = {
+        "User-Agent": user_agent,
+        "Accept": "application/json,text/csv,text/plain,*/*",
+        "Accept-Language": "en",
+    }
+    if extra_headers:
+        headers.update(extra_headers)
     for i in range(attempts):
-        req = urllib.request.Request(
-            url,
-            headers={
-                "User-Agent": user_agent,
-                "Accept": "application/json,text/csv,text/plain,*/*",
-                "Accept-Language": "en",
-            },
-        )
+        req = urllib.request.Request(url, headers=headers)
         try:
             with urllib.request.urlopen(req, timeout=timeout) as resp:
                 return resp.read()

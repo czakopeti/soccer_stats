@@ -14,6 +14,10 @@ BANNED = [
     r"\bxgabora\b",
     r"Röntgen",
     r"Europe/Budapest",
+    r"\bBarcelona\b",
+    r"\bReal Madrid\b",
+    r"\bAtletico\b",
+    r"\bAtlético\b",
 ]
 
 

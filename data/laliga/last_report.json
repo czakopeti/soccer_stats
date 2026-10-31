@@ -1,0 +1,85 @@
+{
+  "ok": true,
+  "timestamp": "2026-10-31T15:16:09Z",
+  "season": "2026/27",
+  "gameweek": 10,
+  "no_new_round": false,
+  "summary": "Matchday 11 in progress (3 of 10 matches played) – the page will update once the round is complete. Rayo Vallecano v Athletic Club was abandoned. 2026/27 through matchday 10: 99 completed matches, 380 fixtures.",
+  "checks": [
+    {
+      "name": "League shape",
+      "pass": true,
+      "detail": "20 clubs, 38 matchdays, 380 fixtures."
+    },
+    {
+      "name": "Every club plays every other club home and away",
+      "pass": true,
+      "detail": "380 unique home-and-away pairs."
+    },
+    {
+      "name": "Shots add up to the match",
+      "pass": true,
+      "detail": "Scores and xG match the shot file."
+    },
+    {
+      "name": "Penalty xG was measured from this season's penalties",
+      "pass": true,
+      "detail": "Average of 35 penalties is 0.7433."
+    },
+    {
+      "name": "Bookmaker prices are not in the data",
+      "pass": true,
+      "detail": "The page data has no bookmaker block."
+    },
+    {
+      "name": "Player totals did not shrink",
+      "pass": true,
+      "detail": "First build: there is no earlier week to compare."
+    },
+    {
+      "name": "Sources were refreshed",
+      "pass": true,
+      "detail": "The La Liga download is from this run."
+    },
+    {
+      "name": "The match file is not behind a completed round",
+      "pass": true,
+      "detail": "Matchday 11 in progress (3 of 10 matches played) – the page will update once the round is complete."
+    },
+    {
+      "name": "Matchdays add up",
+      "pass": true,
+      "detail": "Completed matches fill the completed rounds, and the current round matches the matchday file."
+    },
+    {
+      "name": "The status line matches the fixtures",
+      "pass": true,
+      "detail": "Matchday 11 in progress (3 of 10 matches played) – the page will update once the round is complete. Rayo Vallecano v Athletic Club was abandoned. 2026/27 through matchday 10: 99 completed matches, 380 fixtures."
+    },
+    {
+      "name": "The page text is English",
+      "pass": true,
+      "detail": "No Hungarian in the La Liga notes."
+    },
+    {
+      "name": "The page opens and every tab has content",
+      "pass": true,
+      "detail": "Opened in a browser with no script errors. 77 views have English text and no Hungarian leftovers."
+    }
+  ],
+  "fixture_changes": [
+    {
+      "kind": "abandoned",
+      "id": 30847,
+      "gameweek": 8,
+      "home": "Rayo Vallecano",
+      "away": "Athletic Club",
+      "was": null,
+      "now": "2026-12-09T19:00:00Z"
+    }
+  ],
+  "europe": {
+    "fixtures": 63,
+    "note": "European kickoffs are loaded automatically (63 matches, 8 clubs). Domestic cups are not included."
+  }
+}

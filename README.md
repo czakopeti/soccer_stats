@@ -2,6 +2,8 @@
 
 A weekly Premier League page. It shows what the scoreline leaves out: chances, luck, strength, and the run of fixtures ahead. The page is in English. It rebuilds itself every Wednesday. You do not need to check the numbers by hand. If a check fails, the old page stays up and GitHub opens an issue that says what went wrong, in plain language.
 
+La Liga has its own page at `laliga/` on the same site. It is built in the same Wednesday job, but a La Liga failure does not stop the Premier League page from updating. Shot-level numbers come from Understat. Matchday numbers come from the public-domain openfootball calendar and are checked against ESPN's scoreboard. Injuries, transfer values and the full club-style catalogue are not on a free feed, so those sections are left off rather than invented.
+
 The page is published at:
 
 **https://czakopeti.github.io/soccer_stats/**

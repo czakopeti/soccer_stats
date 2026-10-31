@@ -695,6 +695,8 @@ def prepare(root: Path, cfg: dict, previous: dict | None = None) -> tuple[dict, 
         "unscheduled": unscheduled,
         "fixture_changes": changes,
         "europe_note": europe_note,
+        "other_href": "laliga/",
+        "other_label": "La Liga",
         "cfg": client_cfg,
         "derived": derived,
     }
