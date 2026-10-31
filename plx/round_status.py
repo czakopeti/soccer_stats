@@ -68,7 +68,13 @@ def _by_event(fixtures: list[dict]) -> dict[int, list[dict]]:
     return grouped
 
 
-def _disruptions(event: int, fixtures: list[dict], changes: list[dict]) -> str:
+def _rn(label: str, event) -> str:
+    if label == "GW":
+        return f"GW{event}"
+    return f"{label} {event}"
+
+
+def _disruptions(event: int, fixtures: list[dict], changes: list[dict], round_label: str = "GW") -> str:
     named = []
     for change in changes or []:
         kind = change.get("kind")
@@ -82,7 +88,9 @@ def _disruptions(event: int, fixtures: list[dict], changes: list[dict]) -> str:
         if kind == "rescheduled":
             named.append(f"{home} v {away} was rescheduled")
         elif kind == "moved_gameweek":
-            named.append(f"{home} v {away} moved from GW{change.get('was')} to GW{change.get('now')}")
+            named.append(
+                f"{home} v {away} moved from {_rn(round_label, change.get('was'))} to {_rn(round_label, change.get('now'))}"
+            )
         else:
             named.append(f"{home} v {away} was postponed")
     if named:
@@ -132,6 +140,8 @@ def describe_round(
     tz_name: str,
     changes: list[dict] | None = None,
     gap_days: int = 12,
+    round_label: str = "GW",
+    league_name: str = "Premier League",
 ) -> RoundNote:
     """One plain-English sentence for the fixture state after `published_gw`."""
     if now.tzinfo is None:
@@ -151,10 +161,10 @@ def describe_round(
         if rows and all(row.get("finished") for row in rows):
             played = sum(1 for row in rows if row.get("finished"))
             sentence = (
-                f"The Premier League feed shows GW{event} complete ({played} of {len(rows)} "
-                f"{'match' if len(rows) == 1 else 'matches'} played), but the match file still stops at GW{published_gw}."
+                f"The {league_name} feed shows {_rn(round_label, event)} complete ({played} of {len(rows)} "
+                f"{'match' if len(rows) == 1 else 'matches'} played), but the match file still stops at {_rn(round_label, published_gw)}."
             )
-            extra = _disruptions(event, fixtures, changes or [])
+            extra = _disruptions(event, fixtures, changes or [], round_label)
             if extra:
                 sentence = f"{sentence} {extra}"
             return pack("lag", event, sentence)
@@ -164,8 +174,8 @@ def describe_round(
         played = sum(1 for row in rows if _played(row, now))
         if played and not all(row.get("finished") for row in rows):
             noun = "match" if len(rows) == 1 else "matches"
-            sentence = f"GW{event} in progress ({played} of {len(rows)} {noun} played)"
-            extra = _disruptions(event, fixtures, changes or [])
+            sentence = f"{_rn(round_label, event)} in progress ({played} of {len(rows)} {noun} played)"
+            extra = _disruptions(event, fixtures, changes or [], round_label)
             if extra:
                 sentence = f"{sentence}. {extra} The page will update once the round is complete."
             else:
@@ -178,22 +188,22 @@ def describe_round(
             continue
         kickoffs = [_parse_time(row.get("kickoff")) for row in rows]
         kickoffs = [kick for kick in kickoffs if kick is not None and kick > now]
-        extra = _disruptions(event, fixtures, changes or [])
+        extra = _disruptions(event, fixtures, changes or [], round_label)
         quiet = _quiet_since(fixtures, published_gw, now, gap_days)
         if quiet is not None and kickoffs:
             sentence = (
-                f"No Premier League matches since {_fmt_day(quiet, tz_name)}. "
-                f"GW{event} starts {_fmt_when(min(kickoffs), tz_name)}."
+                f"No {league_name} matches since {_fmt_day(quiet, tz_name)}. "
+                f"{_rn(round_label, event)} starts {_fmt_when(min(kickoffs), tz_name)}."
             )
             if extra:
                 sentence = f"{sentence} {extra}"
             return pack("gap", event, sentence)
         if kickoffs:
-            sentence = f"GW{event} starts {_fmt_when(min(kickoffs), tz_name)} – no new results yet."
+            sentence = f"{_rn(round_label, event)} starts {_fmt_when(min(kickoffs), tz_name)} – no new results yet."
             if extra:
                 sentence = f"{sentence} {extra}"
             return pack("not_started", event, sentence)
-        sentence = f"GW{event} has no kickoff times yet. No new results yet."
+        sentence = f"{_rn(round_label, event)} has no kickoff times yet. No new results yet."
         if extra:
             sentence = f"{sentence} {extra}"
         return pack("not_started", event, sentence)
@@ -201,7 +211,7 @@ def describe_round(
     return pack(
         "season_over",
         None,
-        f"No further Premier League rounds are scheduled after GW{published_gw}.",
+        f"No further {league_name} rounds are scheduled after {_rn(round_label, published_gw)}.",
     )
 
 

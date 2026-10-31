@@ -32,6 +32,21 @@ jobs:
         run: python -m playwright install --with-deps chromium
       - name: Fetch, build and verify
         run: python scripts/run_pipeline.py
+      - name: Build La Liga
+        id: laliga
+        continue-on-error: true
+        run: python scripts/run_pipeline.py --league laliga
+      - name: Keep the previous La Liga page if this week failed
+        if: steps.laliga.outcome != 'success'
+        run: |
+          rm -rf site/laliga
+          mkdir -p site/laliga
+          base="https://czakopeti.github.io/soccer_stats/laliga"
+          curl -fsSL -o site/laliga/index.html "$base/index.html" || rm -rf site/laliga
+          if [ -d site/laliga ]; then
+            curl -fsSL -o site/laliga/status.html "$base/status.html" || true
+            curl -fsSL -o site/laliga/status.json "$base/status.json" || true
+          fi
       - name: Upload the site
         if: success()
         uses: actions/upload-pages-artifact@v3

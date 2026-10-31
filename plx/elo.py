@@ -192,6 +192,7 @@ def build_priors(
     alias_sets: dict[str, list[str]],
     season_start: datetime,
     cfg: dict,
+    division: str = "E0",
 ) -> dict:
     """alias_sets maps the canonical Premier League name to every spelling we saw for it this run."""
     from plx.names import ClubIndex
@@ -226,7 +227,7 @@ def build_priors(
     missing = [t for t in current_teams if t not in seen]
     if missing:
         raise UnmappedName(
-            "No historical Premier League or Championship results matched: "
+            "No historical league results matched: "
             + ", ".join(missing)
             + ". Their pre-season strength was not set to average, because that would be a silent guess."
         )
@@ -235,9 +236,9 @@ def build_priors(
     hfa, ratings = fit_home_advantage(clustered, elo_cfg)
     elos = {t: ratings["team:" + t] for t in current_teams}
     mean_elo = sum(elos.values()) / len(elos)
-    codes = sorted({m["season"] for m in before if m["division"] == "E0"})
+    codes = sorted({m["season"] for m in before if m["division"] == division})
     use = codes[-int(elo_cfg["goal_rate_seasons"]) :]
-    rates = goal_rates(before, "E0", use)
+    rates = goal_rates(before, division, use)
     priors = {
         t: strength_from_elo(elos[t], mean_elo, rates["league_gpg"], elo_cfg) for t in current_teams
     }

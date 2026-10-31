@@ -9,8 +9,8 @@ const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const nf = (v, d = 1) => v == null || Number.isNaN(+v) ? "–" : (+v).toFixed(d);
 const sg = (v, d = 1) => {
-  if (v == null) return "–";
-  const shown = Math.abs(v).toFixed(d);
+  if (v == null || Number.isNaN(+v)) return "–";
+  const shown = Math.abs(+v).toFixed(d);
   if (+shown === 0) return shown;
   return (v > 0 ? "+" : "−") + shown;
 };
@@ -52,6 +52,14 @@ const RESN = { G: "goal", S: "saved", M: "off target", B: "blocked", P: "post", 
 const LAST = { Pass: "a pass", Cross: "a cross", Aerial: "an aerial", Rebound: "a rebound", TakeOn: "a take-on", Chipped: "a chip", Standard: "a set piece", BallTouch: "a touch", BallRecovery: "a recovery", HeadPass: "a headed pass", Throughball: "a through ball", LayOff: "a lay-off", Dispossessed: "losing the ball", CornerAwarded: "a corner", BlockedPass: "a blocked pass", None: "no assist" };
 const SETP = new Set(C.set_piece_situations);
 const grpOf = (sit) => sit === "penalty" ? "pen" : SETP.has(sit) ? "sp" : "op";
+const HIDE = new Set(D.hide_groups || []);
+const HIDE_TOP = new Set(D.hide_top || []);
+const shownCols = (cols) => D.hide_opta ? cols.filter(c => !String(c[1]).includes("°")) : cols;
+const ROUND = D.round_name || "Gameweek";
+const roundL = ROUND.toLowerCase();
+const roundP = /y$/.test(roundL) ? roundL.slice(0, -1) + "ies" : roundL + "s";
+const ROUND_ABBR = D.round_abbr || "GW";
+const colFilled = (k) => !D.hide_empty_cols || PL.some(p => pv(p, k) != null);
 
 /* ---------- core aggregation ---------- */
 function teamMatches(t, upto) { return M.filter(m => m.gw <= upto && (m.h === t || m.a === t)).sort((a, b) => a.gw - b.gw); }
@@ -135,7 +143,7 @@ function halfPitch(shots, col, label, rs = 1) {
 }
 function spark(form) {
   const W = 90, H = 22, n = Math.max(1, form.length), bw = W / Math.max(8, n);
-  return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true">${form.map((f, i) => { const v = Math.max(-2.5, Math.min(2.5, f.d)), h = Math.abs(v) / 2.5 * (H / 2 - 1); return `<rect x="${(i * bw + 1).toFixed(1)}" width="${(bw - 2).toFixed(1)}" y="${v >= 0 ? H / 2 - h : H / 2}" height="${Math.max(1, h).toFixed(1)}" fill="${v >= 0 ? "var(--good)" : "var(--bad)"}" opacity=".85"><title>Gameweek ${f.gw}: ${sg(f.d, 2)} xG</title></rect>`; }).join("")}<line x1="0" x2="${W}" y1="${H / 2}" y2="${H / 2}" stroke="#3a4266"/></svg>`;
+  return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true">${form.map((f, i) => { const v = Math.max(-2.5, Math.min(2.5, f.d)), h = Math.abs(v) / 2.5 * (H / 2 - 1); return `<rect x="${(i * bw + 1).toFixed(1)}" width="${(bw - 2).toFixed(1)}" y="${v >= 0 ? H / 2 - h : H / 2}" height="${Math.max(1, h).toFixed(1)}" fill="${v >= 0 ? "var(--good)" : "var(--bad)"}" opacity=".85"><title>${esc(ROUND)} ${f.gw}: ${sg(f.d, 2)} xG</title></rect>`; }).join("")}<line x1="0" x2="${W}" y1="${H / 2}" y2="${H / 2}" stroke="#3a4266"/></svg>`;
 }
 function slope(rows) {
   const nw = narrow(), W = nw ? 340 : 470, H = rows.length * 22 + 30, L = nw ? 100 : 145, R = nw ? 100 : 140, T = 18, y = (r) => T + (r - 1) * 22;
@@ -156,7 +164,7 @@ function bump(rankFn) {
   for (const t of order) { const rr = ranks[t]; const sel = t === S.team; const col = sel ? "var(--gold)" : "#4a5378";
     g += `<path d="${rr.map((r, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(r)}`).join("")}" fill="none" stroke="${col}" stroke-width="${sel ? 3 : 1.3}" opacity="${sel ? 1 : .6}" stroke-linejoin="round"/>`;
     const lr = rr[rr.length - 1]; g += `<circle cx="${x(S.gw - 1)}" cy="${y(lr)}" r="${sel ? 4 : 2.5}" fill="${col}"/><text x="${x(S.gw - 1) + 7}" y="${y(lr) + 3.5}" style="fill:${sel ? "var(--gold)" : "var(--muted)"};font-size:10px">${esc(nw ? D.short[t] : t)}</text>`; }
-  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Place after each gameweek">${g}</svg>`;
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Place after each ${roundL}">${g}</svg>`;
 }
 function scatter(rows) {
   const W = narrow() ? 360 : 560, H = 340, L = 40, R = 12, T = 14, B = 34;
@@ -188,7 +196,7 @@ function rolling(t) {
   const band = rf.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join("") + ra.slice().reverse().map((v, j) => `L${x(n - 1 - j).toFixed(1)},${y(v).toFixed(1)}`).join("") + "Z";
   g += `<path d="${band}" fill="${rf[n - 1] >= ra[n - 1] ? "var(--good)" : "var(--bad)"}" fill-opacity=".08"/>`;
   g += `<path d="${rf.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join("")}" fill="none" stroke="var(--home)" stroke-width="2.4"/><path d="${ra.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join("")}" fill="none" stroke="var(--away)" stroke-width="2.4"/>`;
-  ms.forEach((z, i) => { g += `<circle cx="${x(i)}" cy="${y(z.xg)}" r="2.2" fill="var(--home)" opacity=".55"/><circle cx="${x(i)}" cy="${y(z.xga)}" r="2.2" fill="var(--away)" opacity=".55"/><circle cx="${x(i)}" cy="${H - 8}" r="4.5" fill="${z.p === 3 ? "var(--good)" : z.p === 1 ? "#6b7394" : "var(--bad)"}"><title>Gameweek ${z.gw}, ${z.home ? "home" : "away"} against ${esc(z.o)}: ${z.gf}–${z.ga} (xG ${nf(z.xg, 2)}–${nf(z.xga, 2)})</title></circle>`; });
+  ms.forEach((z, i) => { g += `<circle cx="${x(i)}" cy="${y(z.xg)}" r="2.2" fill="var(--home)" opacity=".55"/><circle cx="${x(i)}" cy="${y(z.xga)}" r="2.2" fill="var(--away)" opacity=".55"/><circle cx="${x(i)}" cy="${H - 8}" r="4.5" fill="${z.p === 3 ? "var(--good)" : z.p === 1 ? "#6b7394" : "var(--bad)"}"><title>${esc(ROUND)} ${z.gw}, ${z.home ? "home" : "away"} against ${esc(z.o)}: ${z.gf}–${z.ga} (xG ${nf(z.xg, 2)}–${nf(z.xga, 2)})</title></circle>`; });
   return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Rolling xG, created and conceded">${g}</svg>`;
 }
 
@@ -266,7 +274,7 @@ function cleanChart(rows) {
 function cleanSection() {
   const rows = cleanTable(S.gw), hard = rows.slice().sort((a, b) => b.fx - a.fx)[0], easy = rows.slice().sort((a, b) => a.fx - b.fx)[0], R = cleanR(S.gw);
   const moved = (r) => `${ord(r.rr)} on raw xG, ${ord(r.ar)} once adjusted`;
-  return `<section class="sec"><div class="sechead"><h2>Adjusted xG</h2><span class="kicker">Opponent and venue removed · after gameweek ${S.gw}</span></div>
+  return `<section class="sec"><div class="sechead"><h2>Adjusted xG</h2><span class="kicker">Opponent and venue removed · after ${roundL} ${S.gw}</span></div>
     <p class="note">Raw xG flatters a side that plays at home, or that keeps meeting a weak defence. Each match here is divided by what an average club would create against that opponent, at that ground. Chances conceded are divided by that opponent's attack. What is left is the xG a club would have created and allowed against an average opponent on a neutral pitch. Home advantage is worth about ${pc(R.hfH * R.hfH - 1)} more xG at the moment. Only this season's xG is used: not goals, and with no recency weighting.</p>
     <div class="insights"><div class="ins" style="--c:var(--good)"><span class="n">Hardest run</span><p><b>${esc(hard.t)}</b> have faced tougher grounds and tougher opponents than the rest. Adjusted, they are ${nf(Math.abs(hard.fx), 2)} xG per match better than the raw numbers (${moved(hard)}).</p></div>
     <div class="ins" style="--c:var(--bad)"><span class="n">Easiest run</span><p>The schedule flatters <b>${esc(easy.t)}</b>. Adjusted, they are ${nf(Math.abs(easy.fx), 2)} xG per match worse than the raw numbers (${moved(easy)}).</p></div>
@@ -278,7 +286,7 @@ function cleanSection() {
 }
 function cleanMatches(t) {
   const R = cleanR(S.gw), ms = teamMatches(t, S.gw).map(m => adjMatch(m, t, R)); if (!ms.length) return "";
-  return `<div class="panel"><p class="kicker">Match by match, adjusted for the opponent and the ground</p><div class="tw"><table><thead><tr><th class="l">GW</th><th class="l">Opponent</th><th>Score</th><th>xG</th><th class="hm">Avg. side</th><th>Adj.</th><th>xGA</th><th class="hm">Avg. side</th><th>Adj.</th></tr></thead><tbody>
+  return `<div class="panel"><p class="kicker">Match by match, adjusted for the opponent and the ground</p><div class="tw"><table><thead><tr><th class="l">${esc(ROUND_ABBR)}</th><th class="l">Opponent</th><th>Score</th><th>xG</th><th class="hm">Avg. side</th><th>Adj.</th><th>xGA</th><th class="hm">Avg. side</th><th>Adj.</th></tr></thead><tbody>
     ${ms.map(x => `<tr><td class="l mono" style="color:var(--muted)">${x.gw}</td><td class="l">${esc(nm(x.o))} <span class="note">${x.home ? "H" : "A"} · Power ${ord(R.rank[x.o])}</span></td><td class="${x.p === 3 ? "pos" : x.p === 0 ? "neg" : ""}">${x.gf}–${x.ga}</td><td style="color:var(--muted)">${nf(x.xg, 2)}</td><td class="hm" style="color:var(--muted)">${nf(x.eF, 2)}</td><td><b class="${x.ax >= R.lgFit ? "pos" : "neg"}">${nf(x.ax, 2)}</b></td><td style="color:var(--muted)">${nf(x.xga, 2)}</td><td class="hm" style="color:var(--muted)">${nf(x.eA, 2)}</td><td><b class="${x.axa <= R.lgFit ? "pos" : "neg"}">${nf(x.axa, 2)}</b></td></tr>`).join("")}</tbody></table></div>
     <p class="note">Avg. side is what a typical club would have created, or allowed, in that same match at that ground. Adj. is the actual xG rescaled to an average opponent on a neutral pitch. Green is better than the league average of ${nf(R.lgFit, 2)} xG.</p></div>`;
 }
@@ -329,7 +337,7 @@ function viewValodi() {
   const story = `<b>${esc(sel.t)}</b> have ${qty(sel.pts, "point", "points")} and sit ${ord(sel.rank)}. Against an average opponent on a neutral pitch those performances were worth <b>${qty(nf(sel.neutral, 1), "point", "points")}</b>, which ranks them ${ord(sel.vrank)} on true strength. On top of that: schedule and venue ${sg(sel.sched, 1)}, finishing ${sg(sel.fin, 1)}, goalkeeping and defending ${sg(sel.keep, 1)}, other luck ${sg(sel.other, 1)}.${Math.abs(big(sel)[1]) >= 2 ? ` The largest piece is ${DLBL[big(sel)[0]]}.` : " That is roughly what the performances were worth."}`;
   const cell = (v) => `<td class="${v > .5 ? "pos" : v < -.5 ? "neg" : ""}">${sg(v, 1)}</td>`;
   return `<section class="sec"><div class="insights">${ins.map((o, i) => `<div class="ins" style="--c:${o.c};animation-delay:${i * 60}ms"><span class="n">${i + 1} · ${esc(o.h)}</span><p>${o.t}</p></div>`).join("")}</div></section>
-    <section class="sec"><div class="sechead"><h2>True strength</h2><span class="kicker">After gameweek ${S.gw}</span></div>
+    <section class="sec"><div class="sechead"><h2>True strength</h2><span class="kicker">After ${roundL} ${S.gw}</span></div>
     <p class="note">Where do the points come from? On the left, what the performances were worth: the points that adjusted xG would have earned against an average opponent on a neutral pitch. To the right, what was added or taken away: the schedule and the grounds, the finishing, the goalkeeping and the defending, and the rest of the luck, including when the goals happened to fall. Bars to the right are points gained. Bars to the left are points lost. The figure at the edge is the actual points total, and how far it sits from the performances. Clubs are ordered by what the performances were worth. Click a club.</p>
     <div class="lgd"><span><i style="background:#4a5378"></i>worth of the performances</span>${Object.keys(DCOL).map(k => `<span><i style="background:${DCOL[k]}"></i>${DLBL[k]}</span>`).join("")}</div>
     <div class="insights" style="grid-template-columns:1fr"><div class="ins" style="--c:var(--gold)"><span class="n">${esc(sel.t)} in short</span><p>${story}</p></div></div>
@@ -382,7 +390,7 @@ function adBlurb(r, rk, side) {
   return `${ord(g)} for chance quality, ${ord(b)} for explosiveness.`;
 }
 function viewAD(side) {
-  const C = ADC[side], rows = adTable(S.gw), A = side === "att";
+  const rawC = ADC[side], C = Object.assign({}, rawC, { cols: shownCols(rawC.cols) }), rows = adTable(S.gw), A = side === "att";
   const rk = {}; for (const [k, , , low] of C.cols) { const hs = rankHeat(rows, k, low); rk[k] = Object.fromEntries(rows.map(r => [r.t, r[k] == null ? null : rows.filter(z => z[k] != null && (low ? z[k] < r[k] : z[k] > r[k])).length + 1])); void hs; }
   const ord = rows.slice().sort((a, b) => A ? b[C.key] - a[C.key] : a[C.key] - b[C.key]), lg = rows.reduce((a, r) => a + r[C.key], 0) / rows.length;
   const mx = Math.max(...rows.map(r => Math.abs(r[C.key] - lg))) || 1;
@@ -403,12 +411,12 @@ function viewAD(side) {
   const sk = S.ads && S.ads.side === side && C.cols.some(c => c[0] === S.ads.k) ? S.ads : { k: C.key, asc: C.low };
   const sorted = sortRows(rows, sk.k, sk.asc), heats = Object.fromEntries(C.cols.map(c => [c[0], rankHeat(rows, c[0], c[3])]));
   return `<section class="sec"><div class="insights">${ins.map((o, i) => `<div class="ins" style="--c:${o.c};animation-delay:${i * 60}ms"><span class="n">${i + 1} · ${esc(o.h)}</span><p>${o.t}</p></div>`).join("")}</div></section>
-    <section class="sec"><div class="sechead"><h2>${C.title}</h2><span class="kicker">After gameweek ${S.gw} · adjusted for opponent and venue</span></div>
+    <section class="sec"><div class="sechead"><h2>${C.title}</h2><span class="kicker">After ${roundL} ${S.gw} · adjusted for opponent and venue</span></div>
     <p class="note">${A ? "How many chances a club creates against an average opponent on a neutral pitch (adjusted xG). The number beside the bar is the gap to the league average. The line underneath says whether the attack is efficient (lots of good chances) or explosive (lots of big chances), and which way it is heading." : "How many chances a club allows against an average opponent on a neutral pitch (adjusted xGA). The number beside the bar is the gap to the league average. The line underneath says whether the defence is tight (few good chances, few big ones) or open, and which way it is heading."} Click a club.</p>
     <div class="panel plist">${list}</div></section>
     <section class="sec"><div class="sechead"><h2>Details</h2></div><div class="panel"><div class="tw"><table class="sticky1 wrapth" id="adt"><thead><tr><th class="l">#</th><th class="l">Club</th>${C.cols.map(([k, l]) => `<th data-ak="${k}" data-side="${side}" ${sk.k === k ? `aria-sort="${sk.asc ? "ascending" : "descending"}"` : ""}>${esc(l)}${sk.k === k ? (sk.asc ? " ▲" : " ▼") : ""}</th>`).join("")}</tr></thead><tbody>
     ${sorted.map((r, i) => `<tr class="click ${S.team === r.t ? "sel" : ""}" data-t="${esc(r.t)}"><td class="l mono" style="color:var(--muted)">${i + 1}</td><td class="l"><b>${esc(nm(r.t))}</b></td>${C.cols.map(([k, , d]) => { const u = heats[k][r.t]; return `<td style="${u != null ? `background:${heatRGB(u, k === sk.k ? .32 : .14)}` : ""}">${r[k] == null ? "–" : nf(r[k], d)}</td>`; }).join("")}</tr>`).join("")}</tbody></table></div>
-    <p class="note">Read it the way an NFL efficiency table is read. <b style="color:var(--ink)">When level:</b> only the minutes the score was level. A side in front sits off, and a side behind commits players forward, so the score changes the chances they get. <b style="color:var(--ink)">Good chances:</b> the share of shots worth at least 0.10 xG, penalties excluded. <b style="color:var(--ink)">Big chances:</b> shots of at least 0.30 xG, per match. Green is better in the league, red is worse. A ° marks an Opta season total. Click a column heading to sort.</p></div></section>`;
+    <p class="note">Read it the way an NFL efficiency table is read. <b style="color:var(--ink)">When level:</b> only the minutes the score was level. A side in front sits off, and a side behind commits players forward, so the score changes the chances they get. <b style="color:var(--ink)">Good chances:</b> the share of shots worth at least 0.10 xG, penalties excluded. <b style="color:var(--ink)">Big chances:</b> shots of at least 0.30 xG, per match. Green is better in the league, red is worse.${D.hide_opta ? "" : " A ° marks an Opta season total."} Click a column heading to sort.</p></div></section>`;
 }
 function closeGames(t, upto) { let n = 0, pts = 0, xp = 0; for (const m of teamMatches(t, upto)) { const z = persp(m, t); if (Math.abs(z.gf - z.ga) <= 1) { n++; pts += z.p; xp += z.xp; } } return { n, pts, xp, luck: pts - xp }; }
 
@@ -417,7 +425,7 @@ const SCHED = {}; for (const t of TEAMS) SCHED[t] = [];
 for (const f of FX) { const ts = Date.parse(f[3]); SCHED[f[1]].push({ ts, c: "PL", o: f[2], h: 1, gw: f[0], fid: f[5] }); SCHED[f[2]].push({ ts, c: "PL", o: f[1], h: 0, gw: f[0], fid: f[5] }); }
 for (const e of EURO) if (SCHED[e[0]]) SCHED[e[0]].push({ ts: Date.parse(e[1]), c: e[2], o: e[3], h: e[4] });
 for (const t of TEAMS) SCHED[t].sort((a, b) => a.ts - b.ts);
-const COMP = Object.assign({ PL: "Premier League" }, C.competitions);
+const COMP = Object.assign({ PL: D.domestic_name || "Premier League" }, C.competitions);
 const restCls = (d) => d < TH.very_short_rest_days ? "neg" : d < TH.short_rest_days ? "warn" : "";
 function restAround(t, fid) { const s = SCHED[t], i = s.findIndex(e => e.fid === fid); if (i < 0) return {}; const prev = i > 0 ? s[i - 1] : null, next = i < s.length - 1 ? s[i + 1] : null; return { prev, next, before: prev ? (s[i].ts - prev.ts) / 864e5 : null, after: next ? (next.ts - s[i].ts) / 864e5 : null }; }
 const roundEnd = (g) => Math.max(...FX.filter(f => f[0] <= g).map(f => Date.parse(f[3])), 0);
@@ -470,9 +478,12 @@ function simulate(gw) {
 function header() {
   const rows = M.filter(m => m.gw === S.gw); const goals = rows.reduce((a, m) => a + m.hs + m.as, 0), xg = rows.reduce((a, m) => a + m.xh + m.xa, 0);
   const cur = mainOf(S.tab);
-  return `<header style="display:flex;flex-direction:column;gap:10px"><span class="kicker">Premier League ${D.season} · independent · rebuilt every week</span><h1>PL <span>X-ray</span></h1>
-    <p class="lede">What the scoreline leaves out. Gameweek ${S.gw} produced <b>${goals} goals</b> from <b>${nf(xg, 1)} xG</b>.</p></header>
-    <div class="sticky"><div class="gws" role="group" aria-label="Gameweek">${Array.from({ length: D.gw }, (_, i) => i + 1).map(g => `<button data-gw="${g}" aria-pressed="${g === S.gw}" aria-label="Gameweek ${g}">${g}</button>`).join("")}</div>
+  const leagueName = D.league_name || "Premier League";
+  const brand = D.brand || "PL";
+  const other = D.other_href ? `<a href="${esc(D.other_href)}">${esc(D.other_label || "Other league")}</a>` : "";
+  return `<header style="display:flex;flex-direction:column;gap:10px"><span class="kicker">${esc(leagueName)} ${esc(D.season)} · independent · rebuilt every week${other ? " · " + other : ""}</span><h1>${esc(brand)} <span>X-ray</span></h1>
+    <p class="lede">What the scoreline leaves out. ${esc(ROUND)} ${S.gw} produced <b>${goals} goals</b> from <b>${nf(xg, 1)} xG</b>.</p>${D.banner ? `<p class="note">${esc(D.banner)}</p>` : ""}</header>
+    <div class="sticky"><div class="gws" role="group" aria-label="${esc(ROUND)}">${Array.from({ length: D.gw }, (_, i) => i + 1).map(g => `<button data-gw="${g}" aria-pressed="${g === S.gw}" aria-label="${esc(ROUND)} ${g}">${g}</button>`).join("")}</div>
     <div class="mains" role="tablist">${NAV.map(n => `<button role="tab" data-main="${n[0]}" aria-selected="${cur[0] === n[0]}">${n[1]}</button>`).join("")}</div>
     <div class="subs" role="tablist">${cur[3].map(([k, l]) => `<button role="tab" data-tab="${k}" aria-selected="${S.tab === k}">${l}</button>`).join("")}</div></div>
     <p class="sublede">${esc(cur[2])}</p>`;
@@ -489,7 +500,7 @@ function matchCard(m, k) {
 function viewFordulo() {
   const rows = M.filter(m => m.gw === S.gw);
   return `<section class="sec">${insights()}</section>
-    <section class="sec"><div class="sechead"><h2>Gameweek ${S.gw}</h2><div class="lgd"><span><i style="background:var(--home)"></i>home</span><span><i style="background:var(--away)"></i>away</span><span><i style="background:var(--gold)"></i>goal</span></div></div>
+    <section class="sec"><div class="sechead"><h2>${esc(ROUND)} ${S.gw}</h2><div class="lgd"><span><i style="background:var(--home)"></i>home</span><span><i style="background:var(--away)"></i>away</span><span><i style="background:var(--gold)"></i>goal</span></div></div>
     <p class="note">The line is each side's chances added up, minute by minute. The bar is who would have won if every shot went in exactly as often as its xG says. The outline marks what actually happened. Click a match for the shot map.</p>
     <div class="mgrid">${rows.map((m, k) => matchCard(m, k)).join("")}</div></section>${tiles()}`;
 }
@@ -538,17 +549,17 @@ function viewTabella() {
     ${sorted.map(r => `<tr class="click ${S.team === r.t ? "sel" : ""}" data-t="${esc(r.t)}"><td class="l mono" style="color:var(--muted)">${r.rank}</td><td class="l"><b>${esc(narrow() ? D.short[r.t] : r.t)}</b></td><td class="hm">${r.P}</td><td><b>${r.pts}</b></td><td>${nf(r.xpts, 1)}</td><td class="${r.luck > 1 ? "neg" : r.luck < -1 ? "pos" : ""}">${sg(r.luck, 1)}</td><td class="hm">${r.gf}</td><td>${nf(r.xg, 1)}</td><td class="hm">${r.ga}</td><td>${nf(r.xga, 1)}</td><td class="l hm">${spark(r.form)}</td></tr>`).join("")}</tbody></table></div>
     <p class="note">± is actual points minus points deserved. Red is luck on the club's side. Green is luck against it. Click a club for its X-ray.</p></div></div></section>
     <section class="sec"><div class="two eq"><div class="panel"><h3 style="font-family:var(--f-display);font-size:26px;text-transform:uppercase">Attack and defence</h3><p class="note">Further right means more chances created. Higher up means fewer chances conceded. Click a point.</p>${scatter(rows)}</div>
-    <div class="panel"><h3 style="font-family:var(--f-display);font-size:26px;text-transform:uppercase">Place by gameweek</h3><p class="note">The real table after every round. Highlighted: ${esc(S.team)}.</p>${bump()}</div></div></section>`;
+    <div class="panel"><h3 style="font-family:var(--f-display);font-size:26px;text-transform:uppercase">Place by ${roundL}</h3><p class="note">The real table after every round. Highlighted: ${esc(S.team)}.</p>${bump()}</div></div></section>`;
 }
 function simSection() {
   if (!S.sim || S.simGw !== S.gw) { S.sim = simulate(S.gw); S.simGw = S.gw; }
   const r = S.sim; const rem = FX.filter(f => f[0] > S.gw).length;
   const cell = (p, col) => `<td style="text-align:left"><span class="mono" style="display:inline-block;width:38px;text-align:right">${pc1(p)}</span><span class="pbar" style="width:${Math.max(1, p * (narrow() ? 26 : 60))}px;background:${col};opacity:${p > 0 ? .85 : 0}"></span></td>`;
-  return `<section class="sec"><div class="sechead"><h2>Where they finish</h2><span class="kicker">After gameweek ${S.gw} · ${rem} matches left</span></div>
+  return `<section class="sec"><div class="sechead"><h2>Where they finish</h2><span class="kicker">After ${roundL} ${S.gw} · ${rem} matches left</span></div>
     <p class="note">The remaining ${rem} matches were played ${C.simulation.runs.toLocaleString("en-GB")} times using the Power ratings (opponent-adjusted, with recent matches counting for more). Bad luck so far does not drag a club's chances down. Only the points already dropped do.</p>
     <div class="panel"><div class="tw"><table class="probs sticky1"><thead><tr><th class="l">#</th><th class="l">Club</th><th>Now</th><th>Expected</th><th class="l">Title</th><th class="l">Top 4</th><th class="l hm">Top 6</th><th class="l">Relegated</th></tr></thead><tbody>
     ${r.map((x, i) => `<tr class="click ${S.team === x.t ? "sel" : ""}" data-t="${esc(x.t)}"><td class="l mono" style="color:var(--muted)">${i + 1}</td><td class="l"><b>${esc(narrow() ? D.short[x.t] : x.t)}</b></td><td>${x.now}</td><td><b>${nf(x.exp, 0)}</b></td>${cell(x.title, "var(--gold)")}${cell(x.top4, "var(--home)")}<td class="hm" style="text-align:left"><span class="mono" style="display:inline-block;width:38px;text-align:right">${pc1(x.top6)}</span></td>${cell(x.rel, "var(--bad)")}</tr>`).join("")}</tbody></table></div>
-    <p class="note">This is a simple model. It uses home advantage and a Poisson spread of goals. It does not know about injuries or a change of manager. Pick an earlier gameweek above to see what the model said at the time.</p></div></section>`;
+    <p class="note">This is a simple model. It uses home advantage and a Poisson spread of goals. It does not know about injuries or a change of manager. Pick an earlier ${roundL} above to see what the model said at the time.</p></div></section>`;
 }
 /* ---------- win probability minute by minute (NFL-style) ---------- */
 // pre-match strength (Power model before the round) + score + time left; goals left ~ Poisson
@@ -606,7 +617,7 @@ const WPA = {}; for (const m of M) for (const e of wpCurve(m).ev) if (e.pid != n
 
 /* ---------- Preview: next round ---------- */
 const DAY = new Intl.DateTimeFormat("en-GB", { timeZone: C.display_timezone, month: "short", day: "numeric" });
-const formChips = (t) => teamMatches(t, S.gw).slice(-5).map(m => persp(m, t)).map(x => `<i class="fm ${x.p === 3 ? "w" : x.p === 1 ? "d" : "l"}" title="GW${x.gw} ${x.home ? "home" : "away"} vs ${esc(x.o)}: ${x.gf}–${x.ga}">${x.p === 3 ? "W" : x.p === 1 ? "D" : "L"}</i>`).join("");
+const formChips = (t) => teamMatches(t, S.gw).slice(-5).map(m => persp(m, t)).map(x => `<i class="fm ${x.p === 3 ? "w" : x.p === 1 ? "d" : "l"}" title="${ROUND_ABBR}${x.gw} ${x.home ? "home" : "away"} vs ${esc(x.o)}: ${x.gf}–${x.ga}">${x.p === 3 ? "W" : x.p === 1 ? "D" : "L"}</i>`).join("");
 function restLine(t, fid) {
   const r = restAround(t, fid); if (!r.prev && !r.next) return "";
   const b = r.before == null ? "first match of the season" : `<b class="${restCls(r.before)}">${restDays(r.before)}</b>${r.prev && r.prev.c !== "PL" ? ` (before that, ${COMP[r.prev.c] || r.prev.c}${r.prev.o ? " against " + esc(r.prev.o) : ""})` : ""}`;
@@ -658,9 +669,9 @@ function modelLog() {
   const N = rows.reduce((a, r) => a + r.n, 0), H = rows.reduce((a, r) => a + r.hit, 0), PA = rows.reduce((a, r) => a + r.pa * r.n, 0) / N;
   const mk = rows.filter(r => r.mn);
   return `<section class="sec"><div class="sechead"><h2>Model log</h2><span class="kicker">each round uses only the matches already played</span></div>
-    <div class="two eq"><div class="panel"><div class="tw"><table><thead><tr><th class="l">Gameweek</th><th>Matches</th><th>Favourite won</th><th>Chance of the actual result</th></tr></thead><tbody>
+    <div class="two eq"><div class="panel"><div class="tw"><table><thead><tr><th class="l">${esc(ROUND)}</th><th>Matches</th><th>Favourite won</th><th>Chance of the actual result</th></tr></thead><tbody>
     ${rows.map(r => `<tr><td class="l">${r.g}</td><td>${r.n}</td><td>${r.hit} / ${r.n}</td><td><b>${pc(r.pa)}</b></td></tr>`).join("")}<tr><td class="l"><b>Total</b></td><td>${N}</td><td><b>${H} / ${N}</b> (${pc(H / N)})</td><td><b>${pc(PA)}</b></td></tr></tbody></table></div>
-    <p class="note">Each gameweek uses only the matches played before it. "Chance of the actual result" is the probability the model gave to what happened, averaged across the matches. Higher is better. Guessing at random lands near 33%.</p></div>
+    <p class="note">Each ${roundL} uses only the matches played before it. "Chance of the actual result" is the probability the model gave to what happened, averaged across the matches. Higher is better. Guessing at random lands near 33%.</p></div>
     </div></section>`;
 }
 function mismatchSection(fx, R) {
@@ -675,7 +686,7 @@ function mismatchSection(fx, R) {
     if (Math.abs(r.pg) - Math.abs(r.tg) >= TH.mismatch_gap_places) return { cls: "under", tag: "Gap is wider", txt: `<b>${esc(pb)}</b> are ${qty(Math.abs(r.pg), "place", "places")} better on the chances. The table shows a gap of only ${qty(Math.abs(r.tg), "place", "places")}.` };
     return { cls: "", tag: "They agree", txt: "The table and the chances roughly agree." }; };
   const line = (lbl, x, y) => `<div class="mmr"><span>${lbl}</span><b class="${x < y ? "hb" : ""}">${x}.</b><i>–</i><b class="${y < x ? "ab" : ""}">${y}.</b></div>`;
-  return `<section class="sec"><div class="sechead"><h2>Where the table misleads</h2><span class="kicker">Gameweek ${S.gw + 1} · biggest gap first</span></div>
+  return `<section class="sec"><div class="sechead"><h2>Where the table misleads</h2><span class="kicker">${esc(ROUND)} ${S.gw + 1} · biggest gap first</span></div>
     <p class="note">For each match: where the two clubs sit in the real table, in the table their chances deserved, and on the Power list. The big number is how far those two views disagree, in places.${narrow() ? " Swipe sideways for the other matches." : ""}</p>
     <div class="mm">${rows.map((r, i) => { const v = verdict(r); return `<div class="mmc ${v.cls} ${i < 3 && r.mm >= TH.mismatch_gap_places ? "top" : ""}" style="animation-delay:${i * 30}ms">
       <div class="mmh"><b>${esc(r.h)} – ${esc(r.a)}</b><span class="mmv" title="gap in places">${r.mm}</span></div>
@@ -688,8 +699,8 @@ function viewElozetes() {
   const fx = FX.filter(f => f[0] === g).sort((a, b) => a[3].localeCompare(b[3]));
   const ts = fx.map(f => Date.parse(f[3]));
   return `<section class="sec">${previewInsights(fx, R)}</section>${mismatchSection(fx, R)}
-    <section class="sec"><div class="sechead"><h2>Gameweek ${g} preview</h2><span class="kicker">${esc(DAY.format(new Date(Math.min(...ts))))} – ${esc(DAY.format(new Date(Math.max(...ts))))}${S.gw < D.gw ? ` · as it looked after gameweek ${S.gw}` : ""}</span></div>
-    <p class="note">The bar is the model's chance of a home win, a draw and an away win. The numbers in the middle are expected goals. Form is the last five matches (W, D, L). Rest is the days since the club's previous match, including Europe. ${S.gw === D.gw ? "Absentees come from the official Fantasy Premier League injury list. The percentage is the chance of playing." : ""}${S.gw < D.gw ? " This gameweek has been played. The actual score is on the card." : ""}</p>
+    <section class="sec"><div class="sechead"><h2>${esc(ROUND)} ${g} preview</h2><span class="kicker">${esc(DAY.format(new Date(Math.min(...ts))))} – ${esc(DAY.format(new Date(Math.max(...ts))))}${S.gw < D.gw ? ` · as it looked after ${roundL} ${S.gw}` : ""}</span></div>
+    <p class="note">The bar is the model's chance of a home win, a draw and an away win. The numbers in the middle are expected goals. Form is the last five matches (W, D, L). Rest is the days since the club's previous match, including Europe. ${S.gw === D.gw ? (D.absence_note || "Absentees come from the official Fantasy Premier League injury list. The percentage is the chance of playing.") : ""}${S.gw < D.gw ? " This ${roundL} has been played. The actual score is on the card." : ""}</p>
     <div class="mgrid">${fx.map((f, k) => previewCard(f, R, k)).join("")}</div></section>${modelLog()}`;
 }
 
@@ -713,10 +724,10 @@ function viewPower() {
     return `<div class="prow ${S.team === t ? "sel" : ""}" data-t="${esc(t)}" style="animation-delay:${i * 20}ms"><span class="prk">${R.rank[t]}</span><span class="pmv ${mv > 0 ? "up" : mv < 0 ? "dn" : ""}">${mv > 0 ? "▲" + mv : mv < 0 ? "▼" + -mv : "–"}</span>
       <div class="pnm"><b>${esc(t)}</b><span>${esc(powerBlurb(t, R, tr, mv))}</span></div>
       <div class="pbr" aria-hidden="true"><i style="left:${v >= 0 ? 50 : 50 + v / mx * 50}%;width:${Math.abs(v) / mx * 50}%;background:${v >= 0 ? "var(--good)" : "var(--bad)"}"></i></div><b class="pval ${v >= 0 ? "pos" : "neg"}">${sg(v, 2)}</b></div>`; }).join("");
-  return `<section class="sec"><div class="sechead"><h2>Power rankings</h2><span class="kicker">After gameweek ${S.gw}</span></div>
-    <p class="note">Who is strongest right now, regardless of the table? The number is the goal difference a club would expect against an average opponent on a neutral pitch. It accounts for who the chances came against, and recent matches count for more. The starting point is a pre-season strength calculated from earlier league results, and that anchor fades as this season goes on. The arrow is the move since last gameweek. Click a club.</p>
+  return `<section class="sec"><div class="sechead"><h2>Power rankings</h2><span class="kicker">After ${roundL} ${S.gw}</span></div>
+    <p class="note">Who is strongest right now, regardless of the table? The number is the goal difference a club would expect against an average opponent on a neutral pitch. It accounts for who the chances came against, and recent matches count for more. The starting point is a pre-season strength calculated from earlier league results, and that anchor fades as this season goes on. The arrow is the move since last ${roundL}. Click a club.</p>
     <div class="panel plist">${rows}</div></section>
-    <section class="sec"><div class="two eq"><div class="panel"><h3 class="h3">Power place by gameweek</h3><p class="note">Highlighted: ${esc(S.team)}.</p>${bump(g => ratings(g).rank)}</div>
+    <section class="sec"><div class="two eq"><div class="panel"><h3 class="h3">Power place by ${roundL}</h3><p class="note">Highlighted: ${esc(S.team)}.</p>${bump(g => ratings(g).rank)}</div>
     <div class="panel"><h3 class="h3">Attack and defensive strength</h3><p class="note">Goals per match against an average side, adjusted for the opponent. Further right is a more dangerous attack. Higher up is a tighter defence.</p>${powerScatter(R)}</div></div></section>`;
 }
 function powerScatter(R) {
@@ -745,15 +756,15 @@ function viewMenetrend() {
   const TK = [[3, "Next 3"], [6, "Next 6"], [99, "Rest of the season"]];
   const cell = (c) => `<span class="tk" style="background:${heatRGB((c.xp - .7) / 1.4, .78)}" title="${esc(c.o)}, ${c.home ? "home" : "away"}: ${qty(nf(c.xp, 2), "expected point", "expected points")}"><b>${esc(short(c.o))}</b><small>${c.home ? "H" : "A"}</small></span>`;
   const tick = rounds.length ? `<div class="tw"><table class="sticky1 ticker"><thead><tr><th class="l">#</th><th class="l">Club</th>${all ? `<th>Matches</th><th>Expected points</th><th class="l">Points per match</th>` : rounds.map(g => `<th>${g}</th>`).join("") + `<th>Total</th>`}</tr></thead><tbody>
-    ${rows.map((r, i) => `<tr class="click ${S.team === r.t ? "sel" : ""}" data-t="${esc(r.t)}"><td class="l mono" style="color:var(--muted)">${i + 1}</td><td class="l"><b>${esc(nm(r.t))}</b></td>${all ? `<td>${r.n}</td><td><b>${nf(r.sum, 1)}</b></td><td class="l"><span class="mono">${nf(r.sum / Math.max(1, r.n), 2)}</span><span class="pbar" style="width:${Math.max(2, (r.sum / Math.max(1, r.n) - .8) * (narrow() ? 40 : 80))}px;background:${heatRGB((r.sum / Math.max(1, r.n) - 1) / .9)}"></span></td>` : r.cells.map(cs => `<td class="tkc">${cs.length ? cs.map(cell).join("") : `<span class="tk blank">–</span>`}</td>`).join("") + `<td><b>${nf(r.sum, 1)}</b></td>`}</tr>`).join("")}</tbody></table></div>` : `<p class="empty">No gameweeks left.</p>`;
+    ${rows.map((r, i) => `<tr class="click ${S.team === r.t ? "sel" : ""}" data-t="${esc(r.t)}"><td class="l mono" style="color:var(--muted)">${i + 1}</td><td class="l"><b>${esc(nm(r.t))}</b></td>${all ? `<td>${r.n}</td><td><b>${nf(r.sum, 1)}</b></td><td class="l"><span class="mono">${nf(r.sum / Math.max(1, r.n), 2)}</span><span class="pbar" style="width:${Math.max(2, (r.sum / Math.max(1, r.n) - .8) * (narrow() ? 40 : 80))}px;background:${heatRGB((r.sum / Math.max(1, r.n) - 1) / .9)}"></span></td>` : r.cells.map(cs => `<td class="tkc">${cs.length ? cs.map(cell).join("") : `<span class="tk blank">–</span>`}</td>`).join("") + `<td><b>${nf(r.sum, 1)}</b></td>`}</tr>`).join("")}</tbody></table></div>` : `<p class="empty">No ${roundP} left.</p>`;
   const fat = fatigue(S.gw).map(x => { const nx = FX.find(f => f[0] === S.gw + 1 && (f[1] === x.t || f[2] === x.t)); return { ...x, nxt: nx ? restAround(x.t, nx[5]) : null }; }).sort((a, b) => b.eu - a.eu || (a.avg || 9) - (b.avg || 9));
   return `<section class="sec"><div class="sechead"><h2>Schedule</h2><div class="seg" role="group" aria-label="time">${TK.map(([k, l]) => `<button data-tick="${k}" aria-pressed="${S.tick === k}">${l}</button>`).join("")}</div></div>
-    <p class="note">Each cell is the next match and the points the model expects from it: three times the win probability, plus the draw probability. Green is an easier game, red a harder one. H is home, A is away. The easiest run is at the top. The ratings are from after gameweek ${S.gw}.</p>
+    <p class="note">Each cell is the next match and the points the model expects from it: three times the win probability, plus the draw probability. Green is an easier game, red a harder one. H is home, A is away. The easiest run is at the top. The ratings are from after ${roundL} ${S.gw}.</p>
     <div class="panel">${tick}</div></section>
     <section class="sec"><div class="two eq"><div class="panel"><h3 class="h3">Difficulty, so far and still to come</h3><p class="note">Average Power of the opponents. Grey marks opponents already faced. Gold marks opponents still to come. Clubs whose run gets easier are at the top.</p>${sosChart()}</div>
     <div class="panel"><h3 class="h3">Rest and workload</h3><div class="tw"><table class="sticky1"><thead><tr><th class="l">#</th><th class="l">Club</th><th>Europe</th><th>Avg. rest, days</th><th>Under 4 days</th><th class="hm">xPts/match, short rest</th><th class="hm">xPts/match, otherwise</th><th>Before next</th></tr></thead><tbody>
     ${fat.map((x, i) => `<tr class="click ${S.team === x.t ? "sel" : ""}" data-t="${esc(x.t)}"><td class="l mono" style="color:var(--muted)">${i + 1}</td><td class="l"><b>${esc(nm(x.t))}</b></td><td>${x.eu || "–"}</td><td>${x.avg ? nf(x.avg, 1) : "–"}</td><td class="${x.ns ? "neg" : ""}">${x.ns || "–"}</td><td class="hm">${x.xs != null ? nf(x.xs, 2) : "–"}</td><td class="hm">${x.xn != null ? nf(x.xn, 2) : "–"}</td><td>${x.nxt && x.nxt.before != null ? `<span class="${restCls(x.nxt.before)}">${nf(x.nxt.before, 1)}</span>${x.nxt.next && x.nxt.next.c !== "PL" && x.nxt.after < TH.europe_soon_days ? ` <span class="tag rob" title="In ${dayCount(x.nxt.after)}">+${esc(x.nxt.next.c)}</span>` : ""}` : "–"}</td></tr>`).join("")}</tbody></table></div>
-    <p class="note">Europe is Champions League, Europa League and Conference League matches so far. "Under 4 days" is how many league matches were played on fewer than four days' rest. xPts per match is points deserved on short rest, and on a normal week. The last column is rest before the next league match. The tag means a European game follows within five days. The League Cup and the FA Cup are not included.</p></div></div></section>`;
+    <p class="note">Europe is Champions League, Europa League and Conference League matches so far. "Under 4 days" is how many league matches were played on fewer than four days' rest. xPts per match is points deserved on short rest, and on a normal week. The last column is rest before the next league match. The tag means a European game follows within five days. ${D.cup_clause ? esc(D.cup_clause) : "The League Cup and the FA Cup are not included."}</p></div></div></section>`;
 }
 function sosChart() {
   const pts = TEAMS.map(t => ({ t, a: oppPower(t, S.gw, false), b: oppPower(t, S.gw, true) })).filter(p => p.a != null && p.b != null).sort((x, y) => (x.b - x.a) - (y.b - y.a));
@@ -793,7 +804,10 @@ function teamMetrics(upto) {
 function rankHeat(rows, k, low) { const vals = rows.map(r => r[k]).filter(v => v != null); const out = {}; for (const r of rows) { const v = r[k]; if (v == null) continue; const better = vals.filter(x => low ? x < v : x > v).length; out[r.t || r.id] = vals.length > 1 ? 1 - better / (vals.length - 1) : .5; } return out; }
 function sortRows(rows, k, asc) { return rows.slice().sort((a, b) => { const x = a[k], y = b[k]; if (x == null && y == null) return 0; if (x == null) return 1; if (y == null) return -1; return asc ? x - y : y - x; }); }
 function viewMutatok() {
-  const rows = teamMetrics(S.gw), [, cols] = TG[S.tgrp];
+  const rows = teamMetrics(S.gw);
+  const groups = Object.entries(TG).filter(([, v]) => shownCols(v[1]).length);
+  if (!groups.some(([k]) => k === S.tgrp)) S.tgrp = groups[0][0];
+  const cols = shownCols(TG[S.tgrp][1]);
   const sk = S.tms && cols.some(c => c[0] === S.tms.k) ? S.tms : { k: cols[0][0], asc: !!cols[0][3] };
   const sorted = sortRows(rows, sk.k, sk.asc), heats = Object.fromEntries(cols.map(c => [c[0], rankHeat(rows, c[0], c[3])]));
   const best = (k, low) => sortRows(rows.filter(r => r[k] != null), k, !!low)[0];
@@ -804,11 +818,11 @@ function viewMutatok() {
     { c: "var(--gold)", h: "Control", t: `<b>${esc(ld.t)}</b> have led for ${nf(ld.lead, 0)}% of playing time, and trailed for only ${nf(ld.trail, 0)}%.` },
   ];
   return `<section class="sec"><div class="insights">${ins.map((o, i) => `<div class="ins" style="--c:${o.c};animation-delay:${i * 60}ms"><span class="n">${i + 1} · ${esc(o.h)}</span><p>${o.t}</p></div>`).join("")}</div></section>
-    <section class="sec"><div class="sechead"><h2>Clubs</h2><span class="kicker">After gameweek ${S.gw}</span></div>
-    <div class="seg" role="group" aria-label="show">${Object.entries(TG).map(([k, v]) => `<button data-tg="${k}" aria-pressed="${S.tgrp === k}">${v[0]}</button>`).join("")}</div>
+    <section class="sec"><div class="sechead"><h2>Clubs</h2><span class="kicker">After ${roundL} ${S.gw}</span></div>
+    <div class="seg" role="group" aria-label="show">${groups.map(([k, v]) => `<button data-tg="${k}" aria-pressed="${S.tgrp === k}">${v[0]}</button>`).join("")}</div>
     <div class="panel"><div class="tw"><table class="sticky1 wrapth" id="tm"><thead><tr><th class="l">#</th><th class="l">Club</th>${cols.map(([k, l]) => `<th data-tk="${k}" ${sk.k === k ? `aria-sort="${sk.asc ? "ascending" : "descending"}"` : ""}>${esc(l)}${sk.k === k ? (sk.asc ? " ▲" : " ▼") : ""}</th>`).join("")}</tr></thead><tbody>
     ${sorted.map((r, i) => `<tr class="click ${S.team === r.t ? "sel" : ""}" data-t="${esc(r.t)}"><td class="l mono" style="color:var(--muted)">${i + 1}</td><td class="l"><b>${esc(nm(r.t))}</b></td>${cols.map(([k, , dd]) => { const u = heats[k][r.t]; return `<td style="${u != null ? `background:${heatRGB(u, k === sk.k ? .32 : .14)}` : ""}">${r[k] == null ? "–" : ["pw", "luck", "xgd", "axgd", "npxgd", "fin", "keep", "sosA", "sosB", "cgL"].includes(k) ? sg(r[k], dd) : nf(r[k], dd)}</td>`; }).join("")}</tr>`).join("")}</tbody></table></div>
-    <p class="note">Click a column heading to sort, and click it again to reverse the order. Green is better in the league, red is worse. A big chance is at least 0.30 xG. npxG leaves penalties out. A ° marks an Opta season total, always from the latest file. Game state uses the minute of each goal. Points from comebacks: the win probability fell under 20% and the club still took something. Points spurned: the win probability was over 80% and the club did not win. A close match is a draw or a one-goal game. Those results are noisy, the same way close games are in the NFL, because they rarely repeat.</p></div></section>`;
+    <p class="note">Click a column heading to sort, and click it again to reverse the order. Green is better in the league, red is worse. A big chance is at least 0.30 xG. npxG leaves penalties out. ${D.hide_opta ? "" : "A ° marks an Opta season total, always from the latest file. "} Game state uses the minute of each goal. Points from comebacks: the win probability fell under 20% and the club still took something. Points spurned: the win probability was over 80% and the club did not win. A close match is a draw or a one-goal game. Those results are noisy, the same way close games are in the NFL, because they rarely repeat.</p></div></section>`;
 }
 
 /* ---------- Database: match finder ---------- */
@@ -825,7 +839,7 @@ function viewMeccsek() {
   list = list.slice().sort((a, b) => key(a) - key(b)); if (F.tag === "izg") list = list.slice(0, 10);
   const shown = list.slice(0, F.lim), G = list.reduce((a, m) => a + m.hs + m.as, 0), X = list.reduce((a, m) => a + m.xh + m.xa, 0);
   const row = (m) => { const v = verdict(m), C = wpCurve(m), tg = matchTagOf(m), open = S.open === m.id;
-    return `<div class="mrow ${open ? "open" : ""}" data-mo="${m.id}" role="button" tabindex="0" aria-expanded="${open}"><span class="mono note" style="white-space:nowrap">GW${m.gw} · ${esc(DAY.format(new Date(m.date)))}</span>
+    return `<div class="mrow ${open ? "open" : ""}" data-mo="${m.id}" role="button" tabindex="0" aria-expanded="${open}"><span class="mono note" style="white-space:nowrap">${ROUND_ABBR}${m.gw} · ${esc(DAY.format(new Date(m.date)))}</span>
       <span class="mt"><b class="${m.hs > m.as ? "w" : ""}">${esc(nm(m.h))}</b> <span class="msc">${m.hs}–${m.as}</span> <b class="${m.as > m.hs ? "w" : ""}">${esc(nm(m.a))}</b></span>
       <span class="mono mx">xG ${nf(m.xh, 1)}–${nf(m.xa, 1)}</span><span class="tags"><span class="tag ${v.cls}">${v.tag}</span>${tg.ford ? `<span class="tag cb">Comeback</span>` : ""}</span><span class="mono note me" title="Excitement index">⚡${nf(C.excite, 1)}</span></div>
       ${open ? `<div class="mopen">${matchCard(m, 0)}</div>` : ""}`; };
@@ -833,11 +847,11 @@ function viewMeccsek() {
     <div class="seg" role="group" aria-label="match">${MTAGS.map(([k, l]) => `<button data-mft="${k}" aria-pressed="${F.tag === k}">${l}</button>`).join("")}</div>
     <div class="row"><select class="sel" data-mf="team" aria-label="Club"><option value="">Every club</option>${TEAMS.map(t => `<option ${t === F.team ? "selected" : ""}>${esc(t)}</option>`).join("")}</select>
       <select class="sel" data-mf="venue" aria-label="Venue" ${F.team ? "" : "disabled"}><option value="">Home and away</option><option value="home" ${F.venue === "home" ? "selected" : ""}>Home only</option><option value="away" ${F.venue === "away" ? "selected" : ""}>Away only</option></select>
-      <select class="sel" data-mf="from" aria-label="From gameweek">${Array.from({ length: S.gw }, (_, i) => i + 1).map(g => `<option value="${g}" ${g === F.from ? "selected" : ""}>From gameweek ${g}</option>`).join("")}</select>
+      <select class="sel" data-mf="from" aria-label="From ${roundL}">${Array.from({ length: S.gw }, (_, i) => i + 1).map(g => `<option value="${g}" ${g === F.from ? "selected" : ""}>From ${roundL} ${g}</option>`).join("")}</select>
       <select class="sel" data-mf="sort" aria-label="Sort">${MSORT.map(([k, l]) => `<option value="${k}" ${k === F.sort ? "selected" : ""}>Sort: ${l}</option>`).join("")}</select>
       <button class="chip" id="mf-reset">Clear filters</button></div>
     <div class="panel mlist">${shown.length ? shown.map(row).join("") : `<p class="empty">No matches of this kind.</p>`}</div>
-    <div class="row" style="justify-content:space-between"><span class="note">Click a match for the xG chart, the win-probability chart and every shot. The gameweek buttons at the top set the latest round included (now gameweek ${S.gw}).</span>${list.length > F.lim ? `<button class="chip" id="mf-more">Show 20 more</button>` : ""}</div>
+    <div class="row" style="justify-content:space-between"><span class="note">Click a match for the xG chart, the win-probability chart and every shot. The ${roundL} buttons at the top set the latest round included (now ${roundL} ${S.gw}).</span>${list.length > F.lim ? `<button class="chip" id="mf-more">Show 20 more</button>` : ""}</div>
     <p class="note">A robbery is a win the shots rated below 30%. A blown win is a draw in which one club was above 55% to win. Control is a deserved win with a clear xG gap. A comeback is a win in which the winner had been behind and their win probability had fallen below 25%. The lightning bolt is the excitement index: how far the win probabilities swung.</p></section>`;
 }
 
@@ -865,7 +879,7 @@ function viewLovesek() {
       <select class="sel" data-sf="opp" aria-label="Opponent"><option value="">Opponent: any</option>${TEAMS.map(t => `<option ${t === F.opp ? "selected" : ""}>${esc(t)}</option>`).join("")}</select>
       <select class="sel" data-sf="xmin" aria-label="Minimum xG">${[[0, "Any chance"], [0.1, "Good chance (0.10+ xG)"], [0.3, "Big chance (0.30+ xG)"], [0.5, "Huge chance (0.50+ xG)"]].map(([v, l]) => `<option value="${v}" ${+F.xmin === v ? "selected" : ""}>${l}</option>`).join("")}</select>
       <select class="sel" data-sf="min" aria-label="Minute">${MINS.map(([a, b, l]) => `<option value="${a}-${b}" ${F.mfrom === a && F.mto === b ? "selected" : ""}>${l}</option>`).join("")}</select>
-      <select class="sel" data-sf="from" aria-label="From gameweek">${Array.from({ length: S.gw }, (_, i) => i + 1).map(gg => `<option value="${gg}" ${gg === F.from ? "selected" : ""}>From gameweek ${gg}</option>`).join("")}</select>
+      <select class="sel" data-sf="from" aria-label="From ${roundL}">${Array.from({ length: S.gw }, (_, i) => i + 1).map(gg => `<option value="${gg}" ${gg === F.from ? "selected" : ""}>From ${roundL} ${gg}</option>`).join("")}</select>
       <button class="chip" id="sf-reset">Clear filters</button></div>
     <div class="fgrid"><span class="kicker">Outcome</span>${chips("res", SRES)}<span class="kicker">Situation</span>${chips("sit", SITS.map(x => [x, SIT_LABEL[x] || x]))}<span class="kicker">Body part</span>${chips("body", BODY)}<span class="kicker">Zone</span>${chips("zone", ZONES)}</div>
     <div class="two wide"><div class="panel"><div class="kv six"><div><b>${list.length}</b><span>${list.length === 1 ? "shot" : "shots"}</span></div><div><b>${g}</b><span>${g === 1 ? "goal" : "goals"}</span></div><div><b>${nf(x, 1)}</b><span>xG</span></div><div><b class="${g - x >= 0 ? "pos" : "neg"}">${sg(g - x, 1)}</b><span>goals − xG</span></div><div><b>${list.length ? pc(g / list.length) : "–"}</b><span>conversion</span></div><div><b>${list.length ? nf(dist, 1) : "–"}</b><span>avg. distance, m</span></div></div>
@@ -873,7 +887,7 @@ function viewLovesek() {
       <p class="note">${list.length ? `On target: ${pc(on / list.length)}. Average chance: ${nf(x / list.length, 2)} xG. ` : ""}Gold is a goal. Filled is a save or a post. Empty is off target or blocked. Size is the chance of a goal.</p></div>
       <div class="panel"><p class="kicker">Most xG in this filter</p>${tops.length ? tops.map((o, i) => `<button class="tl" data-sq="${esc(o.n)}"><span class="mono" style="color:var(--muted)">${i + 1}</span><span class="tn">${esc(o.n)} <small>${esc(short(o.t))} · ${qty(o.sh, "shot", "shots")}</small></span><b>${o.g} / ${nf(o.x, 1)}</b></button>`).join("") : `<p class="empty">No shots match.</p>`}
       <p class="note">Goals / xG. Click a name to filter to that player.</p></div></div>
-    <div class="panel"><p class="kicker">The biggest chances in this filter</p><div class="tw"><table><thead><tr><th class="l">GW</th><th class="l">Min</th><th class="l">Player</th><th class="l">Opponent</th><th class="l hm">Situation</th><th class="l hm">Body part</th><th>xG</th><th class="l">Outcome</th></tr></thead><tbody>
+    <div class="panel"><p class="kicker">The biggest chances in this filter</p><div class="tw"><table><thead><tr><th class="l">${esc(ROUND_ABBR)}</th><th class="l">Min</th><th class="l">Player</th><th class="l">Opponent</th><th class="l hm">Situation</th><th class="l hm">Body part</th><th>xG</th><th class="l">Outcome</th></tr></thead><tbody>
     ${shown.map(s => `<tr><td class="l mono" style="color:var(--muted)">${s[I.gw]}</td><td class="l mono">${s[I.min]}'</td><td class="l"><b>${esc(s[I.pl])}</b> <span class="note">${esc(short(s[I.team]))}</span></td><td class="l">${esc(nm(s[I.opp]))}</td><td class="l hm">${esc(s[I.sit])}</td><td class="l hm">${esc((BODY.find(b => b[0] === s[I.typ]) || [0, s[I.typ]])[1])}</td><td><b>${nf(s[I.xg], 2)}</b></td><td class="l ${s[I.res] === "G" ? "pos" : ""}">${RESN[s[I.res]]}</td></tr>`).join("")}</tbody></table></div>
     ${list.length > F.lim ? `<button class="chip" id="sf-more" style="align-self:flex-start">Show 30 more</button>` : ""}</div></section>`;
 }
@@ -904,11 +918,11 @@ function pv(p, k) {
 const POS = [["", "All"], ["GKP", "Goalkeeper"], ["DEF", "Defender"], ["MID", "Midfielder"], ["FWD", "Forward"]];
 const TOPS = [["Goals", "g"], ["Assists", "a"], ["Points added by goals", "padd"], ["Win probability added", "wpa"], ["xG", "xg"], ["Chances created", "cc"], ["Defensive contribution", "dc"], ["Goals prevented", "gpv"], ["FPL points", "pts"]];
 function topCards() {
-  return `<div class="tops">${TOPS.map(([l, key]) => { const list = PL.map(p => ({ p, v: pv(p, key) })).filter(x => x.v != null && x.v > 0).sort((a, b) => b.v - a.v || a.p.min - b.p.min).slice(0, 5);
+  return `<div class="tops">${TOPS.filter(([, key]) => !HIDE_TOP.has(key) && colFilled(key)).map(([l, key]) => { const list = PL.map(p => ({ p, v: pv(p, key) })).filter(x => x.v != null && x.v > 0).sort((a, b) => b.v - a.v || a.p.min - b.p.min).slice(0, 5);
     return `<div class="topc"><span class="kicker">${esc(l)}</span>${list.map((x, i) => `<button class="tl" data-p="${x.p.id}"><span class="mono" style="color:var(--muted)">${i + 1}</span><span class="tn">${esc(x.p.n)} <small>${esc(short(x.p.t))}</small></span><b>${nf(x.v, Number.isInteger(x.v) ? 0 : 1)}</b></button>`).join("")}</div>`; }).join("")}</div>`;
 }
 function viewJatekos() {
-  const [, cols] = PG[S.grp], cnt = Object.fromEntries(cols.map(c => [c[0], c[3]]));
+  const [, rawCols] = PG[S.grp], kept = rawCols.filter(c => colFilled(c[0])), cols = kept.length ? kept : rawCols, cnt = Object.fromEntries(cols.map(c => [c[0], c[3]]));
   const pos = S.grp === "concedes" ? "GKP" : S.ppos, q = fold(S.q);
   const val = (p, k, d) => { let v = pv(p, k); if (v != null && S.p90 && cnt[k] && p.min > 0) v = v / p.min * 90; return v; };
   const sk = S.psort && cols.some(c => c[0] === S.psort.k) ? S.psort : { k: cols[0][0], asc: !!cols[0][4] };
@@ -920,7 +934,7 @@ function viewJatekos() {
   const sel = PL.find(p => p.id === S.psel) || (shown[0] && shown[0].p), cmp = PL.find(p => p.id === S.pcmp);
   return `<section class="sec"><div class="sechead"><h2>Leaderboards</h2><span class="kicker">season so far · updated ${esc((D.exported || "").slice(0, 10))}</span></div>${topCards()}</section>
     <section class="sec"><div class="sechead"><h2>Players</h2></div>
-    <div class="seg" role="group" aria-label="show">${Object.entries(PG).map(([k, v]) => `<button data-pg="${k}" aria-pressed="${S.grp === k}">${v[0]}</button>`).join("")}</div>
+    <div class="seg" role="group" aria-label="show">${Object.entries(PG).filter(([k]) => !HIDE.has(k)).map(([k, v]) => `<button data-pg="${k}" aria-pressed="${S.grp === k}">${v[0]}</button>`).join("")}</div>
     <div class="row">${S.grp === "concedes" ? "" : `<div class="seg" role="group" aria-label="Position">${POS.map(([k, l]) => `<button data-pos="${k}" aria-pressed="${S.ppos === k}">${l}</button>`).join("")}</div>`}
       <select class="sel" id="pteam" aria-label="Club"><option value="">Every club</option>${TEAMS.map(t => `<option ${t === S.pteam ? "selected" : ""}>${esc(t)}</option>`).join("")}</select>
       <select class="sel" id="pmin" aria-label="Minutes">${[0, 90, 270, 450, 630].map(v => `<option value="${v}" ${v === S.pmin ? "selected" : ""}>${v ? v + "+ minutes" : "Any minutes"}</option>`).join("")}</select>
@@ -928,14 +942,14 @@ function viewJatekos() {
     <div class="panel"><div class="tw"><table class="sticky1 wrapth" id="pt"><thead><tr><th class="l">#</th><th class="l">Player</th><th class="hm">Min</th>${cols.map(([k, l]) => `<th data-pk="${k}" ${sk.k === k ? `aria-sort="${sk.asc ? "ascending" : "descending"}"` : ""}>${esc(l)}${sk.k === k ? (sk.asc ? " ▲" : " ▼") : ""}</th>`).join("")}</tr></thead><tbody>
     ${shown.length ? shown.map((r, i) => `<tr class="click ${sel && r.id === sel.id ? "sel" : ""}" data-p="${r.id}"><td class="l mono" style="color:var(--muted)">${i + 1}</td><td class="l pn"><b>${esc(r.p.n)}</b><span class="note">${esc(short(r.p.t))} · ${r.p.pos}</span></td><td class="hm">${r.p.min}</td>${cols.map(([k, , d]) => `<td style="${k === sk.k && heat[r.id] != null ? `background:${heatRGB(heat[r.id], .3)}` : ""}">${k === sk.k ? `<b>${fmt(r, k, d)}</b>` : fmt(r, k, d)}</td>`).join("")}</tr>`).join("") : `<tr><td colspan="${cols.length + 3}" class="l empty">No players match.</td></tr>`}</tbody></table></div>
     <div class="row" style="justify-content:space-between"><span class="note">${qty(sorted.length, "player", "players")} · ${S.p90 ? "scaled to 90 minutes" : "season totals"}${S.grp === "concedes" ? " · goalkeepers only" : ""}</span>${sorted.length > S.plim ? `<button class="chip" id="pmore">Show 25 more</button>` : ""}</div>
-    <p class="note">Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth. Without them, the club would have had fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt.</p></div></section>
+    <p class="note">${D.player_note || "Click a column heading to sort, and a row for the player's profile. Win probability added is how many expected points the player's goals were worth to the club at that moment, in the style of NFL win-probability added. Points added by goals is how many league points those goals were worth. Without them, the club would have had fewer. A winning goal is the one that put the club ahead for good. A solo goal has no assist and is not a penalty. Defensive contribution is the official Fantasy Premier League measure of tackles, blocks, clearances and recoveries. Sources: Fantasy Premier League, Opta, Understat, Transfermarkt."}</p></div></section>
     ${sel ? playerProfile(sel, cmp) : ""}`;
 }
 function playerProfile(sel, cmp) {
   const psh = (pl) => pl ? SH.filter(s => s[I.pid] === pl.id) : [];
   const ps = percentiles(sel), pc2 = cmp ? percentiles(cmp) : null;
   const peers = PL.filter(q => q.pos === sel.pos && q.min >= TH.min_minutes_default && q.id !== sel.id).sort((a, b) => a.n.localeCompare(b.n));
-  const facts = [[sel.g, sel.g === 1 ? "goal" : "goals"], [sel.a, sel.a === 1 ? "assist" : "assists"], [nf(sel.xg, 1), "xG"], [nf(sel.xa, 1), "xA"], [sel.padd, sel.padd === 1 ? "point added by goals" : "points added by goals"], [sel.pts, sel.pts === 1 ? "FPL point" : "FPL points"]];
+  const facts = [[sel.g, sel.g === 1 ? "goal" : "goals"], [sel.a, sel.a === 1 ? "assist" : "assists"], [nf(sel.xg, 1), "xG"], [nf(sel.xa, 1), "xA"], [sel.padd, sel.padd === 1 ? "point added by goals" : "points added by goals"], [sel.pts, sel.pts === 1 ? "FPL point" : "FPL points"]].filter(([v]) => v != null && !Number.isNaN(+v));
   return `<section class="sec" id="profile"><div class="panel"><div class="row" style="justify-content:space-between;align-items:flex-end"><div><p class="kicker">${esc(sel.t)} · ${sel.pos} · ${sel.min} minutes${sel.age ? ` · ${sel.age} years old` : ""}</p><h3 style="font-family:var(--f-display);font-size:34px;text-transform:uppercase;line-height:1">${esc(sel.n)}</h3>${sel.news ? `<p class="note neg">${esc(sel.news)}</p>` : ""}</div>${sel.mv ? `<span class="mono" style="color:var(--muted)">${nf(sel.mv / 1e6, 0)} M€ · £${nf(sel.price, 1)}m</span>` : ""}</div>
     <div class="kv six">${facts.map(([v, l]) => `<div><b>${v}</b><span>${l}</span></div>`).join("")}</div>
     <div class="two eq"><div style="display:flex;flex-direction:column;gap:8px"><div class="row"><span class="note">Compare with</span><select class="sel" id="pcmp" aria-label="Compare with another player"><option value="">Choose a player…</option>${peers.map(q => `<option value="${q.id}" ${cmp && cmp.id === q.id ? "selected" : ""}>${esc(q.n)} (${esc(short(q.t))})</option>`).join("")}</select></div>
@@ -962,7 +976,7 @@ function trendSentences(t, r) {
   { const rk = rankIn(TM, "won", t); if (me.won > 0) add(rk, n, `They have rescued ${qty(me.won, "point", "points")} from losing positions${rk <= 3 ? `, ${rk === 1 ? "the most in the league" : `the ${ord(rk)} most in the league`}. They keep coming back` : ` (${ord(rk)} most)`}.`); }
   { const rk = rankIn(TM, "lead", t); add(rk, n, rk <= 3 ? `They have led for ${nf(me.lead, 0)}% of playing time, ${howHigh(rk, "most")}.` : rk >= n - 2 ? `They have led for only ${nf(me.lead, 0)}% of playing time, ${howLow(rk, "least")}.` : `They have led for ${nf(me.lead, 0)}% of playing time (${ord(rk)} in the league).`); }
   { const rk = rankIn(TM, "xgs", t); add(rk, n, rk <= 3 ? `They pick their shots: ${nf(me.xgs, 2)} xG per shot, ${howHigh(rk, "best chance quality")}.` : rk >= n - 2 ? `A lot of poor chances: only ${nf(me.xgs, 2)} xG per shot, ${howLow(rk, "lowest chance quality")}.` : `Shots average ${nf(me.xgs, 2)} xG (${ord(rk)} in the league).`); }
-  { const rk = rankIn(TM, "ppda", t, true), ht = rankIn(TM, "hto", t); if (rk) add(rk, n, rk <= 3 && ht >= 12 ? `The press is ${howHigh(rk, "most aggressive")} by PPDA, but only ${ord(ht)} for winning the ball high. It is not paying off.` : rk <= 3 ? `The press is ${howHigh(rk, "most aggressive")} by PPDA, and they rank ${ord(ht)} for winning the ball high.` : rk >= n - 2 ? `The press is ${howLow(rk, "most passive")}: they sit off and wait.` : `The press sits in the middle of the league (PPDA ${ord(rk)}).`); }
+  { const rk = rankIn(TM, "ppda", t, true), ht = rankIn(TM, "hto", t); if (rk) add(rk, n, rk <= 3 && ht != null && ht >= 12 ? `The press is ${howHigh(rk, "most aggressive")} by PPDA, but only ${ord(ht)} for winning the ball high. It is not paying off.` : rk <= 3 && ht != null ? `The press is ${howHigh(rk, "most aggressive")} by PPDA, and they rank ${ord(ht)} for winning the ball high.` : rk <= 3 ? `The press is ${howHigh(rk, "most aggressive")} by PPDA.` : rk >= n - 2 ? `The press is ${howLow(rk, "most passive")}: they sit off and wait.` : `The press sits in the middle of the league (PPDA ${ord(rk)}).`); }
   { const nx = TEAMS.map(z => { const fx = FX.filter(f => f[0] > S.gw && (f[1] === z || f[2] === z)).slice(0, 5); return { t: z, v: fx.reduce((a, f) => a + predFor(z, f[1] === z ? f[2] : f[1], f[1] === z, R).xp, 0) }; });
     const rk = nx.slice().sort((a, b) => b.v - a.v).findIndex(z => z.t === t) + 1; if (nx.find(z => z.t === t).v > 0) add(rk, n, rk <= 3 ? `The next five matches are ${howHigh(rk, "easiest run")}. Points are there to be taken.` : rk >= n - 2 ? `The next five matches are ${howLow(rk, "hardest run")}.` : `The next five matches are about average for difficulty (${ord(rk)} easiest).`); }
   { const rk = rankIn(TM, "sosA", t, true); add(rk, n, rk >= n - 2 ? `They have had ${howLow(rk, "hardest run")} so far. That belongs in any reading of the points.` : rk <= 3 ? `They have had ${howHigh(rk, "easiest run")} so far, which flatters the points.` : `The run so far has been about average (${ord(rk)} easiest).`); }
@@ -983,7 +997,7 @@ function gameStateViz(t) {
   const px = (v) => L + Math.min(v, mx) / mx * (W - L - Rr), COL = { 1: "var(--good)", 0: "#3a4266", "-1": "var(--bad)" };
   let g = `<text x="${px(0)}" y="10">0'</text><text x="${px(45)}" y="10" text-anchor="middle">45'</text><text x="${px(90)}" y="10" text-anchor="middle">90'</text>`;
   ms.forEach((m, i) => { const z = persp(m, t), { seg, goals } = stateSegs(m, t), y = T + i * rh;
-    g += `<text x="${L - 8}" y="${y + 12}" text-anchor="end" style="font-size:10px;fill:var(--ink)">GW${m.gw} ${esc(nw ? short(z.o) : z.o)} ${z.home ? "(H)" : "(A)"} <tspan style="font-weight:700;fill:${z.p === 3 ? "var(--good)" : z.p === 1 ? "var(--muted)" : "var(--bad)"}">${z.gf}–${z.ga}</tspan></text>`;
+    g += `<text x="${L - 8}" y="${y + 12}" text-anchor="end" style="font-size:10px;fill:var(--ink)">${ROUND_ABBR}${m.gw} ${esc(nw ? short(z.o) : z.o)} ${z.home ? "(H)" : "(A)"} <tspan style="font-weight:700;fill:${z.p === 3 ? "var(--good)" : z.p === 1 ? "var(--muted)" : "var(--bad)"}">${z.gf}–${z.ga}</tspan></text>`;
     for (const [a, b, st] of seg) g += `<rect x="${px(a).toFixed(1)}" y="${y + 3}" width="${Math.max(0, px(b) - px(a)).toFixed(1)}" height="12" fill="${COL[st]}" opacity="${st === 0 ? 1 : .8}"><title>${a}–${b}': ${st > 0 ? "leading" : st < 0 ? "trailing" : "level"}</title></rect>`;
     for (const [we, mine] of goals) g += `<circle cx="${px(we).toFixed(1)}" cy="${y + 9}" r="3.4" fill="${mine ? "var(--gold)" : "var(--bg)"}" stroke="${mine ? "var(--bg)" : "var(--ink)"}" stroke-width="1.2"><title>${we}': ${mine ? "goal scored" : "goal conceded"}</title></circle>`; });
   g += `<line x1="${px(45)}" x2="${px(45)}" y1="${T}" y2="${H - 14}" stroke="#0a0d18" stroke-width="1.5" opacity=".7"/>`;
@@ -997,7 +1011,7 @@ function gameStateViz(t) {
 function nextFive(t) {
   const R = ratings(S.gw), fx = FX.filter(f => f[0] > S.gw && (f[1] === t || f[2] === t)).slice(0, 5); if (!fx.length) return "";
   return `<div class="panel"><p class="kicker">Next matches · expected points from the model</p><div class="nf">${fx.map(f => { const home = f[1] === t, o = home ? f[2] : f[1], { p, xp } = predFor(t, o, home, R), r = restAround(t, f[5]);
-    return `<div class="nfc" style="border-color:${heatRGB((xp - .7) / 1.4, .8)}"><span class="kicker">GW${f[0]} · ${esc(DAY.format(new Date(f[3])))}</span><b>${esc(nm(o))}</b><span class="note">${home ? "Home" : "Away"} · ${pc(home ? p.pw : p.pl)} win</span><span class="mono" style="font-size:12px">${qty(nf(xp, 2), "point", "points")}${r.before != null && r.before < TH.short_rest_days ? ` · <span class="${restCls(r.before)}">${restDays(r.before)}</span>` : ""}</span></div>`; }).join("")}</div></div>`;
+    return `<div class="nfc" style="border-color:${heatRGB((xp - .7) / 1.4, .8)}"><span class="kicker">${ROUND_ABBR}${f[0]} · ${esc(DAY.format(new Date(f[3])))}</span><b>${esc(nm(o))}</b><span class="note">${home ? "Home" : "Away"} · ${pc(home ? p.pw : p.pl)} win</span><span class="mono" style="font-size:12px">${qty(nf(xp, 2), "point", "points")}${r.before != null && r.before < TH.short_rest_days ? ` · <span class="${restCls(r.before)}">${restDays(r.before)}</span>` : ""}</span></div>`; }).join("")}</div></div>`;
 }
 function viewCsapat() {
   const rows = table(S.gw); const r = rows.find(x => x.t === S.team) || rows[0];
@@ -1017,37 +1031,44 @@ function viewCsapat() {
     ${nextFive(r.t)}
     <div class="xray"><div class="panel"><p class="kicker">Shots for · ${qty(forS.length, "shot", "shots")}</p>${halfPitch(forS, "var(--home)", "Shots for")}<p class="note">${qty(g(forS), "goal", "goals")} from ${nf(x(forS), 1)} xG: ${forNote}</p></div>
     <div class="panel"><p class="kicker">Shots faced · ${qty(agS.length, "shot", "shots")}</p>${halfPitch(agS, "var(--away)", "Shots faced")}<p class="note">${qty(g(agS), "goal", "goals")} conceded from ${nf(x(agS), 1)} xG: ${agNote}</p></div>
-    <div class="panel"><p class="kicker">Profile · Opta, this season</p><div class="kv">${OPK.map(([k, l, d, u, low]) => { const rk = orank(k, o[k], low); return `<div><b>${nf(o[k], d)}${u && o[k] != null ? `<small style="font-size:13px"> ${u}</small>` : ""}</b><span>${l}</span>${rk ? `<i>${ord(rk)} in the league</i>` : ""}</div>`; }).join("")}</div></div></div>
+    <div class="panel"><p class="kicker">${esc(D.profile_title || "Profile · Opta, this season")}</p><div class="kv">${(D.hide_empty_profile ? OPK.filter(([k]) => o[k] != null) : OPK).map(([k, l, d, u, low]) => { const rk = orank(k, o[k], low); return `<div><b>${nf(o[k], d)}${u && o[k] != null ? `<small style="font-size:13px"> ${u}</small>` : ""}</b><span>${l}</span>${rk ? `<i>${ord(rk)} in the league</i>` : ""}</div>`; }).join("") || `<p class="note">${esc(D.omitted_note || "Those club-style counts are not in this feed.")}</p>`}</div></div></div>
     <div class="two wide"><div class="panel"><p class="kicker">Form: xG created and conceded, three-match average</p>${rolling(r.t)}<div class="lgd"><span><i style="background:var(--home)"></i>created</span><span><i style="background:var(--away)"></i>conceded</span><span><i style="background:var(--good)"></i>win</span><span><i style="background:#6b7394"></i>draw</span><span><i style="background:var(--bad)"></i>loss</span></div></div>
     <div class="panel"><p class="kicker">Where the chances come from</p>${bars(sf, "var(--home)")}<p class="kicker" style="margin-top:8px">Where the chances they concede come from</p>${bars(sa, "var(--away)")}
       <p class="kicker" style="margin-top:8px">Home and away</p><div class="kv"><div><b>${home.pts} / ${nf(home.xpts, 1)}</b><span>home points / deserved (${qty(home.P, "match", "matches")})</span></div><div><b>${away.pts} / ${nf(away.xpts, 1)}</b><span>away points / deserved (${qty(away.P, "match", "matches")})</span></div></div></div></div>
     ${cleanMatches(r.t)}${gameStateViz(r.t)}</section>`;
 }
-const STRIP = [["xG/90", (p) => p.xg / p.min * 90, 2], ["xA/90", (p) => p.xa / p.min * 90, 2], ["Goals − xG", (p) => p.g - p.xg, 2], ["Chances/90", (p) => (p.cc || 0) / p.min * 90, 2], ["Progressive carries/90", (p) => (p.pc || 0) / p.min * 90, 2], ["Through balls/90", (p) => (p.tb || 0) / p.min * 90, 2], ["Recoveries/90", (p) => (p.rec || 0) / p.min * 90, 2], ["Tackles/90", (p) => (p.tck || 0) / p.min * 90, 2]];
+const STRIP = [["xG/90", (p) => p.min ? p.xg / p.min * 90 : null, 2], ["xA/90", (p) => p.min ? p.xa / p.min * 90 : null, 2], ["Goals − xG", (p) => p.g == null || p.xg == null ? null : p.g - p.xg, 2], ["Chances/90", (p) => p.min && p.cc != null ? p.cc / p.min * 90 : null, 2], ["Progressive carries/90", (p) => p.min && p.pc != null ? p.pc / p.min * 90 : null, 2], ["Through balls/90", (p) => p.min && p.tb != null ? p.tb / p.min * 90 : null, 2], ["Recoveries/90", (p) => p.min && p.rec != null ? p.rec / p.min * 90 : null, 2], ["Tackles/90", (p) => p.min && p.tck != null ? p.tck / p.min * 90 : null, 2]];
 function percentiles(p) {
   const peers = PL.filter(q => q.pos === p.pos && q.min >= TH.min_minutes_default);
-  return STRIP.map(([l, f, d]) => { const vals = peers.map(f).sort((a, b) => a - b); const v = f(p); const pr = vals.length > 1 ? vals.filter(z => z < v).length / (vals.length - 1) : .5; return { l, v, d, pr: Math.max(0, Math.min(1, pr)) }; });
+  return STRIP.map(([l, f, d]) => {
+    const vals = peers.map(f).filter(z => z != null && !Number.isNaN(+z)).sort((a, b) => a - b);
+    const v = f(p);
+    if (v == null || Number.isNaN(+v) || !vals.length) return { l, v: null, d, pr: 0 };
+    const pr = vals.length > 1 ? vals.filter(z => z < v).length / (vals.length - 1) : .5;
+    return { l, v, d, pr: Math.max(0, Math.min(1, pr)) };
+  }).filter((_, i) => !D.hide_empty_cols || PL.some(q => { const v = STRIP[i][1](q); return v != null && !Number.isNaN(+v); }));
 }
 function method() {
   const runs = C.simulation.runs.toLocaleString("en-GB");
   return `<section class="sec"><details class="panel"><summary class="kicker" style="cursor:pointer">How this is calculated</summary><div class="note" style="max-width:86ch;display:flex;flex-direction:column;gap:8px;margin-top:10px">
     <p><b style="color:var(--ink)">xG</b> is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.</p>
     <p><b style="color:var(--ink)">The chance bar and points deserved.</b> From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below ${Math.round(TH.robbery_win_probability * 100)}%.</p>
-    <p><b style="color:var(--ink)">Power and the forecast.</b> Each club has an attack rating and a defence rating, fit to chances created and conceded (${Math.round(RTG.xg_blend * 100)}% xG, ${Math.round((1 - RTG.xg_blend) * 100)}% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from earlier Premier League and Championship results, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played ${runs} times.</p>
+    <p><b style="color:var(--ink)">Power and the forecast.</b> Each club has an attack rating and a defence rating, fit to chances created and conceded (${Math.round(RTG.xg_blend * 100)}% xG, ${Math.round((1 - RTG.xg_blend) * 100)}% actual goals), adjusted for the opponent and for home advantage. Recent matches count for more. Early in the season the ratings lean on a pre-season strength we calculate from ${esc(D.history_phrase || "earlier Premier League and Championship results")}, and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played ${runs} times.</p>
     <p><b style="color:var(--ink)">Adjusted xG</b> divides a match's xG by what an average side would create against that opponent, at that ground. Opponent strength and home advantage come from this season's xG only. Early on, those ratings are pulled gently towards the pre-season figure so one match cannot swing them.</p>
     <p><b style="color:var(--ink)">True strength</b> turns adjusted xG into the points that performance would be worth against an average opponent on a neutral pitch. Schedule and venue are the gap between that and the same sum from raw xG. Finishing and goalkeeping turn the gap between goals and xG into points. Whatever is left is other luck, so the pieces add up to the real points total.</p>
     <p><b style="color:var(--ink)">Win probability, minute by minute,</b> starts from the strength model before the round, then updates it for the score and the time left. Goals still to come follow a Poisson distribution. It does not see red cards or substitutions. The excitement index adds up how much the home and away win chances move.</p>
-    <p><b style="color:var(--ink)">Schedule and rest.</b> The difficulty of a future match is the points the model expects from it. Rest is the time since a club's previous competitive match, including Champions League, Europa League and Conference League games loaded automatically. Domestic cups are not included, so a League Cup or FA Cup week can look quieter than it was. ${esc(D.europe_note || "")}</p>
+    <p><b style="color:var(--ink)">Schedule and rest.</b> The difficulty of a future match is the points the model expects from it. Rest is the time since a club's previous competitive match, including Champions League, Europa League and Conference League games loaded automatically. ${D.cup_clause ? esc(D.cup_clause) : "Domestic cups are not included, so a League Cup or FA Cup week can look quieter than it was."} ${esc(D.europe_note || "")}</p>
     <p><b style="color:var(--ink)">Game state</b> is read from the goal times: how long a side led or trailed, points dropped from a winning position, points rescued from a losing one.</p>
-    <p><b style="color:var(--ink)">Opta numbers.</b> PPDA is how many passes the opponent is allowed before a defensive action (lower means a more aggressive press). High turnovers are balls won within 40 metres of the opponent's goal. There are also directness and build-up counts.</p>
-    <p>Penalty xG used for non-penalty figures is the average of this season's ${DER.pen_n} penalties (${nf(DER.pen_xg, 2)}), not a fixed number. The league goal rate behind the ratings is ${nf(DER.league_gpg, 2)} per team per match, measured from recent Premier League seasons.</p></div></details></section>`;
+    ${D.hide_opta ? `<p><b style="color:var(--ink)">What is left off.</b> ${esc(D.omitted_note || "Possession, pressing totals and the rest of the club-style catalogue are not in the free shot feed, so those columns are hidden.")}</p>` : `<p><b style="color:var(--ink)">Opta numbers.</b> PPDA is how many passes the opponent is allowed before a defensive action (lower means a more aggressive press). High turnovers are balls won within 40 metres of the opponent's goal. There are also directness and build-up counts.</p>`}
+    <p>Penalty xG used for non-penalty figures is the average of this season's ${DER.pen_n} penalties (${nf(DER.pen_xg, 2)}), not a fixed number. The league goal rate behind the ratings is ${nf(DER.league_gpg, 2)} per team per match, measured from ${esc(D.rate_phrase || "recent Premier League seasons")}.</p></div></details></section>`;
 }
 function render() {
   if (!S.team) { const r = table(S.gw).slice().sort((a, b) => a.luck - b.luck)[0]; S.team = r.t; }
   const V = { fordulo: viewFordulo, elozetes: viewElozetes, schedule: viewMenetrend, valodi: viewValodi, tamadas: () => viewAD("att"), vedekezes: () => viewAD("def"), table: viewTabella, tisztitott: cleanSection, power: viewPower, eselyek: simSection, mutatok: viewMutatok, club: viewCsapat, jatekos: viewJatekos, meccsek: viewMeccsek, lovesek: viewLovesek }[S.tab] || viewFordulo;
   const changes = (D.fixture_changes || []).filter(c => c.kind !== "added" || false);
   const changeNote = changes.length ? ` Fixture changes since the last build: ${changes.slice(0, 4).map(c => `${c.home} vs ${c.away} (${c.kind})`).join("; ")}.` : "";
-  $("app").innerHTML = header() + V() + method() + `<p class="credit">Data: <a href="https://github.com/oladeeayo/pl-catalogue">pl-catalogue</a> (Fantasy Premier League, Understat, Opta via The Analyst, Transfermarkt), non-commercial, with attribution. Kickoff times and scores are checked against the Premier League's own fixture feed. European dates come from ESPN's public football schedule. Pre-season strength is calculated here from historical Premier League and Championship results (football-data.co.uk). No bookmaker prices. Updated ${esc((D.exported || "").slice(0, 10))}, gameweeks 1–${D.gw}. Independent, unofficial.${esc(changeNote)} <a href="./status.html">Build status</a>.</p>`;
+  const creditBody = D.credit || `Data: <a href="https://github.com/oladeeayo/pl-catalogue">pl-catalogue</a> (Fantasy Premier League, Understat, Opta via The Analyst, Transfermarkt), non-commercial, with attribution. Kickoff times and scores are checked against the Premier League's own fixture feed. European dates come from ESPN's public football schedule. Pre-season strength is calculated here from historical Premier League and Championship results (football-data.co.uk). No bookmaker prices. Updated ${esc((D.exported || "").slice(0, 10))}, gameweeks 1–${D.gw}. Independent, unofficial.`;
+  $("app").innerHTML = header() + V() + method() + `<p class="credit">${creditBody}${esc(changeNote)} <a href="./status.html">Build status</a>.</p>`;
 }
 function rerender(keepScroll = true) { const y = scrollY; render(); if (keepScroll) scrollTo(0, y); }
 const toTop = () => { const st = document.querySelector(".sticky"); if (st && scrollY > st.offsetTop) scrollTo(0, st.offsetTop - 4); };

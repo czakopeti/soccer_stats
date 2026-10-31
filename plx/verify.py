@@ -496,7 +496,7 @@ def _browser(html: Path, names: list[str], dump_path: Path) -> tuple[bool, str]:
         sections.append((label, text))
         if len(text) < 80:
             errors.append(f"{label} was almost empty.")
-        if re.search(r"\bNaN\b", text) or re.search(r"\bundefined\b", text):
+        if re.search(r"\bNaN\b", text) or re.search(r"\bundefined\b", text) or re.search(r"\bnullth\b", text):
             errors.append(f"{label} shows NaN or undefined.")
         hits = find_hits(text, names)
         if hits:
