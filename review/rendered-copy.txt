@@ -523,6 +523,8 @@ Man Utd
 MODEL
 36% · 29% · 34%
 
+Fair odds 2.76 · 3.41 · 2.91
+
 60%
 over 2.5 goals
 64%
@@ -566,6 +568,8 @@ Leeds
 MODEL
 45% · 32% · 23%
 
+Fair odds 2.22 · 3.14 · 4.33
+
 47%
 over 2.5 goals
 54%
@@ -603,6 +607,8 @@ Nott'm Forest
 
 MODEL
 37% · 32% · 32%
+
+Fair odds 2.72 · 3.17 · 3.16
 
 52%
 over 2.5 goals
@@ -642,6 +648,8 @@ Sunderland
 
 MODEL
 26% · 33% · 42%
+
+Fair odds 3.89 · 3.06 · 2.40
 
 46%
 over 2.5 goals
@@ -684,6 +692,8 @@ Ipswich Town
 MODEL
 29% · 29% · 42%
 
+Fair odds 3.45 · 3.41 · 2.40
+
 59%
 over 2.5 goals
 63%
@@ -721,6 +731,8 @@ Brighton
 
 MODEL
 41% · 27% · 32%
+
+Fair odds 2.43 · 3.65 · 3.17
 
 66%
 over 2.5 goals
@@ -761,6 +773,8 @@ Crystal Palace
 
 MODEL
 42% · 30% · 27%
+
+Fair odds 2.36 · 3.29 · 3.69
 
 54%
 over 2.5 goals
@@ -805,6 +819,8 @@ Fulham
 MODEL
 42% · 33% · 25%
 
+Fair odds 2.37 · 3.04 · 4.01
+
 45%
 over 2.5 goals
 53%
@@ -842,6 +858,8 @@ Arsenal
 
 MODEL
 23% · 34% · 43%
+
+Fair odds 4.39 · 2.95 · 2.31
 
 41%
 over 2.5 goals
@@ -886,6 +904,8 @@ Everton
 
 MODEL
 32% · 32% · 36%
+
+Fair odds 3.15 · 3.12 · 2.76
 
 50%
 over 2.5 goals
@@ -5977,24 +5997,24 @@ AFTER GAMEWEEK 8 · 300 MATCHES LEFT
 The remaining 300 matches were played 6,000 times using the Power ratings (opponent-adjusted, with recent matches counting for more). Bad luck so far does not drag a club's chances down. Only the points already dropped do.
 
 #	CLUB	NOW	EXPECTED	TITLE	TOP 4	TOP 6	RELEGATED
-1	Arsenal	21	84	57%	99%	>99%	0%
+1	Arsenal	21	84	58%	99%	>99%	0%
 2	Man City	21	81	34%	98%	>99%	0%
-3	Brighton	16	73	6%	82%	97%	0%
-4	Liverpool	15	69	2%	65%	92%	0%
-5	Bournemouth	9	63	<1%	28%	72%	0%
+3	Brighton	16	73	6%	83%	97%	0%
+4	Liverpool	15	69	2%	66%	91%	0%
+5	Bournemouth	9	63	<1%	27%	70%	<1%
 6	Aston Villa	11	58	<1%	9%	38%	<1%
-7	Chelsea	13	57	<1%	8%	37%	<1%
-8	Brentford	11	55	<1%	5%	25%	<1%
-9	Leeds	11	54	<1%	3%	19%	<1%
-10	Man Utd	7	49	0%	1%	8%	3%
+7	Chelsea	13	58	<1%	8%	38%	<1%
+8	Brentford	11	55	0%	5%	25%	<1%
+9	Leeds	11	54	0%	3%	19%	1%
+10	Man Utd	7	49	0%	1%	7%	2%
 11	Nott'm Forest	6	47	0%	<1%	4%	4%
 12	Spurs	9	47	0%	<1%	4%	5%
 13	Everton	10	46	0%	<1%	3%	5%
-14	Newcastle	11	45	0%	<1%	2%	8%
-15	Fulham	8	43	0%	<1%	1%	10%
-16	Crystal Palace	7	38	0%	0%	<1%	32%
-17	Sunderland	5	38	0%	0%	<1%	32%
-18	Ipswich Town	10	36	0%	0%	<1%	49%
+14	Newcastle	11	45	0%	<1%	3%	8%
+15	Fulham	8	43	0%	<1%	1%	11%
+16	Crystal Palace	7	39	0%	<1%	<1%	32%
+17	Sunderland	5	39	0%	<1%	<1%	32%
+18	Ipswich Town	10	36	0%	0%	<1%	50%
 19	Coventry City	6	32	0%	0%	0%	73%
 20	Hull City	10	31	0%	0%	0%	77%
 
@@ -36021,6 +36041,8 @@ Man City
 MODEL
 10% · 22% · 68%
 
+Fair odds 9.73 · 4.50 · 1.48
+
 60%
 over 2.5 goals
 53%
@@ -36051,6 +36073,8 @@ Nott'm Forest
 
 MODEL
 52% · 29% · 19%
+
+Fair odds 1.93 · 3.47 · 5.15
 
 54%
 over 2.5 goals
@@ -36083,6 +36107,8 @@ Everton
 MODEL
 42% · 30% · 27%
 
+Fair odds 2.36 · 3.29 · 3.67
+
 54%
 over 2.5 goals
 60%
@@ -36113,6 +36139,8 @@ Hull City
 
 MODEL
 37% · 31% · 32%
+
+Fair odds 2.69 · 3.20 · 3.16
 
 53%
 over 2.5 goals
@@ -36145,6 +36173,8 @@ Newcastle
 MODEL
 19% · 26% · 54%
 
+Fair odds 5.16 · 3.81 · 1.84
+
 62%
 over 2.5 goals
 62%
@@ -36175,6 +36205,8 @@ Brighton
 
 MODEL
 25% · 28% · 47%
+
+Fair odds 3.94 · 3.57 · 2.14
 
 61%
 over 2.5 goals
@@ -36207,6 +36239,8 @@ Brentford
 MODEL
 23% · 31% · 46%
 
+Fair odds 4.39 · 3.23 · 2.16
+
 50%
 over 2.5 goals
 55%
@@ -36237,6 +36271,8 @@ Fulham
 
 MODEL
 23% · 28% · 49%
+
+Fair odds 4.35 · 3.54 · 2.05
 
 59%
 over 2.5 goals
@@ -36269,6 +36305,8 @@ Ipswich Town
 MODEL
 59% · 26% · 15%
 
+Fair odds 1.70 · 3.87 · 6.54
+
 58%
 over 2.5 goals
 57%
@@ -36298,6 +36336,8 @@ Arsenal
 
 MODEL
 10% · 21% · 69%
+
+Fair odds 10.39 · 4.75 · 1.44
 
 63%
 over 2.5 goals

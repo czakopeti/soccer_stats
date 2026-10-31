@@ -618,6 +618,11 @@ function absent(t) {
   const a = PL.filter(q => q.t === t && q.min >= 180 && q.stt !== "a" && q.stt !== "u").sort((x, y) => y.min - x.min).slice(0, 4);
   return a.length ? `<span class="abs">${a.map(q => `<span title="${esc(q.news)}">${esc(q.n)}${q.cop != null ? ` <small>${q.cop}%</small>` : ""}</span>`).join("")}</span>` : `<span class="note">No flagged absentees</span>`;
 }
+function fairOdd(p) {
+  if (!(p > 0) || !Number.isFinite(p)) return "–";
+  const shown = (1 / p).toFixed(2);
+  return shown === "Infinity" ? "–" : shown;
+}
 function previewCard(f, R, k) {
   const [, h, a, ko, , fid] = f, p = predict(h, a, R);
   const tr = Object.fromEntries(table(S.gw).map(r => [r.t, r.rank])), real = S.gw < D.gw ? M.find(x => x.id === fid) : null;
@@ -628,6 +633,7 @@ function previewCard(f, R, k) {
     <div class="row1"><span class="tm">${esc(h)}<small>${tr[h] ? ord(tr[h]) : ""}</small></span><span class="sc pvx" title="Expected goals">${nf(p.lh, 2)}<i>–</i>${nf(p.la, 2)}</span><span class="tm r">${esc(a)}<small>${tr[a] ? ord(tr[a]) : ""}</small></span></div>
     <div class="jbar"><div class="h ${res === 0 ? "act" : ""}" style="width:${p.pw * 100}%">${p.pw > .12 ? pc(p.pw) : ""}</div><div class="d ${res === 1 ? "act" : ""}" style="width:${p.pd * 100}%">${p.pd > .12 ? pc(p.pd) : ""}</div><div class="a ${res === 2 ? "act" : ""}" style="width:${p.pl * 100}%">${p.pl > .12 ? pc(p.pl) : ""}</div></div>
     <p class="mkt"><span class="kicker">Model</span> ${ps.map(pc).join(" · ")}</p>
+    <p class="mkt">Fair odds ${ps.map(fairOdd).join(" · ")}</p>
     <div class="pvstats"><span><b>${pc(p.o25)}</b> over 2.5 goals</span><span><b>${pc(p.btts)}</b> both teams to score</span><span><b>${p.top.map(s => s[0] + "–" + s[1]).join(", ")}</b> most likely</span><span><b>${pc(p.csH)} / ${pc(p.csA)}</b> clean sheet, home / away</span></div>
     ${side(h)}${side(a)}
     ${real ? `<p class="verdict">What happened: <b>${real.hs}–${real.as}</b>. The model gave ${["the home win", "the draw", "the away win"][res]} a ${pc(ps[res])} chance${ps.indexOf(Math.max(...ps)) === res ? ". <b style=\"color:var(--good)\">The favourite delivered.</b>" : "."}</p>` : ""}</div>`;
@@ -1095,5 +1101,5 @@ let qt; document.addEventListener("input", (e) => {
 });
 let rz, lastW = window.innerWidth; addEventListener("resize", () => { if (window.innerWidth === lastW) return; lastW = window.innerWidth; clearTimeout(rz); rz = setTimeout(() => rerender(), 250); });
 render();
-window.__plr = { S, render, ratings, predict };
+window.__plr = { S, render, ratings, predict, fairOdd };
 })();

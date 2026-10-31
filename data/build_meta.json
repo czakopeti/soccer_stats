@@ -170,19 +170,19 @@
     "folder": "2026-27"
   },
   "fetch": {
-    "fetched_at": "2026-10-31T18:49:47Z",
+    "fetched_at": "2026-10-31T19:02:45Z",
     "season_start_year": 2026,
     "catalogue": {
       "commit": "740df5c518abec442583009288d25c545e819d88",
       "committed_at": "2026-10-28T02:54:59+01:00",
-      "fetched_at": "2026-10-31T18:48:56Z",
+      "fetched_at": "2026-10-31T19:02:45Z",
       "repo": "https://github.com/oladeeayo/pl-catalogue.git"
     },
     "fpl": {
-      "fetched_at": "2026-10-31T18:49:15Z",
+      "fetched_at": "2026-10-31T19:02:45Z",
       "events": 38,
       "fixtures": 380,
-      "bootstrap_bytes": 1951735
+      "bootstrap_bytes": 1951736
     },
     "history": {
       "fetched_at": "2026-10-31T18:49:42Z",

@@ -43,7 +43,7 @@ These settings are the variant that produced the most correct 1X2 favourites in 
 
 ## Match forecast
 
-`predict`. Independent Poisson goals from 0 to `prediction.max_goals` (10), then a Dixon–Coles adjustment (`prediction.dixon_coles_rho`, −0.25) that makes 0–0, 1–0, 0–1 and 1–1 a little more common. The page shows the 1X2 chances, over 2.5, both teams to score, a clean sheet for each side, and the three most likely scorelines. Expected goals are shown to two decimals. It does not show a bookmaker price. Model odds in the acceptance check are 1 divided by the probability, with no margin.
+`predict`. Independent Poisson goals from 0 to `prediction.max_goals` (10), then a Dixon–Coles adjustment (`prediction.dixon_coles_rho`, −0.25) that makes 0–0, 1–0, 0–1 and 1–1 a little more common. The page shows the 1X2 chances, over 2.5, both teams to score, a clean sheet for each side, and the three most likely scorelines. Expected goals are shown to two decimals. Under the model chances, each preview card shows fair odds: 1 divided by the unrounded probability, to two decimals, with no margin. A probability of 0 is a dash. It does not show a bookmaker price.
 
 The model log (`backtest`) re-forecasts every finished round using only the matches before it.
 

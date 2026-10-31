@@ -69,6 +69,45 @@ class ModelAcceptanceTest(unittest.TestCase):
             )
         self.assertTrue(ok, "\n".join(lines))
 
+    def test_preview_cards_show_the_fair_odds_line(self):
+        data = json.loads((ROOT / "data" / "pl.json").read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory() as tmp:
+            write_site(ROOT, data, out_dir=Path(tmp))
+            page = Path(tmp) / "index.html"
+            from playwright.sync_api import sync_playwright
+
+            with sync_playwright() as p:
+                browser = p.chromium.launch()
+                tab = browser.new_page()
+                tab.goto(page.resolve().as_uri(), wait_until="domcontentloaded")
+                tab.wait_for_function("() => window.__plr && window.__plr.fairOdd")
+                self.assertEqual(tab.evaluate("() => window.__plr.fairOdd(0)"), "–")
+                self.assertEqual(tab.evaluate("() => window.__plr.fairOdd(-0.2)"), "–")
+                self.assertNotIn("Infinity", tab.evaluate("() => window.__plr.fairOdd(0)"))
+                lines = tab.evaluate(
+                    """(cases) => {
+                      const plr = window.__plr;
+                      const out = [];
+                      for (const [gw, h, a, odds] of cases) {
+                        const R = plr.ratings(gw - 1);
+                        const p = plr.predict(h, a, R);
+                        const line = "Fair odds " + [p.pw, p.pd, p.pl].map(plr.fairOdd).join(" · ");
+                        plr.S.gw = gw - 1;
+                        plr.S.tab = "elozetes";
+                        plr.S.open = null;
+                        plr.render();
+                        const text = document.getElementById("app").innerText;
+                        out.push({ line, odds, shown: text.includes(line), textHas: text.includes("Fair odds " + odds.join(" · ")) });
+                      }
+                      return out;
+                    }""",
+                    [[gw, h, a, list(odds)] for gw, h, a, odds, _xg in CASES],
+                )
+                browser.close()
+        for (gw, home, away, odds, _xg), row in zip(CASES, lines):
+            self.assertEqual(row["line"], "Fair odds " + " · ".join(odds), f"GW{gw} {home}–{away}")
+            self.assertTrue(row["shown"] and row["textHas"], f"GW{gw} card text missing {row['line']}")
+
 
 if __name__ == "__main__":
     unittest.main()
