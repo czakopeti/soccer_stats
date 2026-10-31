@@ -1,0 +1,70 @@
+# Wednesday 08:00 UTC, after pl-catalogue's Tuesday refresh.
+# The site is replaced only when every check passes. A failed run leaves the
+# previous GitHub Pages deployment in place and opens an issue.
+name: Weekly update
+
+on:
+  schedule:
+    - cron: "0 8 * * 3"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  issues: write
+
+concurrency:
+  group: pl-xray-weekly
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install the build tools
+        run: pip install -r requirements.txt
+      - name: Install the browser used by the checks
+        run: python -m playwright install --with-deps chromium
+      - name: Fetch, build and verify
+        run: python scripts/run_pipeline.py
+      - name: Upload the site
+        if: success()
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Keep this week's snapshot in the repository
+        if: success()
+        continue-on-error: true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data snapshots
+          if git diff --cached --quiet; then
+            echo "Nothing new to store."
+          else
+            git commit -m "Weekly data snapshot"
+            git push
+          fi
+      - name: Explain the failure in an issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: python scripts/open_issue.py
+
+  deploy:
+    needs: build
+    if: success()
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
