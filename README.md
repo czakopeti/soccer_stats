@@ -30,7 +30,7 @@ You do not install anything. You do not edit numbers. You do not upload a file.
 4. If every check passes, the new page replaces the old one.
 5. If a check fails, visitors keep seeing last week's page, and an issue titled **[PL X-ray] Weekly update did not publish** explains the problem. The next successful Wednesday replaces it. You can close the issue once a later run has succeeded.
 
-An international break is not a failure. The job writes "no new round", still refreshes the fixture list, and publishes.
+A week without a newly completed round is not a failure. The job says why, from the fixture list: the next round is still being played, it has not kicked off, or there is a gap with no league matches. It still refreshes the fixtures and publishes. It refuses to publish only when the Premier League feed shows a whole round finished and the match file has not caught up.
 
 You can also run it yourself any day: **Actions** → **Weekly update** → **Run workflow**.
 

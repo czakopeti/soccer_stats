@@ -8,7 +8,9 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
+from plx.config import load_config
 from plx.language import find_hits, scan_user_facing
+from plx.round_status import RoundNote, describe_round, summary_problems
 
 
 def _check(checks: list, name: str, ok: bool, detail: str) -> None:
@@ -41,6 +43,51 @@ def _shot_goals(shots_for_match: list, home: str) -> tuple[int, int]:
             else:
                 hs += 1
     return hs, as_
+
+
+def _round_note(root: Path, data: dict, meta: dict) -> RoundNote:
+    tz_name = ((data.get("cfg") or {}).get("display_timezone")) or "UTC"
+    gap_days = 12
+    try:
+        gap_days = int(load_config(root / "config" / "model.json")["verify"]["quiet_gap_days"])
+    except (OSError, KeyError, TypeError, ValueError):
+        gap_days = 12
+    try:
+        raw = json.loads((root / "sources" / "fpl" / "fixtures.json").read_text(encoding="utf-8"))
+        boot = json.loads((root / "sources" / "fpl" / "bootstrap.json").read_text(encoding="utf-8"))
+        names = {int(team["id"]): team["name"] for team in boot.get("teams") or []}
+    except (OSError, json.JSONDecodeError, KeyError, TypeError, ValueError):
+        return RoundNote(
+            "unknown",
+            "The Premier League fixture file could not be read, so this run cannot say whether a round is under way.",
+            None,
+            False,
+        )
+    rows = []
+    for fixture in raw:
+        try:
+            home = names.get(int(fixture["team_h"]), "Home")
+            away = names.get(int(fixture["team_a"]), "Away")
+        except (KeyError, TypeError, ValueError):
+            continue
+        rows.append(
+            {
+                "event": fixture.get("event"),
+                "kickoff": fixture.get("kickoff_time"),
+                "finished": bool(fixture.get("finished")),
+                "started": bool(fixture.get("started")),
+                "home": home,
+                "away": away,
+            }
+        )
+    return describe_round(
+        rows,
+        int(data["gw"]),
+        datetime.now(timezone.utc),
+        tz_name,
+        meta.get("fixture_changes") or [],
+        gap_days,
+    )
 
 
 def verify(root: Path, data: dict, meta: dict, previous: dict | None, browser: bool = True) -> dict:
@@ -204,6 +251,8 @@ def verify(root: Path, data: dict, meta: dict, previous: dict | None, browser: b
             f"Was gameweek {previous.get('gw')}, now {data['gw']}.",
         )
 
+    note = _round_note(root, data, meta)
+
     # Sources actually refreshed, or an explanation.
     fetch = meta.get("fetch") or {}
     fetched_at = _parse_time(fetch.get("fetched_at"))
@@ -220,7 +269,7 @@ def verify(root: Path, data: dict, meta: dict, previous: dict | None, browser: b
         if new_commit and new_commit != old_commit:
             source_detail.append(f"pl-catalogue moved to a new commit {new_commit[:8]}.")
         elif meta.get("no_new_round"):
-            source_detail.append("No new Premier League round, and pl-catalogue's commit is unchanged. That is expected on an international break.")
+            source_detail.append(note.summary)
         elif int(data["gw"]) == int((prev_meta.get("gameweek") or 0)):
             source_detail.append("The gameweek is unchanged and pl-catalogue's commit is unchanged.")
         else:
@@ -249,14 +298,22 @@ def verify(root: Path, data: dict, meta: dict, previous: dict | None, browser: b
         source_detail.append("First build: there is no earlier download to compare. This run's download times are on the record.")
     fpl_gw = int(meta.get("fpl_finished_gameweek") or 0)
     cat_gw = int(data["gw"])
-    if fpl_gw > cat_gw:
+    if note.kind == "lag" or fpl_gw > cat_gw:
         source_ok = False
-        source_detail.append(
-            f"The Premier League says gameweek {fpl_gw} is finished, but the match file only has shots through gameweek {cat_gw}."
-        )
-    elif meta.get("no_new_round"):
-        source_detail.append(f"No new round. Still on gameweek {cat_gw}. Fixtures were refreshed anyway.")
-    _check(checks, "Sources were refreshed, or the pause is explained", source_ok and fpl_gw <= cat_gw, " ".join(source_detail))
+        if note.summary not in source_detail:
+            source_detail.append(
+                note.summary
+                if note.kind == "lag"
+                else f"The Premier League says gameweek {fpl_gw} is finished, but the match file only has shots through gameweek {cat_gw}."
+            )
+    elif meta.get("no_new_round") and note.summary not in source_detail:
+        source_detail.append(note.summary)
+    _check(
+        checks,
+        "Sources were refreshed, or the pause is explained",
+        source_ok and fpl_gw <= cat_gw and note.kind != "lag",
+        " ".join(source_detail),
+    )
 
     _check(
         checks,
@@ -354,20 +411,30 @@ def verify(root: Path, data: dict, meta: dict, previous: dict | None, browser: b
     else:
         _check(checks, "The page opens and every tab has content", False, "Browser check was skipped, so this build cannot be published.")
 
-    ok = all(c["pass"] for c in checks)
-    if meta.get("no_new_round") and ok:
-        summary = (
-            f"No new Premier League round (still gameweek {data['gw']}). "
-            "Fixtures were checked again and the site was refreshed. This is not an error."
-        )
-    elif ok:
-        summary = (
+    def _status_summary(passed: bool) -> str:
+        if not passed:
+            failed = [c["name"] for c in checks if not c["pass"]]
+            lead = f"{note.summary} " if meta.get("no_new_round") or note.kind == "lag" else ""
+            return "The new build was not published. " + lead + "Failed checks: " + ", ".join(failed) + "."
+        if meta.get("no_new_round") or note.kind == "lag":
+            return f"{note.summary} Fixtures were checked again and the site was refreshed. This is not an error."
+        return (
             f"{data['season']} through gameweek {data['gw']} passed every check "
             f"({len(data['matches'])} matches, {len(data['fx'])} fixtures)."
         )
-    else:
-        failed = [c["name"] for c in checks if not c["pass"]]
-        summary = "The new build was not published. Failed checks: " + ", ".join(failed) + "."
+
+    provisional_ok = all(c["pass"] for c in checks)
+    summary = _status_summary(provisional_ok)
+    problems = summary_problems(summary, note)
+    _check(
+        checks,
+        "The status line matches the fixtures",
+        not problems,
+        summary if not problems else " ".join(problems),
+    )
+    ok = all(c["pass"] for c in checks)
+    if ok != provisional_ok:
+        summary = _status_summary(ok)
     return {
         "ok": ok,
         "timestamp": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),

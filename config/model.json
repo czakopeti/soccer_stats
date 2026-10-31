@@ -151,7 +151,8 @@
     "xg_sum_tolerance": 0.05,
     "max_unmapped_shot_share": 0.02,
     "player_minutes_mismatch_share": 0.1,
-    "catalogue_stale_grace_days": 4
+    "catalogue_stale_grace_days": 4,
+    "quiet_gap_days": 12
   },
   "name_matching": {
     "drop_tokens": ["fc", "afc", "the"],
