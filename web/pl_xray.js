@@ -618,6 +618,11 @@ function absent(t) {
   const a = PL.filter(q => q.t === t && q.min >= 180 && q.stt !== "a" && q.stt !== "u").sort((x, y) => y.min - x.min).slice(0, 4);
   return a.length ? `<span class="abs">${a.map(q => `<span title="${esc(q.news)}">${esc(q.n)}${q.cop != null ? ` <small>${q.cop}%</small>` : ""}</span>`).join("")}</span>` : `<span class="note">No flagged absentees</span>`;
 }
+function fairOdd(p) {
+  if (!(p > 0) || !Number.isFinite(p)) return "–";
+  const shown = (1 / p).toFixed(2);
+  return shown === "Infinity" ? "–" : shown;
+}
 function previewCard(f, R, k) {
   const [, h, a, ko, , fid] = f, p = predict(h, a, R);
   const tr = Object.fromEntries(table(S.gw).map(r => [r.t, r.rank])), real = S.gw < D.gw ? M.find(x => x.id === fid) : null;
@@ -628,6 +633,7 @@ function previewCard(f, R, k) {
     <div class="row1"><span class="tm">${esc(h)}<small>${tr[h] ? ord(tr[h]) : ""}</small></span><span class="sc pvx" title="Expected goals">${nf(p.lh, 2)}<i>–</i>${nf(p.la, 2)}</span><span class="tm r">${esc(a)}<small>${tr[a] ? ord(tr[a]) : ""}</small></span></div>
     <div class="jbar"><div class="h ${res === 0 ? "act" : ""}" style="width:${p.pw * 100}%">${p.pw > .12 ? pc(p.pw) : ""}</div><div class="d ${res === 1 ? "act" : ""}" style="width:${p.pd * 100}%">${p.pd > .12 ? pc(p.pd) : ""}</div><div class="a ${res === 2 ? "act" : ""}" style="width:${p.pl * 100}%">${p.pl > .12 ? pc(p.pl) : ""}</div></div>
     <p class="mkt"><span class="kicker">Model</span> ${ps.map(pc).join(" · ")}</p>
+    <p class="mkt">Fair odds ${ps.map(fairOdd).join(" · ")}</p>
     <div class="pvstats"><span><b>${pc(p.o25)}</b> over 2.5 goals</span><span><b>${pc(p.btts)}</b> both teams to score</span><span><b>${p.top.map(s => s[0] + "–" + s[1]).join(", ")}</b> most likely</span><span><b>${pc(p.csH)} / ${pc(p.csA)}</b> clean sheet, home / away</span></div>
     ${side(h)}${side(a)}
     ${real ? `<p class="verdict">What happened: <b>${real.hs}–${real.as}</b>. The model gave ${["the home win", "the draw", "the away win"][res]} a ${pc(ps[res])} chance${ps.indexOf(Math.max(...ps)) === res ? ". <b style=\"color:var(--good)\">The favourite delivered.</b>" : "."}</p>` : ""}</div>`;
@@ -1033,7 +1039,7 @@ function method() {
   return `<section class="sec"><details class="panel"><summary class="kicker" style="cursor:pointer">How this is calculated</summary><div class="note" style="max-width:86ch;display:flex;flex-direction:column;gap:8px;margin-top:10px">
     <p><b style="color:var(--ink)">xG</b> is the chance a shot becomes a goal, from where and how it was taken (Understat). A 0.10 shot scores about once in ten.</p>
     <p><b style="color:var(--ink)">The chance bar and points deserved.</b> From the shots in a match we calculate the chance of a home win, a draw and an away win. Points deserved are 3 times the win chance plus the draw chance. A robbery is a win the shots rated below ${Math.round(TH.robbery_win_probability * 100)}%.</p>
-    <p><b style="color:var(--ink)">Power and the forecast.</b> Each club has an attack rating and a defence rating, fit to chances created and conceded (${Math.round(RTG.xg_blend * 100)}% xG, ${Math.round((1 - RTG.xg_blend) * 100)}% actual goals), adjusted for the opponent${RTG.home_advantage === false ? "" : " and for home advantage"}. Recent matches count for more, with a ${RTG.tau_rounds}-round half-life. Early in the season the ratings lean on a pre-season strength (the season file when one is supplied, otherwise earlier league results), and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played ${runs} times.</p>
+    <p><b style="color:var(--ink)">Power and the forecast.</b> Each club has an attack rating and a defence rating, fit to chances created and conceded (${Math.round(RTG.xg_blend * 100)}% xG, ${Math.round((1 - RTG.xg_blend) * 100)}% actual goals), adjusted for the opponent${RTG.home_advantage === false ? "" : " and for home advantage"}. Recent matches count for more: a match ${RTG.tau_rounds} gameweeks old counts about a third as much as this week's. Early in the season the ratings lean on a pre-season strength (the season file when one is supplied, otherwise earlier league results), and that anchor fades as this season's matches pile up. Match chances come from the two expected-goal figures (Poisson, with a Dixon–Coles adjustment that adds a few draws). The rest of the season is played ${runs} times.</p>
     <p><b style="color:var(--ink)">Adjusted xG</b> divides a match's xG by what an average side would create against that opponent, at that ground. Opponent strength and home advantage come from this season's xG only. Early on, those ratings are pulled gently towards the pre-season figure so one match cannot swing them.</p>
     <p><b style="color:var(--ink)">True strength</b> turns adjusted xG into the points that performance would be worth against an average opponent on a neutral pitch. Schedule and venue are the gap between that and the same sum from raw xG. Finishing and goalkeeping turn the gap between goals and xG into points. Whatever is left is other luck, so the pieces add up to the real points total.</p>
     <p><b style="color:var(--ink)">Win probability, minute by minute,</b> starts from the strength model before the round, then updates it for the score and the time left. Goals still to come follow a Poisson distribution. It does not see red cards or substitutions. The excitement index adds up how much the home and away win chances move.</p>
@@ -1095,5 +1101,5 @@ let qt; document.addEventListener("input", (e) => {
 });
 let rz, lastW = window.innerWidth; addEventListener("resize", () => { if (window.innerWidth === lastW) return; lastW = window.innerWidth; clearTimeout(rz); rz = setTimeout(() => rerender(), 250); });
 render();
-window.__plr = { S, render, ratings, predict };
+window.__plr = { S, render, ratings, predict, fairOdd };
 })();
