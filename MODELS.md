@@ -4,7 +4,7 @@ Measured facts are downloaded or calculated on every run. Choices (how fast rece
 
 ## Pre-season strength
 
-This used to be a ClubElo number from one August date. That feed is not used.
+When `config/preseason_prior_<season>.json` exists for the season the fixtures imply, that file is the pre-season strength and the computed Elo prior is not used. For 2026/27 the file is a ClubElo snapshot of 15 August 2026, converted with the same Poisson formula at a goal level of 1.40. The pipeline matches those names onto the current clubs and stops if any club in the file is unmatched or any current club is missing. Seasons without a file still use the Elo calculation below.
 
 Every run downloads several past seasons of Premier League (`E0`) and Championship (`E1`) results from football-data.co.uk. How many seasons is `elo.history_seasons` (currently 8). Matches from the current season are left out, so the rating really is a pre-season figure. Promoted clubs are included, because their Championship matches are in the same files.
 
@@ -12,7 +12,7 @@ Each club starts at `elo.initial_rating` (1500). Results are replayed in date or
 
 H is not typed in. For each candidate on a grid (`elo.hfa_grid_min` to `elo.hfa_grid_max`), the whole history is replayed and we keep the H with the smallest average squared error. If the best H sits on the edge of the grid, the build stops instead of clipping it. On the current history that value is 45 Elo points.
 
-The twenty Premier League clubs are then compared with their own average rating. The gap is turned into the strength number `s` the match model expects: the value where a Poisson match against an average side (goals per team taken from recent Premier League seasons, not a fixed 1.40) has the same expected points share as the Elo expected score. The search step and the limit are `elo.strength_step` and `elo.strength_limit`. Hitting the limit stops the build.
+The twenty Premier League clubs are then compared with their own average rating. The gap is turned into the strength number `s` the match model expects: the value where a Poisson match against an average side (goal level 1.40, the same `ratings.goal_level_prior` the strength rating uses) has the same expected points share as the Elo expected score. The search step and the limit are `elo.strength_step` and `elo.strength_limit`. Hitting the limit stops the build. The 2026/27 file already holds those converted numbers, so this step is what produced them, not a second conversion at build time.
 
 Club names are not mapped by a hand-written list. Each run collects the spellings on the Premier League feed and on the ESPN club list (full name and short name). Comparison is generic: ignore punctuation, read "Utd" as "United", drop a leading "FC". "Man Utd" and "Man United" meet that way. "Spurs" and "Tottenham" meet because ESPN lists both spellings for the same club. If a name still matches nobody, or matches two clubs, the build stops and names the club.
 
@@ -37,11 +37,13 @@ A **robbery** is a win whose chance was under `thresholds.robbery_win_probabilit
 
 ## Power
 
-In the browser, `ratings`. For a home side, expected goals are league rate × attack × opponent's defence × home factor. The input to each match is `ratings.xg_blend` xG and the rest actual goals (0.80 / 0.20). A match from `ratings.tau_rounds` (12) gameweeks ago counts about a third as much as this week's. Before any matches, each club is given `ratings.prior_matches` (8) games against an average side at its pre-season strength. Home advantage uses `ratings.home_prior_matches` (15) games at the measured home and away factors. Attack and defence are re-estimated `ratings.iterations` (40) times and scaled so their geometric mean is 1. The goal level is pulled toward the measured league rate with a weight of `ratings.goal_prior_matches` (50) team-matches. Power is that goal level times (attack − defence): the goal difference expected against an average opponent on a neutral pitch.
+In the browser, `ratings`. Expected goals are goal level × attack × opponent's defence, and × the home factor only when `ratings.home_advantage` is on. It is off for the forecast (`home_advantage: false`), so that ratio is 1. The cleaned-xG view keeps it (`clean_home_advantage: true`). The input to each match is `ratings.xg_blend` xG and the rest actual goals (0.50 / 0.50). A match from `ratings.tau_rounds` (6) gameweeks ago counts about a third as much as this week's: a 6-round half-life. Before any matches, each club is given `ratings.prior_matches` (4) games against an average side at its pre-season strength. When home advantage is on, it uses `ratings.home_prior_matches` (15) games at the measured home and away factors. Attack and defence are re-estimated `ratings.iterations` (40) times and scaled so their geometric mean is 1. The goal level is `ratings.goal_level_prior` (1.40), pulled with a weight of `ratings.goal_prior_matches` (50) team-matches. It is not the measured league rate. Power is that goal level times (attack − defence): the goal difference expected against an average opponent on a neutral pitch.
+
+These settings are the variant that produced the most correct 1X2 favourites in a backtest of 1440 parameter combinations on gameweeks 1–9, each round predicted only from the matches before it.
 
 ## Match forecast
 
-`predict`. Independent Poisson goals from 0 to `prediction.max_goals` (10), then a Dixon–Coles adjustment (`prediction.dixon_coles_rho`, −0.12) that makes 0–0, 1–0, 0–1 and 1–1 a little more common. The page shows the 1X2 chances, over 2.5, both teams to score, a clean sheet for each side, and the three most likely scorelines. It does not show a bookmaker price.
+`predict`. Independent Poisson goals from 0 to `prediction.max_goals` (10), then a Dixon–Coles adjustment (`prediction.dixon_coles_rho`, −0.25) that makes 0–0, 1–0, 0–1 and 1–1 a little more common. The page shows the 1X2 chances, over 2.5, both teams to score, a clean sheet for each side, and the three most likely scorelines. Expected goals are shown to two decimals. It does not show a bookmaker price. Model odds in the acceptance check are 1 divided by the probability, with no margin.
 
 The model log (`backtest`) re-forecasts every finished round using only the matches before it.
 
@@ -51,7 +53,7 @@ The model log (`backtest`) re-forecasts every finished round using only the matc
 
 ## Adjusted xG
 
-`cleanR`, `adjMatch`, `cleanTable`. Same ratings model with only xG, no recency (`ratings.clean_tau_rounds`), and a lighter pre-season pull (`ratings.clean_prior_matches`, 4). A match's xG is divided by what an average side would create against that opponent at that ground.
+`cleanR`, `adjMatch`, `cleanTable`. Same ratings model with only xG, no recency (`ratings.clean_tau_rounds`), a lighter pre-season pull (`ratings.clean_prior_matches`, 4), and home advantage left on (`ratings.clean_home_advantage`). A match's xG is divided by what an average side would create against that opponent at that ground.
 
 ## Points, pulled apart
 

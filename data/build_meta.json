@@ -142,26 +142,26 @@
     "Sunderland": 1587.7
   },
   "prior": {
-    "Arsenal": 0.785,
-    "Aston Villa": 0.265,
-    "Bournemouth": 0.185,
-    "Brentford": 0.0,
-    "Brighton": 0.03,
-    "Chelsea": 0.015,
-    "Coventry City": -0.295,
-    "Crystal Palace": -0.155,
-    "Everton": -0.14,
-    "Fulham": -0.085,
-    "Hull City": -0.765,
-    "Ipswich Town": -0.425,
-    "Leeds": -0.015,
-    "Liverpool": 0.33,
-    "Man City": 0.7,
-    "Man Utd": 0.32,
-    "Newcastle": -0.04,
-    "Nott'm Forest": -0.11,
-    "Spurs": -0.37,
-    "Sunderland": -0.23
+    "Arsenal": 0.935,
+    "Aston Villa": 0.34,
+    "Bournemouth": 0.285,
+    "Brentford": 0.09,
+    "Brighton": 0.09,
+    "Chelsea": 0.125,
+    "Coventry City": -0.73,
+    "Crystal Palace": -0.07,
+    "Everton": -0.07,
+    "Fulham": -0.02,
+    "Hull City": -1.17,
+    "Ipswich Town": -0.775,
+    "Leeds": -0.085,
+    "Liverpool": 0.445,
+    "Man City": 0.775,
+    "Man Utd": 0.455,
+    "Newcastle": 0.045,
+    "Nott'm Forest": -0.04,
+    "Spurs": -0.24,
+    "Sunderland": -0.335
   },
   "catalogue": {
     "commit": "740df5c518abec442583009288d25c545e819d88",
@@ -170,22 +170,22 @@
     "folder": "2026-27"
   },
   "fetch": {
-    "fetched_at": "2026-10-31T11:57:30Z",
+    "fetched_at": "2026-10-31T18:49:47Z",
     "season_start_year": 2026,
     "catalogue": {
       "commit": "740df5c518abec442583009288d25c545e819d88",
       "committed_at": "2026-10-28T02:54:59+01:00",
-      "fetched_at": "2026-10-31T11:56:49Z",
+      "fetched_at": "2026-10-31T18:48:56Z",
       "repo": "https://github.com/oladeeayo/pl-catalogue.git"
     },
     "fpl": {
-      "fetched_at": "2026-10-31T11:56:50Z",
+      "fetched_at": "2026-10-31T18:49:15Z",
       "events": 38,
       "fixtures": 380,
-      "bootstrap_bytes": 1942059
+      "bootstrap_bytes": 1951735
     },
     "history": {
-      "fetched_at": "2026-10-31T11:57:16Z",
+      "fetched_at": "2026-10-31T18:49:42Z",
       "files": [
         "E0_2526.csv",
         "E1_2526.csv",
@@ -216,7 +216,7 @@
       ]
     },
     "europe": {
-      "fetched_at": "2026-10-31T11:57:30Z",
+      "fetched_at": "2026-10-31T18:49:47Z",
       "events": 70,
       "espn_clubs": 20
     }
