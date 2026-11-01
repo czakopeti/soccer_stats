@@ -1,0 +1,33 @@
+# Temporary probe: can Actions reach Understat and ClubElo? Runs only on this branch.
+name: Leagues probe
+on:
+  push:
+    branches: [leagues-odds]
+    paths: [".github/workflows/leagues_probe.yml"]
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Probe sources
+        run: |
+          mkdir -p probe
+          UA="PL-Xray/1.0 (educational weekly build; +https://github.com/czakopeti/soccer_stats)"
+          for L in La_liga Bundesliga Serie_A Ligue_1; do
+            curl -s -A "$UA" -o probe/html_$L.html -w "html $L %{http_code} %{size_download}\n" "https://understat.com/league/$L/2026" | tee -a probe/log.txt
+            curl -s -A "$UA" -H "X-Requested-With: XMLHttpRequest" -H "Referer: https://understat.com/league/$L/2026" -o probe/api_$L.json -w "api $L %{http_code} %{size_download}\n" "https://understat.com/getLeagueData/$L/2026" | tee -a probe/log.txt
+          done
+          curl -s -A "$UA" -o probe/clubelo.csv -w "clubelo %{http_code} %{size_download}\n" "http://api.clubelo.com/2026-08-10" | tee -a probe/log.txt
+          head -c 3000 probe/api_La_liga.json > probe/api_La_liga_head.txt || true
+          grep -o "datesData[^;]\{0,300\}" probe/html_La_liga.html | head -3 > probe/html_La_liga_dates.txt || true
+          head -5 probe/clubelo.csv > probe/clubelo_head.txt || true
+          rm -f probe/html_*.html
+      - name: Commit probe output
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add probe
+          git commit -m "Probe output" || echo nothing
+          git push
