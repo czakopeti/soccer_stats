@@ -1,9 +1,0 @@
-html La_liga 200 18710
-api La_liga 200 53829
-html Bundesliga 200 18722
-api Bundesliga 200 42970
-html Serie_A 200 18710
-api Serie_A 200 53085
-html Ligue_1 200 18710
-api Ligue_1 200 44536
-clubelo 502 0
