@@ -45,6 +45,12 @@
     "clean_tau_rounds": 1000000,
     "clean_xg_blend": 1
   },
+  "leagues": {
+    "understat_codes": ["La_liga", "Bundesliga", "Serie_A", "Ligue_1"],
+    "understat_data_template": "https://understat.com/getLeagueData/{league}/{year}",
+    "understat_page_template": "https://understat.com/league/{league}/{year}",
+    "round_gap_days": 2.5
+  },
   "prediction": {
     "dixon_coles_rho": -0.25,
     "max_goals": 10

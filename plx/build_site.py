@@ -17,6 +17,7 @@ def write_site(root: Path, data: dict, report: dict | None = None, out_dir: Path
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
 <style>{css}</style></head>
 <body><div class="wrap" id="app"></div>
+<p class="wrap note" style="padding-bottom:24px"><a href="odds.html" style="color:inherit">Fair odds for La Liga, Bundesliga, Serie A and Ligue 1</a></p>
 <script id="data" type="application/json">{payload}</script>
 <script>{js}</script></body></html>"""
     site = out_dir or (root / "site")

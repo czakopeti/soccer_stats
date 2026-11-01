@@ -14,8 +14,23 @@ sys.path.insert(0, str(ROOT))
 from plx.build_site import write_site, write_status
 from plx.config import load_config
 from plx.fetch import fetch_all
+from plx.leagues import build_all as build_leagues, write_page as write_odds_page
 from plx.prepare import prepare
 from plx.verify import verify
+
+
+def _other_leagues(cfg: dict, data: dict, fetch_first: bool) -> None:
+    """Fair odds for the other leagues. A failure here never blocks the Premier League page."""
+    try:
+        out = build_leagues(ROOT, cfg, data["season"], int(data["season_start_year"]), fetch_first=fetch_first)
+        (ROOT / "data" / "leagues.json").write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        write_odds_page(ROOT, out, ROOT / "site")
+        print("Other leagues: " + ", ".join(f"{lg['label']} {lg['played']} played" for lg in out["leagues"]) + ".")
+    except Exception as exc:  # noqa: BLE001 - reported, the PL build still stands
+        print(f"Other leagues were not updated: {exc}")
+        previous = ROOT / "data" / "leagues.json"
+        if previous.exists():
+            write_odds_page(ROOT, json.loads(previous.read_text(encoding="utf-8")), ROOT / "site")
 
 
 def main() -> int:
@@ -69,6 +84,7 @@ def main() -> int:
         (ROOT / "data" / "build_meta.json").write_text(json.dumps(meta, indent=2, ensure_ascii=False), encoding="utf-8")
         (ROOT / "data" / "status.json").write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
         print(f"Verification passed. Snapshot {snap.relative_to(ROOT)}.")
+        _other_leagues(cfg, data, fetch_first=not args.skip_fetch)
         return 0
     except Exception as exc:  # noqa: BLE001 - the weekly job must say what broke, in plain language
         report = {
