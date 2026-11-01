@@ -1,5 +1,5 @@
-# Temporary: download this season's football-data.co.uk files for four leagues. Runs only on this branch.
-name: football-data probe
+# Temporary probe branch. Runs only on pushes to this branch.
+name: probe
 on:
   push:
     branches: [fd-probe]
@@ -13,7 +13,9 @@ jobs:
       - uses: actions/checkout@v4
       - run: |
           mkdir -p probe
-          for D in SP1 D1 I1 F1; do curl -sL -A "PL-Xray/1.0 (+https://github.com/czakopeti/soccer_stats)" -o probe/$D.csv -w "$D %{http_code} %{size_download}\n" "https://www.football-data.co.uk/mmz4281/2627/$D.csv" | tee -a probe/log.txt; done
+          UA="PL-Xray/1.0 (+https://github.com/czakopeti/soccer_stats)"
+          curl -s -A "$UA" -o probe/live9.json -w "live %{http_code} %{size_download}\n" "https://fantasy.premierleague.com/api/event/9/live/" | tee probe/fpl_log.txt
+          curl -s -A "$UA" -o probe/fixtures9.json -w "fix %{http_code} %{size_download}\n" "https://fantasy.premierleague.com/api/fixtures/?event=9" | tee -a probe/fpl_log.txt
       - run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
