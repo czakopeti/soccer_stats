@@ -1,4 +1,4 @@
-# Wednesday 08:00 UTC, after pl-catalogue's Tuesday refresh.
+# Wednesday 08:00 UTC, after pl-catalogue's Tuesday refresh. 
 # The site is replaced only when every check passes. A failed run leaves the
 # previous GitHub Pages deployment in place and opens an issue.
 name: Weekly update
