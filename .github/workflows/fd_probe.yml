@@ -14,8 +14,7 @@ jobs:
       - run: |
           mkdir -p probe
           UA="PL-Xray/1.0 (+https://github.com/czakopeti/soccer_stats)"
-          curl -s -A "$UA" -o probe/live9.json -w "live %{http_code} %{size_download}\n" "https://fantasy.premierleague.com/api/event/9/live/" | tee probe/fpl_log.txt
-          curl -s -A "$UA" -o probe/fixtures9.json -w "fix %{http_code} %{size_download}\n" "https://fantasy.premierleague.com/api/fixtures/?event=9" | tee -a probe/fpl_log.txt
+          curl -s --compressed -A "$UA" -H "X-Requested-With: XMLHttpRequest" -H "Referer: https://understat.com/league/EPL/2026" -o probe/epl.json -w "epl %{http_code} %{size_download}\n" "https://understat.com/getLeagueData/EPL/2026" | tee probe/epl_log.txt
       - run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
