@@ -14,7 +14,11 @@ jobs:
       - run: |
           mkdir -p probe
           UA="PL-Xray/1.0 (+https://github.com/czakopeti/soccer_stats)"
-          curl -s --compressed -A "$UA" -H "X-Requested-With: XMLHttpRequest" -H "Referer: https://understat.com/league/EPL/2026" -o probe/epl.json -w "epl %{http_code} %{size_download}\n" "https://understat.com/getLeagueData/EPL/2026" | tee probe/epl_log.txt
+          for L in EPL La_liga; do
+            curl -s --compressed -A "Mozilla/5.0 (X11; Linux x86_64)" -H "X-Requested-With: XMLHttpRequest" -H "Referer: https://understat.com/league/$L/2026" -o probe/api_$L.json -w "api $L %{http_code} %{size_download}\n" "https://understat.com/getLeagueData/$L/2026" | tee -a probe/epl_log.txt
+            curl -s --compressed -A "Mozilla/5.0 (X11; Linux x86_64)" -o probe/page_$L.html -w "page $L %{http_code} %{size_download}\n" "https://understat.com/league/$L/2026" | tee -a probe/epl_log.txt
+          done
+          head -c 300 probe/api_EPL.json >> probe/epl_log.txt; rm -f probe/page_*.html
       - run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
