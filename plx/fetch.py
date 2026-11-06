@@ -89,6 +89,28 @@ def _history(cfg: dict, dest: Path, user_agent: str, start_year: int) -> dict:
     return {"fetched_at": _now(), "files": saved, "season_codes": codes}
 
 
+def _current_season(cfg: dict, dest: Path, user_agent: str, start_year: int) -> dict:
+    """This season's football-data file, used only for matches pl-catalogue has no shots for yet.
+
+    A failed download is recorded, not fatal: the build then works exactly as it did without it.
+    """
+    fb = cfg.get("xg_fallback") or {}
+    if not fb.get("enabled"):
+        return {"fetched_at": None, "skipped": "disabled"}
+    dest.mkdir(parents=True, exist_ok=True)
+    code = season_code(start_year)
+    url = cfg["sources"]["football_data_template"].format(code=code, division=fb["division"])
+    path = dest / f"{fb['division']}.csv"
+    try:
+        raw = get_bytes(url, user_agent)
+    except DownloadError as exc:
+        if path.exists():
+            path.unlink()
+        return {"fetched_at": None, "error": f"{url}: {exc}"}
+    path.write_bytes(raw)
+    return {"fetched_at": _now(), "file": path.name, "season_code": code, "bytes": len(raw)}
+
+
 def _europe(cfg: dict, dest: Path, user_agent: str, start_year: int) -> dict:
     dest.mkdir(parents=True, exist_ok=True)
     try:
@@ -132,6 +154,7 @@ def fetch_all(root: Path, cfg: dict) -> dict:
     start_year = season_start_year_from_bootstrap(bootstrap)
     history = _history(cfg, sources / "football-data", user_agent, start_year)
     europe = _europe(cfg, sources / "europe", user_agent, start_year)
+    current = _current_season(cfg, sources / "football-data-current", user_agent, start_year)
     manifest = {
         "fetched_at": _now(),
         "season_start_year": start_year,
@@ -139,6 +162,7 @@ def fetch_all(root: Path, cfg: dict) -> dict:
         "fpl": fpl,
         "history": history,
         "europe": europe,
+        "current_season": current,
     }
     (sources / "fetch_manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
     return manifest

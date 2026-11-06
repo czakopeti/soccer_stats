@@ -416,6 +416,25 @@ def prepare(root: Path, cfg: dict, previous: dict | None = None) -> tuple[dict, 
                 ]
             )
 
+    # Finished on the Premier League feed, but pl-catalogue has no shots yet:
+    # match xG and shot counts from football-data.co.uk, rescaled to the
+    # catalogue's xG. Only for matches with no catalogue shots at all, so the
+    # catalogue takes over again as soon as it has them.
+    from plx import xg_fallback
+
+    added, fallback_info = xg_fallback.fill(
+        matches,
+        [(pair, fpl, int(cat_by_pair[pair].fixture_id)) for pair, fpl in pair_to_fpl.items()],
+        sources / "football-data-current",
+        alias_sets,
+        cfg,
+    )
+    matches.extend(added)
+    played_fpl_ids.extend(m["id"] for m in added)
+    if fallback_info["used"]:
+        order = {int(fpl["id"]): i for i, fpl in enumerate(pair_to_fpl.values())}
+        matches.sort(key=lambda m: order[m["id"]])
+
     # Rebuild shot rows in a stable order and attach pids already included.
     # Goal impact uses catalogue shot ids.
     match_by_cat = {m["_cat_id"]: m for m in matches}
@@ -736,6 +755,8 @@ def prepare(root: Path, cfg: dict, previous: dict | None = None) -> tuple[dict, 
         "cfg": client_cfg,
         "derived": derived,
     }
+    if fallback_info["used"]:
+        data["xg_fallback"] = {"source": "football-data.co.uk", "scale": fallback_info["scale"], "overlap": fallback_info["overlap"]}
     meta = {
         "season": season_label,
         "gameweek": int(catalogue_gw),
@@ -748,6 +769,7 @@ def prepare(root: Path, cfg: dict, previous: dict | None = None) -> tuple[dict, 
         "kickoff_disagreements": kickoff_disagreements,
         "gameweek_disagreements": gw_disagreements,
         "finished_missing_shots": finished_missing_shots,
+        "xg_fallback": fallback_info,
         "unmapped_shots": unmapped_shots,
         "shots": len(shot_rows),
         "matches": len(matches),
