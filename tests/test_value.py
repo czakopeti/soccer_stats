@@ -1,80 +1,71 @@
-"""Home value: home advantage, the pick rule, and the track record."""
+"""Value picks: the shots-and-form adjustment, the two rules, and the pick record."""
 import csv
-import tempfile
+import io
+import json
 import unittest
-from datetime import date, timedelta
 from pathlib import Path
 
 from plx import value
 
-OURS = ["Athletic Club", "Atletico Madrid", "Real Betis", "Celta Vigo"]
-FD = {"Athletic Club": "Ath Bilbao", "Atletico Madrid": "Ath Madrid", "Real Betis": "Betis", "Celta Vigo": "Celta"}
-ROUNDS = [[(0, 1), (2, 3)], [(0, 2), (1, 3)], [(0, 3), (1, 2)], [(1, 0), (3, 2)], [(2, 0), (3, 1)], [(3, 0), (2, 1)]]
-HEAD = ["Div", "Date", "HomeTeam", "AwayTeam", "FTHG", "FTAG", "HxG", "AxG", "AvgH", "AvgD", "AvgA", "AvgCH", "AvgCD", "AvgCA"]
-RULE = {"max_home_odds": None}
+ROOT = Path(__file__).resolve().parents[1]
+MODEL = json.loads((ROOT / "config" / "value_model.json").read_text(encoding="utf-8"))
+HEAD = "Div,Date,Time,HomeTeam,AwayTeam,FTHG,FTAG,HS,AS,HST,AST,AvgH,AvgD,AvgA,MaxH,MaxD,MaxA"
 
 
-class HomeValueTest(unittest.TestCase):
-    def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory()
-        self.dir = Path(self.tmp.name)
-        self.played, self.upcoming, rows = [], [], []
-        start = date(2026, 8, 15)
-        for r, games in enumerate(ROUNDS):
-            d = start + timedelta(days=7 * r)
-            for k, (h, a) in enumerate(games):
-                hs, as_ = (r + k) % 3, (r * 2 + k + 1) % 3
-                m = {"h": OURS[h], "a": OURS[a], "dt": f"{d.isoformat()} 18:00:00", "lh": 1.6 if k == 0 else 1.0, "la": 1.0 if k == 0 else 1.6}
-                if r < 5:
-                    m.update(hs=hs, **{"as": as_})
-                    self.played.append(m)
-                    # The first match of each round is priced generously for the home side.
-                    rows.append(["SP1", d.strftime("%d/%m/%Y"), FD[OURS[h]], FD[OURS[a]], hs, as_, 1.2, 1.0,
-                                 3.0 if k == 0 else 1.5, 3.5, 3.0, 2.8 if k == 0 else 1.5, 3.5, 3.0])
-                else:
-                    self.upcoming.append(m)
-        with (self.dir / "SP1.csv").open("w", newline="", encoding="utf-8") as fh:
-            w = csv.writer(fh)
-            w.writerow(HEAD)
-            w.writerows(rows)
-        self.fixtures = [
-            {"Div": "SP1", "HomeTeam": "Celta", "AwayTeam": "Ath Bilbao", "AvgH": "3.0", "AvgD": "3.5", "AvgA": "2.5"},
-            {"Div": "SP1", "HomeTeam": "Betis", "AwayTeam": "Ath Madrid", "AvgH": "3.0", "AvgD": "3.5", "AvgA": "2.5"},
-        ]
+def _rows(text):
+    return list(csv.DictReader(io.StringIO(HEAD + "\n" + text.strip() + "\n")))
 
-    def tearDown(self):
-        self.tmp.cleanup()
 
-    def _build(self, h_adv=0.1):
-        return value.league_rows("Test", self.played, self.upcoming, self.dir / "SP1.csv", self.fixtures, "SP1", h_adv, RULE, -0.25, 10)
-
-    def test_home_advantage_raises_the_home_chance(self):
-        flat = value.probs(1.3, 1.3, -0.25, 10)
-        home = value.probs(1.3 * 1.1, 1.3 / 1.1, -0.25, 10)
+class ValueModelTest(unittest.TestCase):
+    def test_chances_add_up_and_follow_shots(self):
+        avg = [2.5, 3.4, 2.9]
+        flat = value.chances(avg, {"sotd": MODEL["mean"]["sotd"], "shd": MODEL["mean"]["shd"], "gd": MODEL["mean"]["gd"], "form": MODEL["mean"]["form"]}, MODEL)
+        better = value.chances(avg, {"sotd": 4.0, "shd": 8.0, "gd": MODEL["mean"]["gd"], "form": MODEL["mean"]["form"]}, MODEL)
         self.assertAlmostEqual(sum(flat), 1.0, places=9)
-        self.assertGreater(home[0], flat[0])
-        self.assertLess(home[2], flat[2])
+        self.assertGreater(better[0], flat[0])  # out-shooting the opponent lifts the home chance
+        luckier = value.chances(avg, {"sotd": MODEL["mean"]["sotd"], "shd": MODEL["mean"]["shd"], "gd": 2.0, "form": 8}, MODEL)
+        self.assertLess(luckier[0], flat[0])  # results ahead of shots are priced too high already
 
-    def test_pick_rule(self):
-        out = self._build()
-        self.assertNotIn("error", out)
-        picks = [r for r in out["history"] if r["pick"]]
-        # Only the stronger home sides priced above our fair odds.
-        self.assertEqual(len(picks), 5)
-        self.assertTrue(all(r["lh"] > r["la"] and r["bk"][0] * r["p"][0] > 1 for r in picks))
-        up = {(r["h"], r["a"]): r for r in out["upcoming"]}
-        self.assertTrue(up[("Celta Vigo", "Athletic Club")]["pick"])
-        self.assertFalse(up[("Real Betis", "Atletico Madrid")]["pick"])  # the away side is stronger
+    def test_rules(self):
+        avg = [3.0, 3.4, 2.4]
+        # Our home chance 36%: edge 8% at 3.00, inside A's 2.50-5.00 band, so both rules.
+        m = value.marks([0.36, 0.26, 0.38], avg, MODEL["rules"])
+        self.assertEqual(sorted(k["rule"] for k in m), ["A", "B"])
+        self.assertTrue(all(k["side"] == "1" for k in m))
+        # 4% at 2.40 on the away side: B only (below A's edge and price band).
+        m = value.marks([0.30, 0.2667, 0.4333], avg, MODEL["rules"])
+        self.assertEqual([(k["rule"], k["side"]) for k in m], [("B", "2")])
+        self.assertEqual(value.marks([0.3, 0.3, 0.4], avg, MODEL["rules"]), [])
 
-    def test_summary_and_tracking_date(self):
-        out = self._build()
-        s = value.summary(out["history"])
-        picks = [r for r in out["history"] if r["pick"]]
-        self.assertEqual(s["n"], len(picks))
-        self.assertAlmostEqual(s["profit"], round(sum((r["bk"][0] - 1) if r["hs"] > r["as"] else -1 for r in picks), 2))
-        self.assertGreater(s["clv"], 0)  # 3.0 before, 2.8 at kickoff
-        later = value.summary(out["history"], since="2026-09-01")
-        self.assertEqual(later["n"], sum(1 for r in picks if r["dt"] >= "2026-09-01"))
+    def test_no_look_ahead_and_record(self):
+        lines = []
+        # Five rounds for four clubs; A always out-shoots its opponent but loses.
+        pairs = [("A", "B", "C", "D"), ("A", "C", "B", "D"), ("A", "D", "B", "C"), ("B", "A", "D", "C"), ("C", "A", "D", "B")]
+        for r, (h1, a1, h2, a2) in enumerate(pairs):
+            d = f"{1 + 7 * r:02d}/08/2026"
+            for h, a in ((h1, a1), (h2, a2)):
+                a_home = h == "A"
+                hs, hst = (20, 9) if a_home else (8, 3)
+                as_, ast = (20, 9) if a == "A" else (8, 3)
+                hg, ag = (0, 1) if a_home else (1, 0) if a == "A" else (1, 1)
+                lines.append(f"E0,{d},15:00,{h},{a},{hg},{ag},{hs},{as_},{hst},{ast},2.6,3.4,2.8,2.7,3.5,3.0")
+        lines.append("E0,05/09/2026,15:00,A,B,1,0,15,5,6,2,3.0,3.4,2.4,3.2,3.5,2.5")
+        out = value.score_league(_rows("\n".join(lines)), _rows("E0,12/09/2026,15:00,A,C,,,,,,,3.0,3.4,2.4,3.2,3.5,2.6"), "Test", MODEL)
+        # The sixth match is the first with five matches behind each side; A out-shot everyone but lost.
+        picks = [h for h in out["history"] if h["h"] == "A" and h["a"] == "B"]
+        self.assertTrue(picks and all(h["side"] == "1" for h in picks))
+        self.assertTrue(all(h["won"] for h in picks))
+        b = next(h for h in picks if h["rule"] == "B")
+        self.assertEqual(b["price"], 3.2)  # rule B is paid at the best price
+        nxt = out["upcoming"][0]
+        self.assertIn("p", nxt)
+        s = value.summary(out["history"], "B")
+        self.assertEqual((s["n"], s["won"]), (1, 1))
+        self.assertEqual(value.summary(out["history"], "B", since="2026-10-01")["n"], 0)
+
+    def test_kickoff_is_uk_time(self):
+        self.assertEqual(value._iso(value.kickoff("07/11/2026", "17:30")), "2026-11-07T17:30Z")
+        self.assertEqual(value._iso(value.kickoff("01/08/2026", "17:30")), "2026-08-01T16:30Z")
 
 
 if __name__ == "__main__":

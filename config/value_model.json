@@ -1,0 +1,83 @@
+{
+  "what": "Market chance adjusted by recent shots, shots on target, goal difference and form. For each outcome: logit(chance) = logit(bookmaker average, margin removed) + z · coef, then the three chances are scaled to add up to 1. z are the four inputs standardised with the mean and sd below.",
+  "inputs": {
+    "sotd": "(home side's shots on target for − against, average of its last 8 league matches) − the same for the away side",
+    "shd": "the same with all shots",
+    "gd": "the same with goals",
+    "form": "home side's points in its last 5 league matches − the away side's"
+  },
+  "window": 8,
+  "form_window": 5,
+  "min_matches": 5,
+  "trained_on": "Top five leagues, 2006/07 to 2016/17 seasons, about 19,000 matches with bookmaker averages and shot counts.",
+  "checked_on": "The ten seasons after that, not used for fitting.",
+  "features": [
+    "sotd",
+    "shd",
+    "gd",
+    "form"
+  ],
+  "mean": {
+    "sotd": -0.133168,
+    "shd": -0.331044,
+    "gd": -0.048635,
+    "form": -0.29661
+  },
+  "sd": {
+    "sotd": 2.784203,
+    "shd": 5.842987,
+    "gd": 1.141952,
+    "form": 4.599379
+  },
+  "coef": {
+    "home": [
+      0.063049,
+      0.053256,
+      -0.046299,
+      -0.017721
+    ],
+    "draw": [
+      9e-05,
+      -0.003823,
+      0.004415,
+      -0.004731
+    ],
+    "away": [
+      -0.074425,
+      -0.058279,
+      0.053927,
+      0.025739
+    ]
+  },
+  "rules": {
+    "A": {
+      "min_edge": 0.05,
+      "min_odds": 2.5,
+      "max_odds": 5.0,
+      "paid_at": "average",
+      "checked": {
+        "bets": 357,
+        "units": 39.9,
+        "return": 0.112,
+        "seasons_up": "8 of 10"
+      }
+    },
+    "B": {
+      "min_edge": 0.03,
+      "paid_at": "best",
+      "checked": {
+        "bets": 1246,
+        "units": 106.9,
+        "return": 0.086,
+        "seasons_up": "9 of 10"
+      }
+    }
+  },
+  "divisions": {
+    "E0": "Premier League",
+    "SP1": "La Liga",
+    "D1": "Bundesliga",
+    "I1": "Serie A",
+    "F1": "Ligue 1"
+  }
+}
