@@ -1,0 +1,308 @@
+{
+  "season": "2026/27",
+  "gameweek": 9,
+  "fpl_finished_gameweek": 9,
+  "no_new_round": false,
+  "change_note": null,
+  "fixture_changes": [
+    {
+      "kind": "rescheduled",
+      "id": 159,
+      "gameweek": 16,
+      "home": "Nott'm Forest",
+      "away": "Everton",
+      "was": "2026-12-19T15:00:00Z",
+      "now": "2026-12-20T14:00:00Z"
+    }
+  ],
+  "unscheduled": [],
+  "score_disagreements": [],
+  "kickoff_disagreements": [
+    {
+      "home": "Nott'm Forest",
+      "away": "Everton",
+      "fpl": "2026-12-20T14:00:00Z",
+      "catalogue": "2026-12-19T15:00:00Z"
+    }
+  ],
+  "gameweek_disagreements": [],
+  "finished_missing_shots": [],
+  "xg_fallback": {
+    "used": [
+      {
+        "home": "Chelsea",
+        "away": "Man Utd",
+        "gameweek": 9
+      },
+      {
+        "home": "Bournemouth",
+        "away": "Leeds",
+        "gameweek": 9
+      },
+      {
+        "home": "Brentford",
+        "away": "Nott'm Forest",
+        "gameweek": 9
+      },
+      {
+        "home": "Coventry City",
+        "away": "Sunderland",
+        "gameweek": 9
+      },
+      {
+        "home": "Hull City",
+        "away": "Ipswich Town",
+        "gameweek": 9
+      },
+      {
+        "home": "Man City",
+        "away": "Brighton",
+        "gameweek": 9
+      },
+      {
+        "home": "Spurs",
+        "away": "Crystal Palace",
+        "gameweek": 9
+      },
+      {
+        "home": "Aston Villa",
+        "away": "Fulham",
+        "gameweek": 9
+      },
+      {
+        "home": "Liverpool",
+        "away": "Arsenal",
+        "gameweek": 9
+      },
+      {
+        "home": "Newcastle",
+        "away": "Everton",
+        "gameweek": 9
+      }
+    ],
+    "scale": 1.1208,
+    "overlap": 80,
+    "unmatched": [],
+    "skipped": []
+  },
+  "unmapped_shots": 14,
+  "shots": 2192,
+  "matches": 90,
+  "players": 454,
+  "missing_opta_metrics": [],
+  "europe": {
+    "fixtures": 72,
+    "teams": [
+      "Arsenal",
+      "Aston Villa",
+      "Bournemouth",
+      "Brighton",
+      "Crystal Palace",
+      "Liverpool",
+      "Man City",
+      "Man Utd",
+      "Sunderland"
+    ],
+    "teams_without_europe": [
+      "Brentford",
+      "Chelsea",
+      "Coventry City",
+      "Everton",
+      "Fulham",
+      "Hull City",
+      "Ipswich Town",
+      "Leeds",
+      "Newcastle",
+      "Nott'm Forest",
+      "Spurs"
+    ],
+    "opponent_names_outside_premier_league": [
+      "AC Milan",
+      "AEK Athens",
+      "AS Monaco",
+      "AS Roma",
+      "AZ Alkmaar",
+      "Anderlecht",
+      "Atlético Madrid",
+      "Barcelona",
+      "Bayern Munich",
+      "Besiktas",
+      "Borussia Dortmund",
+      "CSU Craiova",
+      "Celta Vigo",
+      "Club Brugge",
+      "Como",
+      "Dinamo Zagreb",
+      "FC Porto",
+      "Fenerbahce",
+      "Galatasaray",
+      "Getafe",
+      "Hapoel Be'er",
+      "Internazionale",
+      "Jablonec",
+      "Jagiellonia Bialystok",
+      "Kauno Zalgiris",
+      "LASK Linz",
+      "Lech Poznan",
+      "Lens",
+      "Levski Sofia",
+      "Lille",
+      "Lillestrom",
+      "Lyon",
+      "Napoli",
+      "Panathinaikos",
+      "Paris Saint-Germain",
+      "RB Leipzig",
+      "RB Salzburg",
+      "Real Betis",
+      "Real Madrid",
+      "Real Sociedad",
+      "SK Sturm Graz",
+      "Sabah FK",
+      "Slavia Prague",
+      "Sparta Prague",
+      "Sporting CP",
+      "TSG Hoffenheim",
+      "Torreense",
+      "Viking FK",
+      "Viktoria Plzen"
+    ],
+    "competitions": [
+      "UCL",
+      "UECL",
+      "UEL"
+    ],
+    "kickoffs_marked_unconfirmed": 0
+  },
+  "europe_note": "European kickoffs are loaded automatically (72 matches, 9 Premier League clubs). Domestic cup ties are not included, so a midweek cup game will not show up in the rest-day count. Clubs with no European tie this season are treated as not playing in Europe.",
+  "derived": {
+    "league_gpg": 1.4939,
+    "home_factor": 1.0799,
+    "away_factor": 0.9201,
+    "home_gpg": 1.6132,
+    "away_gpg": 1.3746,
+    "goal_rate_seasons": [
+      "2324",
+      "2425",
+      "2526"
+    ],
+    "goal_rate_matches": 1140,
+    "pen_xg": 0.7612,
+    "pen_n": 12,
+    "elo_hfa": 45.0,
+    "elo_mean": 1640.5,
+    "history_matches": 7456,
+    "history_through": "2026-05-24"
+  },
+  "elo": {
+    "Arsenal": 1824.6,
+    "Aston Villa": 1700.8,
+    "Bournemouth": 1682.4,
+    "Brentford": 1640.0,
+    "Brighton": 1647.3,
+    "Chelsea": 1644.2,
+    "Coventry City": 1572.8,
+    "Crystal Palace": 1604.4,
+    "Everton": 1608.7,
+    "Fulham": 1621.3,
+    "Hull City": 1460.8,
+    "Ipswich Town": 1542.2,
+    "Leeds": 1636.9,
+    "Liverpool": 1715.7,
+    "Man City": 1803.4,
+    "Man Utd": 1714.1,
+    "Newcastle": 1631.4,
+    "Nott'm Forest": 1615.2,
+    "Spurs": 1555.2,
+    "Sunderland": 1587.7
+  },
+  "prior": {
+    "Arsenal": 0.935,
+    "Aston Villa": 0.34,
+    "Bournemouth": 0.285,
+    "Brentford": 0.09,
+    "Brighton": 0.09,
+    "Chelsea": 0.125,
+    "Coventry City": -0.73,
+    "Crystal Palace": -0.07,
+    "Everton": -0.07,
+    "Fulham": -0.02,
+    "Hull City": -1.17,
+    "Ipswich Town": -0.775,
+    "Leeds": -0.085,
+    "Liverpool": 0.445,
+    "Man City": 0.775,
+    "Man Utd": 0.455,
+    "Newcastle": 0.045,
+    "Nott'm Forest": -0.04,
+    "Spurs": -0.24,
+    "Sunderland": -0.335
+  },
+  "catalogue": {
+    "commit": "10f59c2aa32ac9c0b73459b3a535abc7a81d1721",
+    "committed_at": "2026-11-04T08:33:23+01:00",
+    "exported_at": "2026-11-04T08:29:10",
+    "folder": "2026-27"
+  },
+  "fetch": {
+    "fetched_at": "2026-11-06T08:43:33Z",
+    "season_start_year": 2026,
+    "catalogue": {
+      "commit": "10f59c2aa32ac9c0b73459b3a535abc7a81d1721",
+      "committed_at": "2026-11-04T08:33:23+01:00",
+      "fetched_at": "2026-11-06T08:43:08Z",
+      "repo": "https://github.com/oladeeayo/pl-catalogue.git"
+    },
+    "fpl": {
+      "fetched_at": "2026-11-06T08:43:09Z",
+      "events": 38,
+      "fixtures": 380,
+      "bootstrap_bytes": 1955649
+    },
+    "history": {
+      "fetched_at": "2026-11-06T08:43:26Z",
+      "files": [
+        "E0_2526.csv",
+        "E1_2526.csv",
+        "E0_2425.csv",
+        "E1_2425.csv",
+        "E0_2324.csv",
+        "E1_2324.csv",
+        "E0_2223.csv",
+        "E1_2223.csv",
+        "E0_2122.csv",
+        "E1_2122.csv",
+        "E0_2021.csv",
+        "E1_2021.csv",
+        "E0_1920.csv",
+        "E1_1920.csv",
+        "E0_1819.csv",
+        "E1_1819.csv"
+      ],
+      "season_codes": [
+        "2526",
+        "2425",
+        "2324",
+        "2223",
+        "2122",
+        "2021",
+        "1920",
+        "1819"
+      ]
+    },
+    "europe": {
+      "fetched_at": "2026-11-06T08:43:32Z",
+      "events": 70,
+      "espn_clubs": 20
+    },
+    "current_season": {
+      "fetched_at": "2026-11-06T08:43:33Z",
+      "file": "E0.csv",
+      "season_code": "2627",
+      "bytes": 44210
+    }
+  },
+  "teams": 20,
+  "rounds": 38,
+  "fixtures": 380
+}

@@ -1,17 +1,17 @@
 {
   "ok": true,
-  "timestamp": "2026-11-01T05:29:22Z",
+  "timestamp": "2026-11-06T08:44:17Z",
   "season": "2026/27",
-  "gameweek": 8,
-  "no_new_round": true,
-  "summary": "GW9 in progress (8 of 10 matches played) – the page will update once the round is complete. Fixtures were checked again and the site was refreshed. This is not an error.",
+  "gameweek": 9,
+  "no_new_round": false,
+  "summary": "2026/27 through gameweek 9 passed every check (90 matches, 380 fixtures).",
   "data_dates": {
-    "catalogue_commit": "740df5c518abec442583009288d25c545e819d88",
-    "catalogue_exported_at": "2026-10-28T01:47:07",
-    "fpl_fetched_at": "2026-11-01T05:28:12Z",
-    "history_fetched_at": "2026-11-01T05:28:33Z",
-    "europe_fetched_at": "2026-11-01T05:28:55Z",
-    "generated_at": "2026-11-01T05:29:03Z"
+    "catalogue_commit": "10f59c2aa32ac9c0b73459b3a535abc7a81d1721",
+    "catalogue_exported_at": "2026-11-04T08:29:10",
+    "fpl_fetched_at": "2026-11-06T08:43:09Z",
+    "history_fetched_at": "2026-11-06T08:43:26Z",
+    "europe_fetched_at": "2026-11-06T08:43:32Z",
+    "generated_at": "2026-11-06T08:43:47Z"
   },
   "checks": [
     {
@@ -27,7 +27,12 @@
     {
       "name": "Finished matches have a score, xG and shots",
       "pass": true,
-      "detail": "All finished matches in this file have a score, xG and at least one shot."
+      "detail": "All finished matches in this file have a score, xG and at least one shot. 10 of them have no shot list yet and use football-data.co.uk match xG and shot counts instead."
+    },
+    {
+      "name": "Matches without shots use football-data xG only while pl-catalogue has none",
+      "pass": true,
+      "detail": "10 matches (Chelsea vs Man Utd, Bournemouth vs Leeds, Brentford vs Nott'm Forest, Coventry City vs Sunderland, Hull City vs Ipswich Town, Man City vs Brighton, Spurs vs Crystal Palace, Aston Villa vs Fulham, Liverpool vs Arsenal, Newcastle vs Everton) use football-data.co.uk xG times 1.1208, the ratio measured on 80 matches both sources have. They go back to catalogue shots on the first build after pl-catalogue publishes them."
     },
     {
       "name": "Shot xG adds up to the match xG",
@@ -62,12 +67,12 @@
     {
       "name": "Gameweek did not go backwards",
       "pass": true,
-      "detail": "Was gameweek 8, now 8."
+      "detail": "Was gameweek 8, now 9."
     },
     {
       "name": "Sources were refreshed, or the pause is explained",
       "pass": true,
-      "detail": "GW9 in progress (8 of 10 matches played) – the page will update once the round is complete. Premier League fixtures were downloaded again. European fixtures were downloaded again. Historical results: 16 files."
+      "detail": "pl-catalogue moved to a new commit 10f59c2a. Premier League fixtures were downloaded again. European fixtures were downloaded again. Historical results: 16 files."
     },
     {
       "name": "Official scores match the match file",
@@ -77,7 +82,7 @@
     {
       "name": "Fixture changes are recorded",
       "pass": true,
-      "detail": "No kickoff or gameweek changes since the previous build."
+      "detail": "1 change(s) since the previous build."
     },
     {
       "name": "Bookmaker prices are not in the data",
@@ -112,10 +117,20 @@
     {
       "name": "The status line matches the fixtures",
       "pass": true,
-      "detail": "GW9 in progress (8 of 10 matches played) – the page will update once the round is complete. Fixtures were checked again and the site was refreshed. This is not an error."
+      "detail": "2026/27 through gameweek 9 passed every check (90 matches, 380 fixtures)."
     }
   ],
-  "fixture_changes": [],
+  "fixture_changes": [
+    {
+      "kind": "rescheduled",
+      "id": 159,
+      "gameweek": 16,
+      "home": "Nott'm Forest",
+      "away": "Everton",
+      "was": "2026-12-19T15:00:00Z",
+      "now": "2026-12-20T14:00:00Z"
+    }
+  ],
   "europe": {
     "fixtures": 72,
     "teams": [
