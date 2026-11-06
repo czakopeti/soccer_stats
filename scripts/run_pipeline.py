@@ -33,23 +33,24 @@ def _other_leagues(cfg: dict, data: dict, fetch_first: bool) -> None:
             write_odds_page(ROOT, json.loads(previous.read_text(encoding="utf-8")), ROOT / "site")
 
 
-def _home_value(cfg: dict, data: dict, fetch_first: bool) -> None:
-    """Home value page. A failure here never blocks the other pages."""
+def _value(cfg: dict, data: dict, fetch_first: bool) -> None:
+    """Value picks page. A failure here never blocks the other pages."""
     from plx import value
 
     try:
-        leagues_path = ROOT / "data" / "leagues.json"
-        leagues = json.loads(leagues_path.read_text(encoding="utf-8")) if leagues_path.exists() else None
-        out = value.build(ROOT, cfg, data, leagues, fetch_first=fetch_first)
+        out = value.build(ROOT, cfg, data["season"], int(data["season_start_year"]), fetch_first=fetch_first)
         (ROOT / "data" / "value.json").write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
         value.write_page(ROOT, out, ROOT / "site")
-        picks = sum(1 for lg in out["leagues"] for m in lg["upcoming"] if m.get("pick"))
-        print(f"Home value: {picks} picks for the next round, season {out['season_summary']}, test {out['live_summary']}.")
+        picks = sum(1 for m in out["upcoming"] if m.get("marks"))
+        print(f"Value picks: {picks} marked in the next matches, record {out['summary']}, problems {out['problems']}.")
     except Exception as exc:  # noqa: BLE001 - reported, the other pages still stand
-        print(f"Home value page was not updated: {exc}")
+        print(f"Value page was not updated: {exc}")
         previous = ROOT / "data" / "value.json"
         if previous.exists():
-            value.write_page(ROOT, json.loads(previous.read_text(encoding="utf-8")), ROOT / "site")
+            try:
+                value.write_page(ROOT, json.loads(previous.read_text(encoding="utf-8")), ROOT / "site")
+            except Exception as exc2:  # noqa: BLE001 - an old file from an earlier page version
+                print(f"The previous value page could not be written either: {exc2}")
 
 
 def main() -> int:
@@ -104,7 +105,7 @@ def main() -> int:
         (ROOT / "data" / "status.json").write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
         print(f"Verification passed. Snapshot {snap.relative_to(ROOT)}.")
         _other_leagues(cfg, data, fetch_first=not args.skip_fetch)
-        _home_value(cfg, data, fetch_first=not args.skip_fetch)
+        _value(cfg, data, fetch_first=not args.skip_fetch)
         return 0
     except Exception as exc:  # noqa: BLE001 - the weekly job must say what broke, in plain language
         report = {

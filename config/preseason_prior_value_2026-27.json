@@ -1,0 +1,5 @@
+{
+  "season": "2026/27",
+  "tracking_from": "2026-11-06",
+  "why": "Value picks are recorded from this date as the real test. The model was fitted on older seasons, so earlier matches this season are also unseen, but the two rules were chosen after looking at results up to this date."
+}
