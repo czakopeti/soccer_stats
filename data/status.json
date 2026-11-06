@@ -1,17 +1,17 @@
 {
   "ok": true,
-  "timestamp": "2026-11-06T08:44:17Z",
+  "timestamp": "2026-11-06T08:56:58Z",
   "season": "2026/27",
   "gameweek": 9,
-  "no_new_round": false,
-  "summary": "2026/27 through gameweek 9 passed every check (90 matches, 380 fixtures).",
+  "no_new_round": true,
+  "summary": "GW10 starts 6 Nov 2026, 20:00 Europe/London (20:00 UTC) – no new results yet. Fixtures were checked again and the site was refreshed. This is not an error.",
   "data_dates": {
     "catalogue_commit": "10f59c2aa32ac9c0b73459b3a535abc7a81d1721",
     "catalogue_exported_at": "2026-11-04T08:29:10",
-    "fpl_fetched_at": "2026-11-06T08:43:09Z",
-    "history_fetched_at": "2026-11-06T08:43:26Z",
-    "europe_fetched_at": "2026-11-06T08:43:32Z",
-    "generated_at": "2026-11-06T08:43:47Z"
+    "fpl_fetched_at": "2026-11-06T08:55:36Z",
+    "history_fetched_at": "2026-11-06T08:55:59Z",
+    "europe_fetched_at": "2026-11-06T08:56:22Z",
+    "generated_at": "2026-11-06T08:56:34Z"
   },
   "checks": [
     {
@@ -67,12 +67,12 @@
     {
       "name": "Gameweek did not go backwards",
       "pass": true,
-      "detail": "Was gameweek 8, now 9."
+      "detail": "Was gameweek 9, now 9."
     },
     {
       "name": "Sources were refreshed, or the pause is explained",
       "pass": true,
-      "detail": "pl-catalogue moved to a new commit 10f59c2a. Premier League fixtures were downloaded again. European fixtures were downloaded again. Historical results: 16 files."
+      "detail": "GW10 starts 6 Nov 2026, 20:00 Europe/London (20:00 UTC) – no new results yet. Premier League fixtures were downloaded again. European fixtures were downloaded again. Historical results: 16 files."
     },
     {
       "name": "Official scores match the match file",
@@ -82,7 +82,7 @@
     {
       "name": "Fixture changes are recorded",
       "pass": true,
-      "detail": "1 change(s) since the previous build."
+      "detail": "No kickoff or gameweek changes since the previous build."
     },
     {
       "name": "Bookmaker prices are not in the data",
@@ -117,20 +117,10 @@
     {
       "name": "The status line matches the fixtures",
       "pass": true,
-      "detail": "2026/27 through gameweek 9 passed every check (90 matches, 380 fixtures)."
+      "detail": "GW10 starts 6 Nov 2026, 20:00 Europe/London (20:00 UTC) – no new results yet. Fixtures were checked again and the site was refreshed. This is not an error."
     }
   ],
-  "fixture_changes": [
-    {
-      "kind": "rescheduled",
-      "id": 159,
-      "gameweek": 16,
-      "home": "Nott'm Forest",
-      "away": "Everton",
-      "was": "2026-12-19T15:00:00Z",
-      "now": "2026-12-20T14:00:00Z"
-    }
-  ],
+  "fixture_changes": [],
   "europe": {
     "fixtures": 72,
     "teams": [
