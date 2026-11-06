@@ -55,7 +55,10 @@
     "understat_codes": ["La_liga", "Bundesliga", "Serie_A", "Ligue_1"],
     "understat_data_template": "https://understat.com/getLeagueData/{league}/{year}",
     "understat_page_template": "https://understat.com/league/{league}/{year}",
-    "round_gap_days": 2.5
+    "round_gap_days": 2.5,
+    "football_data_divisions": {"La_liga": "SP1", "Bundesliga": "D1", "Serie_A": "I1", "Ligue_1": "F1"},
+    "fallback_min_overlap": 30,
+    "fallback_why": "When Understat does not answer, the last good Understat copy in data/understat/ is used and matches played since are filled from football-data.co.uk, with xG rescaled on the matches both sources have."
   },
   "prediction": {
     "dixon_coles_rho": -0.25,

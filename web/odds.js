@@ -9,6 +9,7 @@ const S = { lg: 0, r: null };
 try { const s = JSON.parse(localStorage.getItem("plx-odds") || "{}"); if (Number.isInteger(s.lg) && s.lg < D.leagues.length) S.lg = s.lg; } catch (e) { /* storage blocked */ }
 function save() { try { localStorage.setItem("plx-odds", JSON.stringify({ lg: S.lg })); } catch (e) { /* storage blocked */ } }
 function day(dt) { const d = new Date(dt.replace(" ", "T") + "Z"); return d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "Europe/London" }); }
+function dayISO(d) { return d ? new Date(d + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" }) : "–"; }
 function span(x) { const ds = x.matches.map((m) => m.dt).sort(), a = day(ds[0]), b = day(ds[ds.length - 1]); return a === b ? a : `${a} – ${b}`; }
 function render() {
   const L = D.leagues[S.lg];
@@ -26,9 +27,10 @@ function render() {
       <select id="rd" style="background:var(--panel);border:1px solid var(--faint);border-radius:8px;padding:5px 8px">${L.rounds.map((x) => `<option value="${x.r}" ${x.r === S.r ? "selected" : ""}>${span(x)}${x.r === L.next_round ? " (next)" : ""}</option>`).join("")}</select>
       ${done.length ? `<span class="note">Favourite won ${fav} of ${done.length}</span>` : ""}</div>
     <div class="panel" style="margin-top:12px"><div class="tw"><table class="probs"><thead><tr><th class="l">Match</th><th>1</th><th>X</th><th>2</th><th>Expected goals</th><th>Over 2.5</th><th>Result</th></tr></thead><tbody>
-    ${R.matches.map((m) => `<tr><td class="l"><span class="note" style="display:block">${day(m.dt)}</span><b>${esc(m.h)}</b> – <b>${esc(m.a)}</b></td><td class="mono">${odd(m.pw)}</td><td class="mono">${odd(m.pd)}</td><td class="mono">${odd(m.pl)}</td><td class="mono">${m.lh.toFixed(2)}–${m.la.toFixed(2)}</td><td class="mono">${pc(m.o25)}</td><td class="mono">${m.hs != null ? m.hs + "–" + m.as : "–"}</td></tr>`).join("")}
+    ${R.matches.map((m) => `<tr><td class="l"><span class="note" style="display:block">${day(m.dt)}</span><b>${esc(m.h)}</b> – <b>${esc(m.a)}</b></td><td class="mono">${odd(m.pw)}</td><td class="mono">${odd(m.pd)}</td><td class="mono">${odd(m.pl)}</td><td class="mono">${m.lh.toFixed(2)}–${m.la.toFixed(2)}</td><td class="mono">${pc(m.o25)}</td><td class="mono">${m.hs != null ? m.hs + "–" + m.as + (m.fb ? "*" : "") : "–"}</td></tr>`).join("")}
     </tbody></table></div></div>
     ${L.postponed && L.postponed.length ? `<p class="note" style="margin-top:10px">Postponed, waiting for a new date: ${L.postponed.map((m) => esc(m.h) + " – " + esc(m.a)).join(", ")}.</p>` : ""}
+    ${L.source && L.source.understat === "kept" ? `<p class="note" style="margin-top:10px">Understat, the usual xG source, did not answer on this update, so its last copy (results through ${esc(dayISO(L.source.through))}) is used.${L.source.filled ? ` ${L.source.filled} ${L.source.filled === 1 ? "match" : "matches"} played since then, marked *, ${L.source.filled === 1 ? "comes" : "come"} from football-data.co.uk, with xG rescaled by ${Number(L.source.scale).toFixed(2)} to Understat's level (measured on ${L.source.overlap} matches both sources have).` : ""} Understat's own data replaces this as soon as it is back.</p>` : ""}
     <p class="note" style="margin-top:10px">Matches are grouped by kickoff: a group closes when a club would play twice in it, or after a gap of more than two and a half days. A group can differ from the official matchday. Data: match xG from Understat, refreshed weekly. The model does not know about injuries, suspensions or a change of manager.</p></section>`;
 }
 app.addEventListener("click", (e) => { const b = e.target.closest("[data-lg]"); if (!b) return; S.lg = +b.dataset.lg; S.r = null; save(); render(); });
