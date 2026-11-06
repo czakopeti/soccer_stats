@@ -45,6 +45,12 @@
     "clean_tau_rounds": 1000000,
     "clean_xg_blend": 1
   },
+  "xg_fallback": {
+    "enabled": true,
+    "division": "E0",
+    "min_overlap_matches": 30,
+    "why": "When the Premier League feed shows a match as finished but pl-catalogue has no shots for it, match xG and shot counts come from football-data.co.uk's current-season file, rescaled to the catalogue's xG on the matches both have. A match with catalogue shots never uses it."
+  },
   "leagues": {
     "understat_codes": ["La_liga", "Bundesliga", "Serie_A", "Ligue_1"],
     "understat_data_template": "https://understat.com/getLeagueData/{league}/{year}",

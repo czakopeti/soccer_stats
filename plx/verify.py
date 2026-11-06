@@ -45,6 +45,10 @@ def _shot_goals(shots_for_match: list, home: str) -> tuple[int, int]:
     return hs, as_
 
 
+def by_fid_has(shots: list, fid: int) -> bool:
+    return any(s[1] == fid for s in shots)
+
+
 def _round_note(root: Path, data: dict, meta: dict) -> RoundNote:
     tz_name = ((data.get("cfg") or {}).get("display_timezone")) or "UTC"
     gap_days = 12
@@ -127,15 +131,41 @@ def verify(root: Path, data: dict, meta: dict, previous: dict | None, browser: b
     for m in data["matches"]:
         if m.get("hs") is None or m.get("as") is None or m.get("xh") is None or m.get("xa") is None:
             missing_bits.append(f"{m.get('h')} vs {m.get('a')}: missing score or xG")
-        if not m.get("shots"):
+        if not m.get("shots") and m.get("src") != "fd":
             missing_bits.append(f"{m.get('h')} vs {m.get('a')}: no shots")
+        if m.get("src") == "fd" and (m.get("shots") or not isinstance(m.get("sh"), int) or not isinstance(m.get("sa"), int)):
+            missing_bits.append(f"{m.get('h')} vs {m.get('a')}: football-data match is malformed")
+    fallback = [m for m in data["matches"] if m.get("src") == "fd"]
     _check(
         checks,
         "Finished matches have a score, xG and shots",
         not missing_bits and not meta.get("finished_missing_shots"),
-        "All finished matches in this file have a score, xG and at least one shot."
+        (
+            "All finished matches in this file have a score, xG and at least one shot."
+            + (
+                f" {len(fallback)} of them have no shot list yet and use football-data.co.uk match xG and shot counts instead."
+                if fallback
+                else ""
+            )
+        )
         if not missing_bits and not meta.get("finished_missing_shots")
         else "; ".join((missing_bits + [str(x) for x in meta.get("finished_missing_shots", [])])[:8]),
+    )
+    fb_meta = meta.get("xg_fallback") or {}
+    scale = fb_meta.get("scale")
+    _check(
+        checks,
+        "Matches without shots use football-data xG only while pl-catalogue has none",
+        all(not by_fid_has(data["shots"], m["id"]) for m in fallback)
+        and (not fallback or (isinstance(scale, (int, float)) and 0.7 <= float(scale) <= 1.5)),
+        (
+            "No match needed it: every finished match has catalogue shots."
+            if not fallback
+            else f"{len(fallback)} matches ({', '.join(m['h'] + ' vs ' + m['a'] for m in fallback[:10])}) use football-data.co.uk xG "
+            f"times {scale}, the ratio measured on {fb_meta.get('overlap')} matches both sources have. "
+            "They go back to catalogue shots on the first build after pl-catalogue publishes them."
+        )
+        + (" Not filled: " + "; ".join(fb_meta.get("skipped")[:5]) + "." if fb_meta.get("skipped") else ""),
     )
 
     by_fid = defaultdict(list)
@@ -148,6 +178,8 @@ def verify(root: Path, data: dict, meta: dict, previous: dict | None, browser: b
     if verify_cfg_path.exists():
         tol = float(json.loads(verify_cfg_path.read_text(encoding="utf-8"))["verify"]["xg_sum_tolerance"])
     for m in data["matches"]:
+        if m.get("src") == "fd":
+            continue
         shots = by_fid.get(m["id"], [])
         hx = sum(s[9] for s in shots if s[2] == m["h"] and s[10] != "O")
         ax = sum(s[9] for s in shots if s[2] == m["a"] and s[10] != "O")

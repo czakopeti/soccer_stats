@@ -55,6 +55,9 @@ const grpOf = (sit) => sit === "penalty" ? "pen" : SETP.has(sit) ? "sp" : "op";
 
 /* ---------- core aggregation ---------- */
 function teamMatches(t, upto) { return M.filter(m => m.gw <= upto && (m.h === t || m.a === t)).sort((a, b) => a.gw - b.gw); }
+// A match whose shots are not out yet: match xG and shot counts from football-data.co.uk, no shot list.
+const FB = (m) => m.src === "fd";
+function shotMatches(t, upto) { return teamMatches(t, upto).filter(m => !FB(m)); }
 function persp(m, t) { const h = m.h === t; return { t, o: h ? m.a : m.h, home: h, gf: h ? m.hs : m.as, ga: h ? m.as : m.hs, xg: h ? m.xh : m.xa, xga: h ? m.xa : m.xh, p: h ? m.ph : m.pa, xp: h ? m.xph : m.xpa, gw: m.gw, m }; }
 function table(upto, mode = "all") {
   const rows = TEAMS.map(t => {
@@ -73,12 +76,12 @@ function verdictRaw(m) { const res = m.hs > m.as ? "H" : m.hs < m.as ? "A" : "D"
 // season-long robbery ranking (lowest winning probability among all wins so far)
 function robberyRank(m, upto) { const wins = M.filter(x => x.gw <= upto && x.hs !== x.as).map(x => verdictRaw(x).pAct).sort((a, b) => a - b); const v = verdictRaw(m).pAct; return wins.filter(p => p < v).length + 1; }
 function verdict(m) {
-  const { res, pAct, win, lose } = verdictRaw(m);
+  const { res, pAct, win, lose } = verdictRaw(m), by = FB(m) ? "the xG" : "the shots", By = FB(m) ? "The xG" : "The shots";
   const pLoseWin = res === "H" ? m.pl : res === "A" ? m.pw : 0;
-  if (win && pAct < TH.robbery_win_probability) { const rk = robberyRank(m, S.gw); return { tag: "Robbery", cls: "rob", txt: `<b>${esc(win)}</b> won, though the shots gave them only a ${pc(pAct)} chance${pLoseWin > 0.4 ? `, against ${pc(pLoseWin)} for ${esc(lose)}` : ""}.${rk <= 5 ? ` ${nthBiggest(rk)[0].toUpperCase()}${nthBiggest(rk).slice(1)} robbery of the season so far.` : ""}` }; }
+  if (win && pAct < TH.robbery_win_probability) { const rk = robberyRank(m, S.gw); return { tag: "Robbery", cls: "rob", txt: `<b>${esc(win)}</b> won, though ${by} gave them only a ${pc(pAct)} chance${pLoseWin > 0.4 ? `, against ${pc(pLoseWin)} for ${esc(lose)}` : ""}.${rk <= 5 ? ` ${nthBiggest(rk)[0].toUpperCase()}${nthBiggest(rk).slice(1)} robbery of the season so far.` : ""}` }; }
   if (!win && Math.max(m.pw, m.pl) > TH.blown_win_probability) { const t = m.pw > m.pl ? m.h : m.a; return { tag: "Blown win", cls: "rob", txt: `<b>${esc(t)}</b> had a ${pc(Math.max(m.pw, m.pl))} chance of winning and only drew.` }; }
-  if (win && pAct > TH.dominance_win_probability && Math.abs(m.xh - m.xa) > TH.dominance_xg_diff) return { tag: "Deserved", cls: "dom", txt: `<b>${esc(win)}</b> won, and the shots agreed: a ${pc(pAct)} chance.` };
-  return { tag: "Fair", cls: "", txt: win ? `The shots gave ${esc(win)} a ${pc(pAct)} chance of winning.` : `From the shots, the draw was a ${pc(pAct)} chance.` };
+  if (win && pAct > TH.dominance_win_probability && Math.abs(m.xh - m.xa) > TH.dominance_xg_diff) return { tag: "Deserved", cls: "dom", txt: `<b>${esc(win)}</b> won, and ${by} agreed: a ${pc(pAct)} chance.` };
+  return { tag: "Fair", cls: "", txt: win ? `${By} gave ${esc(win)} a ${pc(pAct)} chance of winning.` : `From ${by}, the draw was a ${pc(pAct)} chance.` };
 }
 
 /* ---------- insights ---------- */
@@ -87,7 +90,7 @@ function insights() {
   const rows = M.filter(m => m.gw === gw);
   // 1. robbery or dominance of the round
   const rob = rows.map(m => ({ m, ...verdictRaw(m) })).filter(x => x.win).sort((a, b) => a.pAct - b.pAct)[0];
-  if (rob && rob.pAct < TH.robbery_win_probability) { const rk = robberyRank(rob.m, gw); out.push({ c: "var(--gold)", h: "Robbery of the round", t: `<b>${esc(rob.win)}</b> beat ${esc(rob.lose)} with only a ${pc(rob.pAct)} chance from the shots. ${rk === 1 ? "The biggest robbery of the season so far." : `${nthBiggest(rk)[0].toUpperCase()}${nthBiggest(rk).slice(1)} robbery of the season so far.`}` }); }
+  if (rob && rob.pAct < TH.robbery_win_probability) { const rk = robberyRank(rob.m, gw); out.push({ c: "var(--gold)", h: "Robbery of the round", t: `<b>${esc(rob.win)}</b> beat ${esc(rob.lose)} with only a ${pc(rob.pAct)} chance from ${FB(rob.m) ? "the xG" : "the shots"}. ${rk === 1 ? "The biggest robbery of the season so far." : `${nthBiggest(rk)[0].toUpperCase()}${nthBiggest(rk).slice(1)} robbery of the season so far.`}` }); }
   else { const dom = rows.map(m => ({ m, d: Math.abs(m.xh - m.xa), t: m.xh > m.xa ? m.h : m.a, o: m.xh > m.xa ? m.a : m.h })).sort((a, b) => b.d - a.d)[0]; out.push({ c: "var(--good)", h: "Control of the round", t: `<b>${esc(dom.t)}</b> created ${nf(dom.d, 1)} xG more than ${esc(dom.o)}. No robbery this weekend.` }); }
   // 2. justice gap
   const tab = table(gw); const worst = tab.slice().sort((a, b) => a.luck - b.luck)[0], best = tab.slice().sort((a, b) => b.luck - a.luck)[0];
@@ -350,14 +353,14 @@ function adTable(upto) {
   const CL = Object.fromEntries(cleanTable(upto).map(x => [x.t, x])), sh = shotsUpTo(upto).filter(s => s[I.res] !== "O"), R = cleanR(upto);
   const st = new Map(sh.map(s => [s, shotState(s)]));
   return TEAMS.map(t => {
-    const ms = teamMatches(t, upto), P = Math.max(1, ms.length), fo = sh.filter(s => s[I.team] === t), ag = sh.filter(s => s[I.opp] === t);
-    let lvl = 0; for (const m of ms) for (const [a, b, z] of stateSegs(m, t).seg) if (z === 0) lvl += b - a;
+    const ms = teamMatches(t, upto), sm = shotMatches(t, upto), P = Math.max(1, sm.length), fo = sh.filter(s => s[I.team] === t), ag = sh.filter(s => s[I.opp] === t);
+    let lvl = 0; for (const m of sm) for (const [a, b, z] of stateSegs(m, t).seg) if (z === 0) lvl += b - a;
     const x = (a) => a.reduce((q, s) => q + s[I.xg], 0), np = (a) => a.filter(s => s[I.sit] !== "penalty");
     const fl = fo.filter(s => st.get(s) === 0), al = ag.filter(s => st.get(s) === 0);
     const adj = ms.map(m => adjMatch(m, t, R)), l3 = adj.slice(-3), ln = Math.max(1, l3.length);
     const o = OP[t] || {};
     return { t, P: ms.length, ax: CL[t].ax, axa: CL[t].axa, xg: CL[t].xg, xga: CL[t].xga,
-      lx: lvl ? x(fl) / lvl * 90 : null, lxa: lvl ? x(al) / lvl * 90 : null, lvlPct: lvl / Math.max(1, ms.reduce((a, m) => a + stateSegs(m, t).end, 0)) * 100,
+      lx: lvl ? x(fl) / lvl * 90 : null, lxa: lvl ? x(al) / lvl * 90 : null, lvlPct: lvl / Math.max(1, sm.reduce((a, m) => a + stateSegs(m, t).end, 0)) * 100,
       sr: np(fo).length ? np(fo).filter(s => s[I.xg] >= TH.good_chance_xg).length / np(fo).length * 100 : null, sra: np(ag).length ? np(ag).filter(s => s[I.xg] >= TH.good_chance_xg).length / np(ag).length * 100 : null,
       bc: fo.filter(s => s[I.xg] >= TH.big_chance_xg).length / P, bca: ag.filter(s => s[I.xg] >= TH.big_chance_xg).length / P,
       sp: x(fo.filter(s => grpOf(s[I.sit]) === "sp")) / P, spa: x(ag.filter(s => grpOf(s[I.sit]) === "sp")) / P,
@@ -435,7 +438,7 @@ function oppPower(t, upto, future) {
 /* ---------- game state from the goal timeline ---------- */
 function gameState(t, upto) {
   let lead = 0, trail = 0, tot = 0, dropped = 0, won = 0, first = 0, firstN = 0, late = 0, lateA = 0;
-  for (const m of teamMatches(t, upto)) {
+  for (const m of shotMatches(t, upto)) {
     const home = m.h === t, me = home ? 0 : 1, ev = [];
     for (const [we, side, , res] of m.shots) { if (res === "G") ev.push([we, side]); else if (res === "O") ev.push([we, 1 - side]); }
     const end = Math.max(TH.regulation_minutes, ...m.shots.map(s => s[0] + 1)); let gf = 0, ga = 0, last = 0, everLead = false, everTrail = false;
@@ -482,7 +485,7 @@ function matchCard(m, k) {
       return `<div class="mc ${open ? "open" : ""}" data-m="${m.id}" style="animation-delay:${k * 35}ms" role="button" tabindex="0" aria-expanded="${open}">
         <div class="row1"><span class="tm">${esc(m.h)}</span><span class="sc">${m.hs}–${m.as}</span><span class="tm r">${esc(m.a)}</span></div>
         <div class="xg"><span>xG <b>${nf(m.xh, 2)}</b></span><span class="tags"><span class="tag ${v.cls}">${v.tag}</span>${wpCurve(m).minW != null && wpCurve(m).minW < TH.comeback_win_probability && wpCurve(m).trailed ? `<span class="tag cb" title="Win probability fell to ${pc(wpCurve(m).minW)}">Comeback</span>` : ""}</span><span>xG <b>${nf(m.xa, 2)}</b></span></div>
-        ${flow(m)}
+        ${FB(m) ? `<p class="note fbnote">Shots ${m.sh}–${m.sa}. No shot-by-shot data yet, so the xG is football-data.co.uk's and there is no minute-by-minute line.</p>` : flow(m)}
         <div class="jbar"><div class="h ${res === "H" ? "act" : ""}" style="width:${m.pw * 100}%">${m.pw > .12 ? pc(m.pw) : ""}</div><div class="d ${res === "D" ? "act" : ""}" style="width:${m.pd * 100}%">${m.pd > .12 ? pc(m.pd) : ""}</div><div class="a ${res === "A" ? "act" : ""}" style="width:${m.pl * 100}%">${m.pl > .12 ? pc(m.pl) : ""}</div></div>
         ${mkt(m)}<p class="verdict">${v.txt}</p>${open ? matchDetail(m) : ""}</div>`;
 }
@@ -490,11 +493,12 @@ function viewFordulo() {
   const rows = M.filter(m => m.gw === S.gw);
   return `<section class="sec">${insights()}</section>
     <section class="sec"><div class="sechead"><h2>Gameweek ${S.gw}</h2><div class="lgd"><span><i style="background:var(--home)"></i>home</span><span><i style="background:var(--away)"></i>away</span><span><i style="background:var(--gold)"></i>goal</span></div></div>
-    <p class="note">The line is each side's chances added up, minute by minute. The bar is who would have won if every shot went in exactly as often as its xG says. The outline marks what actually happened. Click a match for the shot map.</p>
+    <p class="note">The line is each side's chances added up, minute by minute. The bar is who would have won if every shot went in exactly as often as its xG says. The outline marks what actually happened. Click a match for the shot map.${rows.some(FB) ? ` ${qty(rows.filter(FB).length, "match", "matches")} this week ${rows.filter(FB).length === 1 ? "has" : "have"} no shot list yet. ${rows.filter(FB).length === 1 ? "Its" : "Their"} xG comes from football-data.co.uk, rescaled by ${nf(D.xg_fallback ? D.xg_fallback.scale : 1, 2)} to match the shot-based xG on the ${D.xg_fallback ? D.xg_fallback.overlap : 0} matches both sources have. The strength model and the next round's odds use ${rows.filter(FB).length === 1 ? "it" : "them"} like any other match. Shot-based figures (game state, chance quality, shot maps) leave ${rows.filter(FB).length === 1 ? "it" : "them"} out until the shots arrive.` : ""}</p>
     <div class="mgrid">${rows.map((m, k) => matchCard(m, k)).join("")}</div></section>${tiles()}`;
 }
 function mkt() { return ""; }
 function matchDetail(m) {
+  if (FB(m)) return `<p class="note" style="margin-top:6px">No shot map yet: the shot-by-shot data for this match has not been published. It appears here on the first update after it is.</p>`;
   const sh = SH.filter(s => s[I.fid] === m.id); const hs = sh.filter(s => s[I.team] === m.h), as = sh.filter(s => s[I.team] === m.a);
   const list = sh.slice().sort((a, b) => a[I.min] - b[I.min]).map(s => `<div><span class="mono" style="color:var(--muted)">${s[I.min]}'</span><span><b style="color:${s[I.team] === m.h ? "var(--home)" : "var(--away)"}">${esc(s[I.pl])}</b> · ${esc(SIT_LABEL[s[I.sit]] || s[I.sit])}${s[I.last] && s[I.last] !== "None" ? ", from " + esc(LAST[s[I.last]] || s[I.last]) : ""}</span><span class="mono" style="${s[I.res] === "G" ? "color:var(--gold);font-weight:700" : ""}">${s[I.res] === "O" ? "own goal" : nf(s[I.xg], 2) + " · " + RESN[s[I.res]]}</span></div>`).join("");
   const big = (arr) => arr.filter(s => s[I.xg] >= TH.big_chance_xg && s[I.res] !== "O").length;
@@ -503,7 +507,7 @@ function matchDetail(m) {
     <div><p class="kicker" style="margin-bottom:6px">Every shot</p><div class="slist">${list}</div></div></div>`;
 }
 function wpTiles() {
-  const ms = M.filter(m => m.gw === S.gw); if (!ms.length) return "";
+  const ms = M.filter(m => m.gw === S.gw && !FB(m)); if (!ms.length) return "";
   const cbm = ms.filter(m => wpCurve(m).minW != null).sort((a, b) => wpCurve(a).minW - wpCurve(b).minW)[0], ex = ms.slice().sort((a, b) => wpCurve(b).excite - wpCurve(a).excite)[0];
   const out = [];
   if (cbm && wpCurve(cbm).minW < TH.exciting_dip_probability) { const C = wpCurve(cbm), w = C.res === 0 ? cbm.h : cbm.a; out.push(`<div class="tile"><span class="kicker">${C.trailed ? "Biggest comeback" : "Biggest swing"}</span><span class="big" style="color:var(--home)">${pc(C.minW)}</span><span class="who">${esc(w)}</span><span class="d">${esc(cbm.h)} ${cbm.hs}–${cbm.as} ${esc(cbm.a)}. At ${C.minT}', with the score ${C.minScore[0]}–${C.minScore[1]}, ${esc(poss(w))} win probability was only ${pc(C.minW)}, and they still won.</span></div>`); }
@@ -601,7 +605,7 @@ function wpSummary(m) {
   parts.push(`Excitement index: <b>${nf(C.excite, 1)}</b>.`);
   return parts.join(" ");
 }
-function wpTeam(t, upto) { let cb = 0, bl = 0, n = 0; for (const m of teamMatches(t, upto)) { const C = wpCurve(m), h = m.h === t, wi = h ? 1 : 3, z = persp(m, t), mn = Math.min(...C.pts.map(q => q[wi])), mx = Math.max(...C.pts.map(q => q[wi])); if (mn < TH.team_comeback_win_probability && z.p > 0) cb += z.p; if (mx > TH.team_blown_win_probability && z.p < 3) bl += 3 - z.p; n++; } return { cb, bl }; }
+function wpTeam(t, upto) { let cb = 0, bl = 0, n = 0; for (const m of shotMatches(t, upto)) { const C = wpCurve(m), h = m.h === t, wi = h ? 1 : 3, z = persp(m, t), mn = Math.min(...C.pts.map(q => q[wi])), mx = Math.max(...C.pts.map(q => q[wi])); if (mn < TH.team_comeback_win_probability && z.p > 0) cb += z.p; if (mx > TH.team_blown_win_probability && z.p < 3) bl += 3 - z.p; n++; } return { cb, bl }; }
 const WPA = {}; for (const m of M) for (const e of wpCurve(m).ev) if (e.pid != null && e.pid >= 0) WPA[e.pid] = (WPA[e.pid] || 0) + e.d3;
 
 /* ---------- Preview: next round ---------- */
@@ -786,11 +790,11 @@ const TG = {
 function teamMetrics(upto) {
   const R = ratings(upto), sh = shotsUpTo(upto), fat = Object.fromEntries(fatigue(upto).map(x => [x.t, x])), CL = Object.fromEntries(cleanTable(upto).map(x => [x.t, x]));
   const sx = (a) => a.reduce((q, s) => q + s[I.xg], 0), np = (a) => a.filter(s => s[I.sit] !== "penalty");
-  return table(upto).map(r => { const t = r.t, P = Math.max(1, r.P), fo = sh.filter(s => s[I.team] === t && s[I.res] !== "O"), ag = sh.filter(s => s[I.opp] === t && s[I.res] !== "O"), gs = gameState(t, upto), o = OP[t] || {};
-    return { t, P: r.P, pw: R.pw[t], pts: r.pts, xpts: r.xpts, luck: r.luck, xgd: (r.xg - r.xga) / P, axgd: CL[t].axgd, npxgd: (sx(np(fo)) - sx(np(ag))) / P, fin: r.gf - r.xg, keep: r.xga - r.ga,
-      xg: r.xg / P, shf: fo.length / P, xgs: fo.length ? sx(fo) / fo.length : null, bc: fo.filter(s => s[I.xg] >= TH.big_chance_xg).length / P, sp: sx(fo) ? sx(fo.filter(s => grpOf(s[I.sit]) === "sp")) / sx(fo) * 100 : null,
+  return table(upto).map(r => { const t = r.t, P = Math.max(1, r.P), Ps = Math.max(1, shotMatches(t, upto).length), fo = sh.filter(s => s[I.team] === t && s[I.res] !== "O"), ag = sh.filter(s => s[I.opp] === t && s[I.res] !== "O"), gs = gameState(t, upto), o = OP[t] || {};
+    return { t, P: r.P, pw: R.pw[t], pts: r.pts, xpts: r.xpts, luck: r.luck, xgd: (r.xg - r.xga) / P, axgd: CL[t].axgd, npxgd: (sx(np(fo)) - sx(np(ag))) / Ps, fin: r.gf - r.xg, keep: r.xga - r.ga,
+      xg: r.xg / P, shf: fo.length / Ps, xgs: fo.length ? sx(fo) / fo.length : null, bc: fo.filter(s => s[I.xg] >= TH.big_chance_xg).length / Ps, sp: sx(fo) ? sx(fo.filter(s => grpOf(s[I.sit]) === "sp")) / sx(fo) * 100 : null,
       box: o.attack_misc_tch_in_box, crs: o.possession_op_crosses, thr: o.possession_through_balls, head: o.attack_misc_headed_goals, fb: o.attack_misc_fast_break_goals, wood: o.attack_misc_hit_woodwork,
-      xga: r.xga / P, sha: ag.length / P, xgsa: ag.length ? sx(ag) / ag.length : null, bca: ag.filter(s => s[I.xg] >= TH.big_chance_xg).length / P, ppda: o.sequences_ppda, hto: o.sequences_high_turnovers, obox: o.defending_misc_opp_tch_in_box, err: o.misc_errors_lead_to_goal,
+      xga: r.xga / P, sha: ag.length / Ps, xgsa: ag.length ? sx(ag) / ag.length : null, bca: ag.filter(s => s[I.xg] >= TH.big_chance_xg).length / Ps, ppda: o.sequences_ppda, hto: o.sequences_high_turnovers, obox: o.defending_misc_opp_tch_in_box, err: o.misc_errors_lead_to_goal,
       cbP: wpTeam(t, upto).cb, blP: wpTeam(t, upto).bl, cgN: closeGames(t, upto).n, cgP: closeGames(t, upto).pts, cgL: closeGames(t, upto).luck, lead: gs.lead, trail: gs.trail, first: gs.first, dropped: gs.dropped, won: gs.won, late: gs.late, lateA: gs.lateA,
       poss: o.possession_pos_perc, acc: o.possession_accuracy, spd: o.sequences_direct_speed_for, bu: o.sequences_build_ups, da: o.sequences_direct_attacks, ten: o.sequences_ten_plus_passes, spp: o.sequences_passes_for,
       sosA: oppPower(t, upto, false), sosB: oppPower(t, upto, true), rest: fat[t].avg, short: fat[t].ns, eu: fat[t].eu };
@@ -984,7 +988,7 @@ function stateSegs(m, t) {
   seg.push([last, end, Math.sign(gf - ga)]); return { seg, goals, end };
 }
 function gameStateViz(t) {
-  const ms = teamMatches(t, S.gw); if (!ms.length) return "";
+  const ms = shotMatches(t, S.gw); if (!ms.length) return "";
   const gs = gameState(t, S.gw), nw = narrow(), W = nw ? 360 : 620, L = nw ? 96 : 150, Rr = 8, rh = 22, T = 16, H = T + ms.length * rh + 14, mx = 98;
   const px = (v) => L + Math.min(v, mx) / mx * (W - L - Rr), COL = { 1: "var(--good)", 0: "#3a4266", "-1": "var(--bad)" };
   let g = `<text x="${px(0)}" y="10">0'</text><text x="${px(45)}" y="10" text-anchor="middle">45'</text><text x="${px(90)}" y="10" text-anchor="middle">90'</text>`;
@@ -1053,7 +1057,7 @@ function render() {
   const V = { fordulo: viewFordulo, elozetes: viewElozetes, schedule: viewMenetrend, valodi: viewValodi, tamadas: () => viewAD("att"), vedekezes: () => viewAD("def"), table: viewTabella, tisztitott: cleanSection, power: viewPower, eselyek: simSection, mutatok: viewMutatok, club: viewCsapat, jatekos: viewJatekos, meccsek: viewMeccsek, lovesek: viewLovesek }[S.tab] || viewFordulo;
   const changes = (D.fixture_changes || []).filter(c => c.kind !== "added" || false);
   const changeNote = changes.length ? ` Fixture changes since the last build: ${changes.slice(0, 4).map(c => `${c.home} vs ${c.away} (${c.kind})`).join("; ")}.` : "";
-  $("app").innerHTML = header() + V() + method() + `<p class="credit">Data: <a href="https://github.com/oladeeayo/pl-catalogue">pl-catalogue</a> (Fantasy Premier League, Understat, Opta via The Analyst, Transfermarkt), non-commercial, with attribution. Kickoff times and scores are checked against the Premier League's own fixture feed. European dates come from ESPN's public football schedule. Pre-season strength is calculated here from historical Premier League and Championship results (football-data.co.uk). No bookmaker prices. Updated ${esc((D.exported || "").slice(0, 10))}, gameweeks 1–${D.gw}. Independent, unofficial.${esc(changeNote)} <a href="./status.html">Build status</a>.</p>`;
+  $("app").innerHTML = header() + V() + method() + `<p class="credit">Data: <a href="https://github.com/oladeeayo/pl-catalogue">pl-catalogue</a> (Fantasy Premier League, Understat, Opta via The Analyst, Transfermarkt), non-commercial, with attribution. Kickoff times and scores are checked against the Premier League's own fixture feed. European dates come from ESPN's public football schedule. Pre-season strength is calculated here from historical Premier League and Championship results (football-data.co.uk). ${M.some(FB) ? `Matches whose shots are not out yet (gameweek ${[...new Set(M.filter(FB).map(m => m.gw))].join(", ")}) use football-data.co.uk match xG and shot counts until they are. ` : ""}No bookmaker prices. Updated ${esc((D.exported || "").slice(0, 10))}, gameweeks 1–${D.gw}. Independent, unofficial.${esc(changeNote)} <a href="./status.html">Build status</a>.</p>`;
 }
 function rerender(keepScroll = true) { const y = scrollY; render(); if (keepScroll) scrollTo(0, y); }
 const toTop = () => { const st = document.querySelector(".sticky"); if (st && scrollY > st.offsetTop) scrollTo(0, st.offsetTop - 4); };
