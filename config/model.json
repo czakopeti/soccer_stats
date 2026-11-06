@@ -51,6 +51,14 @@
     "min_overlap_matches": 30,
     "why": "When the Premier League feed shows a match as finished but pl-catalogue has no shots for it, match xG and shot counts come from football-data.co.uk's current-season file, rescaled to the catalogue's xG on the matches both have. A match with catalogue shots never uses it."
   },
+  "home_value": {
+    "fixtures_url": "https://www.football-data.co.uk/fixtures.csv",
+    "rule": {
+      "text": "Our home expected goals (with home advantage) are higher than the away side's, and the bookmakers' average home price is higher than our fair home odds. Bet the home side.",
+      "max_home_odds": null
+    },
+    "why": "Paper-tracking a rule found on this season's early rounds. Matches before the season file's tracking_from date were used to find it; only later ones test it."
+  },
   "leagues": {
     "understat_codes": ["La_liga", "Bundesliga", "Serie_A", "Ligue_1"],
     "understat_data_template": "https://understat.com/getLeagueData/{league}/{year}",
