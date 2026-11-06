@@ -40,18 +40,47 @@ def _get(url: str, user_agent: str, referer: str, attempts: int = 4) -> bytes:
     raise LeagueError(f"Could not download {url}: {last}")
 
 
-def fetch(root: Path, cfg: dict, start_year: int) -> None:
+def fetch(root: Path, cfg: dict, start_year: int) -> dict:
+    """Download each league from Understat, and football-data's current file as the stand-in.
+
+    A good Understat download also replaces the kept copy in data/understat/.
+    Returns the problems per league; none of them stops the other leagues.
+    """
+    from plx.elo import season_code
+
     lc = cfg["leagues"]
     dest = root / "sources" / "leagues"
+    keep = root / "data" / "understat"
     dest.mkdir(parents=True, exist_ok=True)
+    keep.mkdir(parents=True, exist_ok=True)
+    problems: dict[str, str] = {}
     for code in lc["understat_codes"]:
+        fresh = dest / f"{code}.json"
+        if fresh.exists():
+            fresh.unlink()
         url = lc["understat_data_template"].format(league=code, year=start_year)
         ref = lc["understat_page_template"].format(league=code, year=start_year)
-        body = _get(url, cfg["http_user_agent"], ref)
-        data = json.loads(body)
-        if "dates" not in data:
-            raise LeagueError(f"{code}: the download has no match list.")
-        (dest / f"{code}.json").write_text(json.dumps(data["dates"], ensure_ascii=False), encoding="utf-8")
+        try:
+            data = json.loads(_get(url, cfg["http_user_agent"], ref))
+            if not isinstance(data, dict) or not data.get("dates"):
+                raise LeagueError(f"{code}: the download has no match list.")
+        except (LeagueError, ValueError) as exc:
+            problems[code] = f"Understat: {exc}"[:300]
+        else:
+            text = json.dumps(data["dates"], ensure_ascii=False)
+            fresh.write_text(text, encoding="utf-8")
+            (keep / f"{code}.json").write_text(text, encoding="utf-8")
+        div = (lc.get("football_data_divisions") or {}).get(code)
+        if div:
+            fd_url = cfg["sources"]["football_data_template"].format(code=season_code(start_year), division=div)
+            fd_path = dest / f"fd_{div}.csv"
+            try:
+                fd_path.write_bytes(_get(fd_url, cfg["http_user_agent"], fd_url, attempts=2))
+            except LeagueError as exc:
+                if fd_path.exists():
+                    fd_path.unlink()
+                problems.setdefault(code + " football-data", str(exc)[:300])
+    return problems
 
 
 def _assign_rounds(rows: list[dict], gap_days: float) -> None:
@@ -80,7 +109,7 @@ def build_league(dates: list[dict], season_file: dict, cfg: dict) -> dict:
     for d in dates:
         row = {"h": d["h"]["title"], "a": d["a"]["title"], "dt": d["datetime"], "played": bool(d["isResult"])}
         if row["played"]:
-            row.update(hs=int(d["goals"]["h"]), **{"as": int(d["goals"]["a"])}, xh=float(d["xG"]["h"]), xa=float(d["xG"]["a"]))
+            row.update(hs=int(d["goals"]["h"]), **{"as": int(d["goals"]["a"])}, xh=float(d["xG"]["h"]), xa=float(d["xG"]["a"]), fb=d.get("src") == "fd")
         rows.append(row)
     teams = sorted({r["h"] for r in rows} | {r["a"] for r in rows})
     prior = season_file["prior"]
@@ -107,6 +136,8 @@ def build_league(dates: list[dict], season_file: dict, cfg: dict) -> dict:
                 "pw": round(p["pw"], 5), "pd": round(p["pd"], 5), "pl": round(p["pl"], 5), "o25": round(p["o25"], 4)}
         if r["played"]:
             item.update(hs=r["hs"], **{"as": r["as"]})
+            if r.get("fb"):
+                item["fb"] = 1
         out_rounds.setdefault(r["gw"], []).append(item)
     open_rounds = [g for g, ms in out_rounds.items() if any("hs" not in m for m in ms)]
     return {
@@ -139,15 +170,32 @@ def build_all(root: Path, cfg: dict, season_label: str, start_year: int, fetch_f
     if not path.is_file():
         raise LeagueError(f"{path.name} is missing, so the other leagues were not built.")
     season = json.loads(path.read_text(encoding="utf-8"))["leagues"]
-    if fetch_first:
-        fetch(root, cfg, start_year)
+    fetch_problems = fetch(root, cfg, start_year) if fetch_first else {}
     out = {"season": season_label, "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
            "model": {k: cfg["ratings"][k] for k in ("tau_rounds", "prior_matches", "xg_blend", "home_advantage")} | {"dixon_coles_rho": cfg["prediction"]["dixon_coles_rho"]},
            "leagues": []}
     problems = []
-    for code in cfg["leagues"]["understat_codes"]:
-        dates = json.loads((root / "sources" / "leagues" / f"{code}.json").read_text(encoding="utf-8"))
+    from plx import league_fallback as lf
+
+    lc = cfg["leagues"]
+    for code in lc["understat_codes"]:
+        fresh = root / "sources" / "leagues" / f"{code}.json"
+        source = {"understat": "fresh"}
+        if fresh.exists():
+            dates = json.loads(fresh.read_text(encoding="utf-8"))
+        else:
+            kept = root / "data" / "understat" / f"{code}.json"
+            if not kept.exists():
+                raise LeagueError(f"{code}: Understat failed and there is no earlier copy. {fetch_problems.get(code, '')}")
+            dates = json.loads(kept.read_text(encoding="utf-8"))
+            div = (lc.get("football_data_divisions") or {}).get(code)
+            fd = lf.load_fd(root / "sources" / "leagues" / f"fd_{div}.csv") if div else []
+            dates, info = lf.fill(dates, fd, int(lc.get("fallback_min_overlap", 30)))
+            source = {"understat": "kept", "through": lf.cache_date(dates), "filled": info["filled"],
+                      "scale": info["scale"], "overlap": info["overlap"], "note": info["note"],
+                      "problem": fetch_problems.get(code, "")}
         lg = build_league(dates, season[code], cfg)
+        lg["source"] = source
         problems += check(lg)
         out["leagues"].append(lg)
     if problems:
