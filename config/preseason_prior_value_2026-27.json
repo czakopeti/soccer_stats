@@ -1,5 +1,128 @@
 {
-  "season": "2026/27",
-  "tracking_from": "2026-11-06",
-  "why": "Value picks are recorded from this date as the real test. The model was fitted on older seasons, so earlier matches this season are also unseen, but the two rules were chosen after looking at results up to this date."
+ "season": "2026/27",
+ "tracking_from": "2026-11-06",
+ "why": "Value picks are recorded from this date as the real test. The model was fitted on older seasons, so earlier matches this season are also unseen, but the two rules were chosen after looking at results up to this date.",
+ "elo_start": {
+  "SP1": {
+   "newcomer": 1943.52,
+   "teams": {
+    "Alaves": 1961.17,
+    "Ath Bilbao": 2017.65,
+    "Ath Madrid": 2154.6,
+    "Barcelona": 2338.02,
+    "Betis": 2104.26,
+    "Celta": 2041.58,
+    "Elche": 1943.74,
+    "Espanol": 1958.63,
+    "Getafe": 1999.45,
+    "La Coruna": 1868.64,
+    "Levante": 1978.79,
+    "Malaga": 1846.08,
+    "Osasuna": 1980.42,
+    "Real Madrid": 2287.67,
+    "Santander": 1832.17,
+    "Sevilla": 1947.45,
+    "Sociedad": 2008.07,
+    "Valencia": 2040.5,
+    "Vallecano": 2036.6,
+    "Villarreal": 2148.7
+   }
+  },
+  "E0": {
+   "newcomer": 1758.73,
+   "teams": {
+    "Arsenal": 2162.19,
+    "Aston Villa": 1986.36,
+    "Bournemouth": 1979.3,
+    "Brentford": 1930.6,
+    "Brighton": 1940.93,
+    "Chelsea": 1935.6,
+    "Coventry": 1805.0,
+    "Crystal Palace": 1892.03,
+    "Everton": 1887.91,
+    "Fulham": 1906.62,
+    "Hull": 1746.27,
+    "Ipswich": 1710.77,
+    "Leeds": 1861.62,
+    "Liverpool": 2032.75,
+    "Man City": 2141.45,
+    "Man United": 2017.84,
+    "Newcastle": 1929.75,
+    "Nott'm Forest": 1890.73,
+    "Sunderland": 1847.0,
+    "Tottenham": 1833.31
+   }
+  },
+  "I1": {
+   "newcomer": 1779.1,
+   "teams": {
+    "Atalanta": 2098.09,
+    "Bologna": 2012.62,
+    "Cagliari": 1888.4,
+    "Como": 2098.43,
+    "Fiorentina": 2003.58,
+    "Frosinone": 1824.63,
+    "Genoa": 1919.34,
+    "Inter": 2275.75,
+    "Juventus": 2123.59,
+    "Lazio": 2029.35,
+    "Lecce": 1864.4,
+    "Milan": 2091.06,
+    "Monza": 1770.36,
+    "Napoli": 2148.94,
+    "Parma": 1893.41,
+    "Roma": 2144.88,
+    "Sassuolo": 1921.26,
+    "Torino": 1932.75,
+    "Udinese": 1963.95,
+    "Venezia": 1796.08
+   }
+  },
+  "D1": {
+   "newcomer": 1559.43,
+   "teams": {
+    "Augsburg": 1664.36,
+    "Bayern Munich": 2065.48,
+    "Dortmund": 1907.8,
+    "Ein Frankfurt": 1718.18,
+    "FC Koln": 1587.09,
+    "Freiburg": 1716.93,
+    "Hamburg": 1634.69,
+    "Hoffenheim": 1745.29,
+    "Leverkusen": 1866.67,
+    "M'gladbach": 1634.3,
+    "Mainz": 1713.44,
+    "Paderborn": 1487.76,
+    "RB Leipzig": 1817.7,
+    "Schalke 04": 1557.52,
+    "Stuttgart": 1835.36,
+    "Union Berlin": 1634.77,
+    "Werder Bremen": 1616.97
+   }
+  },
+  "F1": {
+   "newcomer": 1588.25,
+   "teams": {
+    "Angers": 1633.03,
+    "Auxerre": 1729.26,
+    "Brest": 1727.62,
+    "Le Havre": 1676.04,
+    "Le Mans": 1630.23,
+    "Lens": 1902.97,
+    "Lille": 1877.92,
+    "Lorient": 1739.18,
+    "Lyon": 1857.23,
+    "Marseille": 1852.67,
+    "Monaco": 1847.67,
+    "Nice": 1729.78,
+    "Paris FC": 1731.31,
+    "Paris SG": 2042.9,
+    "Rennes": 1851.05,
+    "Strasbourg": 1829.72,
+    "Toulouse": 1762.45,
+    "Troyes": 1561.11
+   }
+  }
+ },
+ "elo_start_why": "Elo ratings at the end of the previous season, replayed from 2000/01 league results with the method in config/value_model.json. newcomer: the starting rating for a club that has never played in that league."
 }

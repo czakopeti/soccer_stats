@@ -8,10 +8,11 @@ where z are four standardised inputs from each side's last league matches
 (shots on target, shots, goals, form). The three chances are then scaled to
 add up to 1.
 
-Two rules, marked at the end of each row:
-  A  edge ≥ 5% against the average price, average price 2.50–5.00
-  B  edge ≥ 3% against the average price, taken at the best price
-Edge = our chance × average price − 1. Only home and away wins are bet.
+Rules are listed in the model file and marked at the end of each row. Rule C:
+edge ≥ 5% against the average price, average price 2.50–5.00, and our own Elo
+rating (elofootball.com's method, replayed from league results) gives that side
+no more than the market does. Edge = our chance × average price − 1. Only
+home and away wins are bet.
 
 Every finished match this season is scored the same way, from the matches
 before it and the price collected before kickoff, so the page measures every
@@ -117,9 +118,27 @@ def chances(avg: list[float], x: dict, model: dict) -> list[float]:
     return [p / t for p in out]
 
 
-def marks(p: list[float], avg: list[float], rules: dict) -> list[dict]:
+def market(avg: list[float]) -> list[float]:
+    inv = [1 / o for o in avg]
+    s = sum(inv)
+    return [v / s for v in inv]
+
+
+def elo_chances(d: float, model: dict) -> list[float]:
+    """Home, draw, away chance from the Elo difference d (home advantage included)."""
+    x = d / 100
+    f = model["elo"]["fit"]
+    sig = lambda c: 1 / (1 + math.exp(-(c[0] + c[1] * x + c[2] * x * x)))  # noqa: E731
+    h, a = sig(f["home"]), sig(f["away"])
+    dr = max(1 - h - a, 0.05)
+    t = h + dr + a
+    return [h / t, dr / t, a / t]
+
+
+def marks(p: list[float], avg: list[float], rules: dict, elo: list[float] | None = None) -> list[dict]:
     """Picks on the home (1) or away (2) side."""
     out = []
+    q = market(avg)
     for i, side in ((0, "1"), (2, "2")):
         edge = p[i] * avg[i] - 1
         for name, r in rules.items():
@@ -127,14 +146,43 @@ def marks(p: list[float], avg: list[float], rules: dict) -> list[dict]:
                 continue
             if "min_odds" in r and not (r["min_odds"] <= avg[i] < r["max_odds"]):
                 continue
+            if r.get("elo_not_higher") and (elo is None or elo[i] > q[i]):
+                continue
             out.append({"rule": name, "side": side, "edge": round(edge, 4)})
     return out
 
 
-def score_league(season_rows: list[dict], fixtures: list[dict], label: str, model: dict) -> dict:
+class Elo:
+    """elofootball.com's method on league results, from the season-start ratings."""
+
+    def __init__(self, start: dict, model: dict):
+        self.r = dict(start.get("teams", {}))
+        self.newcomer = float(start["newcomer"])
+        self.hfa = float(model["elo"]["home_advantage"])
+        self.k = float(model["elo"]["k"])
+
+    def diff(self, h: str, a: str) -> float:
+        return self.r.setdefault(h, self.newcomer) + self.hfa - self.r.setdefault(a, self.newcomer)
+
+    def add(self, r: dict) -> None:
+        hg, ag = _num(r.get("FTHG")), _num(r.get("FTAG"))
+        if hg is None or ag is None:
+            return
+        h, a = r["HomeTeam"].strip(), r["AwayTeam"].strip()
+        we = 1 / (10 ** (-self.diff(h, a) / 400) + 1)
+        gd = abs(hg - ag)
+        gdm = 1 if gd <= 1 else 1.5 if gd == 2 else (11 + gd) / 8
+        res = 1 if hg > ag else 0.5 if hg == ag else 0
+        d = self.k * gdm * (res - we)
+        self.r[h] += d
+        self.r[a] -= d
+
+
+def score_league(season_rows: list[dict], fixtures: list[dict], label: str, model: dict, elo_start: dict | None = None) -> dict:
     """Past matches scored from the matches before them; next matches from all played so far."""
     rules = model["rules"]
     form = Form(model["window"], model["form_window"])
+    elo = Elo(elo_start, model) if elo_start else None
     rows = []
     for r in season_rows:
         try:
@@ -159,7 +207,7 @@ def score_league(season_rows: list[dict], fixtures: list[dict], label: str, mode
             if x is None or not all(v and v > 1 for v in avg):
                 continue
             p = chances(avg, x, model)
-            mk = marks(p, avg, rules)
+            mk = marks(p, avg, rules, elo_chances(elo.diff(h, a), model) if elo else None)
             if not mk:
                 continue
             hg, ag = _num(r.get("FTHG")), _num(r.get("FTAG"))
@@ -175,6 +223,8 @@ def score_league(season_rows: list[dict], fixtures: list[dict], label: str, mode
                                 "profit": round(price - 1, 3) if res == k["side"] else -1.0})
         for _t, r in batch:
             form.add(r)
+            if elo:
+                elo.add(r)
         i = j
     upcoming = []
     for r in fixtures:
@@ -191,7 +241,10 @@ def score_league(season_rows: list[dict], fixtures: list[dict], label: str, mode
             p = chances(row["avg"], x, model)
             row["p"] = [round(v, 4) for v in p]
             row["edge"] = [round(p[0] * row["avg"][0] - 1, 4), round(p[2] * row["avg"][2] - 1, 4)]
-            row["marks"] = marks(p, row["avg"], rules)
+            e = elo_chances(elo.diff(h, a), model) if elo else None
+            if e:
+                row["elo"] = [round(v, 4) for v in e]
+            row["marks"] = marks(p, row["avg"], rules, e)
         upcoming.append(row)
     upcoming.sort(key=lambda m: m["t"])
     return {"label": label, "history": history, "upcoming": upcoming}
@@ -244,7 +297,7 @@ def build(root: Path, cfg: dict, season_label: str, start_year: int, fetch_first
         if not rows:
             problems.append(f"{label}: no season file")
             continue
-        leagues.append(score_league(rows, [r for r in fixtures if r.get("Div") == div], label, model))
+        leagues.append(score_league(rows, [r for r in fixtures if r.get("Div") == div], label, model, season.get("elo_start", {}).get(div)))
     if not leagues:
         raise ValueBuildError("No league could be scored. " + "; ".join(problems))
     history = sorted((h for L in leagues for h in L["history"]), key=lambda h: h["t"], reverse=True)
