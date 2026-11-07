@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>About elofootball.com – how the Elo ratings work</title>
+    <meta name="description" content="How elofootball.com rates European club football since 1955: scope, starting ratings, rules and the choice of the weighting factor k.">
+    <link rel="canonical" href="https://www.elofootball.com/about.php">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/assets/app.css?v=1794047990">
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('consent', 'default', {ad_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted', analytics_storage: 'granted'});
+        gtag('consent', 'default', {ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'denied',
+            region: ["AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU","IS","IE","IT","LV","LI","LT","LU","MT","NL","NO","PL","PT","RO","SK","SI","ES","SE","GB","CH"], wait_for_update: 500});
+        gtag('set', 'ads_data_redaction', true);
+        gtag('js', new Date());
+        gtag('config', "G-YHFT77SR9H");
+    </script>
+    <script>
+        /* Analytics und AdSense erst laden, wenn beides erfüllt ist:
+           (1) eine Interaktion (Scrollen, Tippen, Maus, Tastatur) und
+           (2) die Seite ist seit mindestens MIN_SEC Sekunden sichtbar geöffnet.
+           Scraper mit ferngesteuertem Browser scrollen oft automatisch, verlassen die Seite
+           aber nach ein bis zwei Sekunden wieder – sie lösen so nichts mehr aus. */
+        (function () {
+            var MIN_SEC = 5;
+            var done = false, interacted = false, timeOk = false,
+                events = ['scroll', 'wheel', 'mousemove', 'pointerdown', 'touchstart', 'keydown'];
+            function add(src, cross) {
+                var s = document.createElement('script');
+                s.async = true; s.src = src;
+                if (cross) { s.crossOrigin = 'anonymous'; }
+                document.head.appendChild(s);
+            }
+            function load() {
+                if (done) { return; }
+                done = true;
+                events.forEach(function (e) { window.removeEventListener(e, onEvent, {passive: true}); });
+                add("https:\/\/www.googletagmanager.com\/gtag\/js?id=G-YHFT77SR9H", false);
+                add('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9830372795231685', true);
+            }
+            function check() {
+                if (interacted && timeOk && !document.hidden) { load(); }
+            }
+            function onEvent() { interacted = true; check(); }
+            events.forEach(function (e) { window.addEventListener(e, onEvent, {passive: true}); });
+            setTimeout(function () { timeOk = true; check(); }, MIN_SEC * 1000);
+        })();
+    </script>
+</head>
+<body>
+<header class="site-header">
+    <div class="bar">
+        <a class="brand" href="/index.php">elo<span>football</span></a>
+        <nav class="main-nav" aria-label="Main">
+            <a href="/index.php">Ranking</a>
+            <a href="/countrylist.php">Countries</a>
+            <a href="/data_coverage.php">Data coverage</a>
+            <a href="/mqx.php">MQX</a>
+            <a href="/about.php" aria-current="page">About</a>
+        </nav>
+                <form class="donate" action="https://www.paypal.com/donate" method="post" target="_top">
+            <input type="hidden" name="hosted_button_id" value="E2BG9TQ3HZDUG">
+            <button type="submit" title="Support elofootball.com with a donation (opens PayPal)">Donate</button>
+        </form>
+    </div>
+</header>
+<main class="container">
+<article class="card prose article">
+    <p class="kicker">About</p>
+    <h1 class="page-title">About elofootball.com</h1>
+
+    <p class="lead">elofootball.com rates every European club with the Elo system – the method chess uses to rank players.
+        It was inspired by <a href="https://www.eloratings.net" target="_blank" rel="noopener">eloratings.net</a>, which ranks
+        national teams with Elo ratings and, in our view, captures their actual relative strength more accurately than any
+        incarnation of the official FIFA rankings so far.</p>
+
+    <h2>Scope</h2>
+    <p>This site applies that concept to European club football. It arguably provides more insight than league tables, as it allows
+        the comparison of clubs within a country across all covered competitions. A club which has a mediocre run in its domestic league
+        but excels in international competitions or domestic cups will therefore rank higher than the league table alone suggests.</p>
+    <p>More interestingly, the system allows the comparison between countries. Clubs involved in international competition exchange points
+        with each other and thus raise or lower the average rating and the relative position of their country.</p>
+    <p>The database covers 54 countries – all UEFA members except Liechtenstein, which has no league system
+        of its own – plus the former states Czechoslovakia, East Germany, the Soviet Union and Yugoslavia.
+        First divisions are available for all countries, second-tier or lower leagues for 22 of them. Domestic cups, league cups, super cups and relegation play-offs are covered as well.
+        Additionally, the database contains all competitive international matches between eligible clubs of these countries:
+        currently the Champions League, Europa League, Conference League and UEFA Super Cup, and historically
+        the Cup Winners' Cup, Inter-Cities Fairs Cup, Intertoto Cup, Mitropa Cup (until 1959) and Latin Cup, as well as the
+        qualification rounds of these competitions. Which seasons are complete for each country is listed under
+        <a href="/data_coverage.php">Data coverage</a>.</p>
+    <p>The database today:</p>
+    <div class="facts"><div class="fact"><b>1,141,329</b><span>Games</span></div><div class="fact"><b>1,055,222</b><span>League games</span></div><div class="fact"><b>52,121</b><span>National Cup games</span></div><div class="fact"><b>30,029</b><span>European Cup games</span></div><div class="fact"><b>3,957</b><span>Relegation playoffs</span></div><div class="fact"><b>3,744</b><span>Clubs</span></div><div class="fact"><b>59</b><span>Countries</span></div><div class="fact"><b>277</b><span>Competitions</span></div><div class="fact"><b>72</b><span>Seasons</span></div></div>
+    <h2>Rules</h2>
+    <p>Each league is assigned an initial rating which aims to reflect its long-term strength, e.g.
+        2000 for Spain, 1700 for Germany and 1625 for the Netherlands.
+        These starting values were found by giving all countries equal values, running several simulations, observing how the countries
+        diverged over time and adjusting accordingly. The actual initial ratings are, however, of secondary importance, since Elo ratings
+        always converge towards the real relative strength of a club (or country): a club with an initial rating of 1000 (2000) which plays
+        <math><mi>n</mi></math> consecutive draws against 1500 clubs will converge towards 1500 with increasing <math><mi>n</mi></math>,
+        because the system rewards (punishes) draws against stronger (weaker) teams. The convergence is even quicker if the stronger (weaker)
+        team loses (wins). Even with an initial rating of only 1000, Spanish clubs would almost always face better-rated competition at first
+        and consequently rise very quickly to a rating that reflects their actual strength.</p>
+    <p>The database starts in 1955/56, the inaugural season of the competition now known as the Champions League. All initial members
+        of a league are assigned the starting value of that league. A relegated club keeps its rating until it is promoted again, or until
+        it meets another eligible team in a cup competition. Admittedly, this also means that a former first-division club which has since
+        dropped to the fifth tier will still enter a cup match with the rating it had when it was relegated from the first division.
+        A promoted club which was not a founding member of the league starts with the average rating of the teams relegated in the previous
+        season or, if no team was relegated that year, with the rating of the worst team.</p>
+    <p>Games in domestic cups and international competitions only count if both participants have already played in their domestic
+        first division (or in a lower division covered by the database). Domestic cup games between two former first-division members are
+        included, since both clubs already have a rating.</p>
+    <p>For simplicity, all seasons run from 1 July to 30 June, even though Sweden, for instance, still plays a calendar-year season,
+        as Russia did until 2011.</p>
+
+    <h2 id="weighting-factor">In depth: setting the weighting factor</h2>
+    <p class="muted small">First published 13 September 2017</p>
+    <p>When I set up the calculation, my goal was to replicate the methodology of eloratings.net for European club football. I applied the
+        same formulas for the pre-game probabilities and for the points exchanged given that probability. The parameters I simply took as given,
+        namely the home advantage, which is set to 100, and the weighting factor <math><mi>k</mi></math>.
+        This parameter puts a weight on the magnitude of the event:</p>
+    <div class="table-wrap">
+    <table class="data">
+        <thead><tr><th class="num">k</th><th>eloratings.net</th><th>elofootball.com (2017)</th></tr></thead>
+        <tbody>
+            <tr><td class="num">60</td><td>World Cup finals</td><td>Champions League, UEFA Super Cup</td></tr>
+            <tr><td class="num">50</td><td>Continental championship finals and major intercontinental tournaments</td><td>Europa League, Champions League qualification</td></tr>
+            <tr><td class="num">40</td><td>World Cup and continental qualifiers and major tournaments</td><td>Europa League qualification, domestic leagues, domestic cups and super cups</td></tr>
+            <tr><td class="num">30</td><td>All other tournaments</td><td>Domestic league cups</td></tr>
+            <tr><td class="num">20</td><td>Friendly matches</td><td>Not covered</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p>I then stumbled upon an <a href="https://web.archive.org/web/2018/http://pena.lt/y/2013/02/07/applying-elo-ratings-to-football/" target="_blank" rel="noopener">interesting
+        article</a> on pena.lt/y, a site covering sports metrics, with a graph of the relationship between <math><mi>k</mi></math> and the
+        prediction error. The minimum is around <math><mi>k</mi><mo>=</mo><mn>15</mn></math>. Realising that the weighting factor I used for
+        most games, 40, was not even on the graph, I decided to run my own calculations to see whether I would get similar results.</p>
+    <p>The two main formulas of the calculation are the two-way win expectancy of the home team, where
+        <math><msub><mi>d</mi><mi>r</mi></msub></math> is the difference in ratings before the match,</p>
+    <p class="formula"><math display="block"><msub><mi>WE</mi><mi>h</mi></msub><mo>=</mo>
+        <mfrac><mn>1</mn><mrow><msup><mn>10</mn><mrow><mo>−</mo><msub><mi>d</mi><mi>r</mi></msub><mo>/</mo><mn>400</mn></mrow></msup><mo>+</mo><mn>1</mn></mrow></mfrac></math></p>
+    <p>and the points exchanged, with <math><mi>gdm</mi></math> being the goal difference multiplier and <math><mi>outcome</mi></math>
+        taking the values 1 (win), 0.5 (draw) and 0 (loss):</p>
+    <p class="formula"><math display="block"><msub><mi>RΔ</mi><mi>h</mi></msub><mo>=</mo><mi>k</mi><mo>·</mo><mi>gdm</mi><mo>·</mo>
+        <mo>(</mo><mi>outcome</mi><mo>−</mo><msub><mi>WE</mi><mi>h</mi></msub><mo>)</mo></math></p>
+    <p>The dynamic between these formulas is clear: given a certain <math><msub><mi>WE</mi><mi>h</mi></msub></math> before the game,
+        <math><msub><mi>RΔ</mi><mi>h</mi></msub></math> changes the post-game ratings of the teams and thereby the
+        <math><msub><mi>WE</mi><mi>h</mi></msub></math> of the next game. So <math><mi>k</mi></math> not only alters the size of the rating
+        change, but also the subsequent predictions. A smaller <math><mi>k</mi></math> slows down convergence and avoids very high
+        probabilities for favourites and very low ones for underdogs, which means that upsets are considered more likely – two-way
+        probabilities of 90:10 might become 87:13, for example.</p>
+
+    <h3>Results</h3>
+    <p>The question then is: does it improve the prediction to assume slightly lower probabilities for the favourite (and higher ones for the
+        underdog) of a given match? To answer it, I apply least squares as suggested by pena.lt/y. The residuals are simply the difference
+        between prediction and outcome,</p>
+    <p class="formula"><math display="block"><mi>R</mi><mo>=</mo><msub><mi>WE</mi><mi>h</mi></msub><mo>−</mo><mi>outcome</mi></math></p>
+    <p>and the mean of the squared residuals serves as the measure of the prediction error:</p>
+    <p class="formula"><math display="block"><mi>error</mi><mo>(</mo><mi>k</mi><mo>,</mo><mi>n</mi><mo>)</mo><mo>=</mo>
+        <mfrac><mi>RSS</mi><mi>n</mi></mfrac></math></p>
+    <p>Since the database contained over 470,000 games since 1955 at the time, running the whole history for every
+        specification of <math><mi>k</mi></math> would have taken too long. The analysis is therefore limited to
+        <math><mi>n</mi></math> ∈ {1,000; 5,000; 10,000; 20,000; 30,000; 40,000; 50,000} and <math><mi>k</mi></math> ∈ {5, 10, 15, 20, 25, 30, 40, 50}.</p>
+    <figure>
+        <img src="/img/about/kfactor.png" width="629" height="552" loading="lazy"
+             alt="Prediction error by weighting factor k for different numbers of games">
+        <figcaption>Prediction error by weighting factor <i>k</i>, for samples of 1,000 to 50,000 games</figcaption>
+    </figure>
+    <p>The simulations confirm the main result of pena.lt/y: the error-minimising <math><mi>k</mi></math> is around 15. The size of their
+        dataset is not specified, which is unfortunate, as there is a clear relationship between the size of the dataset and the prediction
+        error: with increasing <math><mi>n</mi></math> the error decreases steadily, and so does the error-minimising
+        <math><mi>k</mi></math>. While the optimum is <math><mi>k</mi><mo>=</mo><mn>25</mn></math> and <math><mi>k</mi><mo>=</mo><mn>20</mn></math>
+        for the smaller samples of 1,000 and 5,000 games, it is always <math><mi>k</mi><mo>=</mo><mn>15</mn></math> for samples between
+        10,000 and 50,000 games.</p>
+    <p>The conclusion: the <math><mi>k</mi></math> used was evidently too high and was lowered in the following historical re-runs (see the current values below). The differentiation between types of competition is kept, as teams clearly put a higher value on the
+        Champions League than, say, on domestic competitions – although super cups might deserve less weight, since they often carry no
+        more importance than league cups.</p>
+
+    <h2 id="current-k">Current weighting factors</h2>
+    <p>Based on these results, the weighting factors have since been lowered considerably. The differentiation by competition remains;
+        the home advantage is still 100 rating points.</p>
+    <div class="table-wrap">
+    <table class="data k-table">
+        <thead><tr><th>Competition</th><th class="num">k</th></tr></thead>
+        <tbody>
+            <tr><td>Champions League</td><td class="num">30</td></tr>
+            <tr><td>UEFA Super Cup</td><td class="num">30</td></tr>
+            <tr><td>Latin Cup</td><td class="num">30</td></tr>
+            <tr><td>Champions League qualification</td><td class="num">25</td></tr>
+            <tr><td>Europa League</td><td class="num">25</td></tr>
+            <tr><td>Europa League qualification</td><td class="num">20</td></tr>
+            <tr><td>Conference League</td><td class="num">20</td></tr>
+            <tr><td>Conference League qualification</td><td class="num">15</td></tr>
+            <tr><td>Domestic leagues, cups, super cups and relegation play-offs</td><td class="num">20</td></tr>
+            <tr><td>Domestic league cups</td><td class="num">15</td></tr>
+        </tbody>
+    </table>
+    </div>
+
+    <h2 id="open-questions">Open questions</h2>
+    <p>Some ideas for further analysis that have not been tackled yet:</p>
+
+    <h3>Tanking</h3>
+    <p>Quite often, Champions League participants lose a lot of Elo points in a league game right before a Champions League match,
+        supposedly because they field a B team. Since the expected Elo exchange of any given match is zero (teams on average play according
+        to their strength), it would be interesting to test whether this holds for league or cup games directly before a Champions League game.</p>
+
+    <h3>Scheduling</h3>
+    <p>When this question was first raised in 2017, English clubs had an abundance of money at their disposal but only relatively
+        ordinary success in international competition. It was suggested that their schedule was too tight compared to other countries
+        (no winter break, replays of drawn cup matches, league cup). Conversely, a lighter schedule might explain why Chelsea won the
+        2016/17 Premier League with relative ease without European football. English clubs have since become far more successful in Europe,
+        and FA Cup replays were scrapped from 2024/25 – but how much schedule density affects results, and whether it should be factored
+        into the ratings, is still an open question.</p>
+
+    <h3>Rating non-European clubs</h3>
+    <p>Another interesting idea would be to estimate the strength of non-European leagues such as Major League Soccer or the Chinese
+        Super League. Unfortunately, there are few competitive games between European clubs and the rest of the world – essentially the FIFA
+        Club World Cup, which has offered considerably more such matches since its expansion to 32 teams in 2025. One approach would
+        be to use international club friendlies (weighted considerably lower than competitive matches) between European and non-European teams and to find ratings for the non-European teams which minimise the
+        rating changes – small changes suggest that the result was already reflected in the pre-match ratings.</p>
+</article>
+</main>
+<footer class="site-footer">
+    <div class="bar">
+        <div>&copy; 2017–2026 elofootball.com ·
+            Questions, hints, corrections or ideas? <a href="mailto:info@elofootball.com">info@elofootball.com</a></div>
+        <div><a href="/impressum_legal_notice.php">Impressum / Privacy</a> ·
+            <a href="/impressum_legal_notice.php#privacy" data-privacy-settings>Privacy settings</a></div>
+    </div>
+</footer>
+<script src="/js/sorttable.js"></script>
+<script src="/assets/app.js?v=1793867237"></script>
+</body>
+</html>
