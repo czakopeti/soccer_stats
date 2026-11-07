@@ -13,10 +13,8 @@ const save = () => { try { localStorage.setItem("plx-value2", JSON.stringify({ o
 const when = (t) => new Date(t).toLocaleString("en-GB", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 const dayOf = (d) => new Date(d + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
 const R = D.rules;
-const ruleText = {
-  A: `edge at least ${Math.round(R.A.min_edge * 100)}% and an average price of ${o2(R.A.min_odds)}–${o2(R.A.max_odds)}. Measured at the average price.`,
-  B: `edge at least ${Math.round(R.B.min_edge * 100)}%, at any price. Measured at the best price on offer.`,
-};
+const ruleText = (r) => `Edge at least ${Math.round(r.min_edge * 100)}%${r.min_odds ? `, average price ${o2(r.min_odds)}–${o2(r.max_odds)}` : ""}${r.elo_not_higher ? ", and our Elo rating gives that side no more than the bookmakers do" : ""}. Measured at the ${r.paid_at === "best" ? "best price on offer" : "average price"}.`;
+const KEYS = Object.keys(R);
 const mark = (m) => (m.marks || []).map((k) => `<span style="display:inline-block;padding:1px 7px;border-radius:6px;background:var(--gold);color:var(--bg);font-weight:700;margin-left:4px">${k.rule} · ${k.side}</span>`).join("");
 function line(s) { return s.n ? `${s.n} bets, ${s.won} won, <b>${sgn(s.profit)}</b> units (${pct(s.roi)})` : "no bets yet"; }
 function render() {
@@ -27,12 +25,13 @@ function render() {
   app.innerHTML = `
   <section class="sec" style="padding-top:18px"><span class="kicker">PL X-ray · ${esc(D.season)}</span>
     <h2 style="font-family:var(--f-display);font-weight:900;font-size:clamp(34px,8vw,64px);line-height:.95;text-transform:uppercase;margin-top:6px">Value picks</h2>
-    <p class="note" style="margin-top:8px">The bookmakers price recent results a little too strongly and recent shots a little too weakly. We start from their average price, with the margin taken out, and shift it by each side's last eight league matches: shots on target, shots, goals, and points from the last five. Edge is our chance × the average price − 1. Only home and away wins are marked. <a href="index.html" style="color:var(--ink)">Premier League</a> · <a href="odds.html" style="color:var(--ink)">Fair odds</a></p></section>
-  <section class="sec"><h3 class="kicker">The two rules</h3>
+    <p class="note" style="margin-top:8px">The bookmakers price recent results a little too strongly and recent shots a little too weakly. We start from their average price, with the margin taken out, and shift it by each side's last eight league matches: shots on target, shots, goals, and points from the last five. Edge is our chance × the average price − 1. A second check uses Elo, which only sees results: when Elo rates a side higher than the bookmakers do, the bookmakers have usually seen something Elo has not, so a pick needs Elo to rate it no higher. Only home and away wins are marked. <a href="index.html" style="color:var(--ink)">Premier League</a> · <a href="odds.html" style="color:var(--ink)">Fair odds</a></p></section>
+  <section class="sec"><h3 class="kicker">${KEYS.length === 1 ? "The rule" : "The rules"}</h3>
     <div style="display:flex;gap:12px;flex-wrap:wrap">
-    ${["A", "B"].map((k) => `<div class="panel" style="padding:14px 16px;flex:1 1 280px"><span style="align-self:flex-start;display:inline-block;padding:1px 9px;border-radius:6px;background:var(--gold);color:var(--bg);font-weight:800">${k}</span>
-      <p class="note" style="margin-top:8px">${ruleText[k]}</p>
-      <p class="note" style="margin-top:6px">Ten earlier seasons the model never saw: ${R[k].checked.bets} bets, ${sgn(R[k].checked.units)} units (${pct(R[k].checked.return)}), up in ${esc(R[k].checked.seasons_up)} seasons.</p>
+    ${KEYS.map((k) => `<div class="panel" style="padding:14px 16px;flex:1 1 280px"><span style="align-self:flex-start;display:inline-block;padding:1px 9px;border-radius:6px;background:var(--gold);color:var(--bg);font-weight:800">${k}</span>
+      <p class="note" style="margin-top:8px">${ruleText(R[k])}</p>
+      ${R[k].found_on ? `<p class="note" style="margin-top:6px">Older seasons it was found on: ${R[k].found_on.bets} bets, ${sgn(R[k].found_on.units)} units (${pct(R[k].found_on.return)}), up in ${esc(R[k].found_on.seasons_up)} seasons.</p>` : ""}
+      <p class="note" style="margin-top:6px">Later seasons, used only to check it: ${R[k].checked.bets} bets, ${sgn(R[k].checked.units)} units (${pct(R[k].checked.return)}), up in ${esc(R[k].checked.seasons_up)} seasons.</p>
       <p class="note" style="margin-top:6px">From ${dayOf(D.tracking_from)}, the real test: ${line(D.summary[k].test)}.</p>
       <p class="note" style="margin-top:6px">This season so far: ${line(D.summary[k].season)}.</p></div>`).join("")}
     </div>
@@ -52,7 +51,7 @@ function render() {
       <td class="mono">${h.rule} · ${h.side}</td><td class="mono">${o2(h.fair)}</td><td class="mono">${o2(h.price)}</td><td class="mono">${h.hs}–${h.as}</td>
       <td class="mono" style="color:var(${h.won ? "--good" : "--bad"})">${sgn(h.profit)}</td><td class="mono">${sgn(h.run)}</td></tr>`).join("")}
     </tbody></table></div></div>` : `<p class="note">No picks yet this season.</p>`}
-    <p class="note">One unit a bet. Rule A is paid at the average price, rule B at the best price, both as collected one to three days before kickoff. "Running" adds up both rules from the start of the season. Prices and results: football-data.co.uk. Updated ${esc(new Date(D.updated).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }))}.${D.problems && D.problems.length ? ` Problems on this update: ${D.problems.map(esc).join("; ")}.` : ""}</p></section>`;
+    <p class="note">One unit a bet, at the price collected one to three days before kickoff. "Running" adds up every pick from the start of the season. Prices and results: football-data.co.uk. Updated ${esc(new Date(D.updated).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }))}.${D.problems && D.problems.length ? ` Problems on this update: ${D.problems.map(esc).join("; ")}.` : ""}</p></section>`;
 }
 app.addEventListener("change", (e) => { if (e.target.id === "only") { S.only = e.target.checked; save(); render(); } });
 render();

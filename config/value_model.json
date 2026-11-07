@@ -1,5 +1,5 @@
 {
-  "what": "Market chance adjusted by recent shots, shots on target, goal difference and form. For each outcome: logit(chance) = logit(bookmaker average, margin removed) + z · coef, then the three chances are scaled to add up to 1. z are the four inputs standardised with the mean and sd below.",
+  "what": "Market chance adjusted by recent shots, shots on target, goal difference and form. For each outcome: logit(chance) = logit(bookmaker average, margin removed) + z · coef, then the three chances are scaled to add up to 1. z are the four inputs standardised with the mean and sd below. A second, separate view comes from Elo ratings: when Elo rates a side no higher than the market does, the market has seen something Elo has not, and the shots edge on that side holds up better.",
   "inputs": {
     "sotd": "(home side's shots on target for − against, average of its last 8 league matches) − the same for the away side",
     "shd": "the same with all shots",
@@ -10,7 +10,7 @@
   "form_window": 5,
   "min_matches": 5,
   "trained_on": "Top five leagues, 2006/07 to 2016/17 seasons, about 19,000 matches with bookmaker averages and shot counts.",
-  "checked_on": "The ten seasons after that, not used for fitting.",
+  "checked_on": "The seasons after that, not used for fitting.",
   "features": [
     "sotd",
     "shd",
@@ -50,26 +50,23 @@
     ]
   },
   "rules": {
-    "A": {
+    "C": {
       "min_edge": 0.05,
       "min_odds": 2.5,
       "max_odds": 5.0,
+      "elo_not_higher": true,
       "paid_at": "average",
       "checked": {
-        "bets": 357,
-        "units": 39.9,
-        "return": 0.112,
-        "seasons_up": "8 of 10"
-      }
-    },
-    "B": {
-      "min_edge": 0.03,
-      "paid_at": "best",
-      "checked": {
-        "bets": 1246,
-        "units": 106.9,
-        "return": 0.086,
-        "seasons_up": "9 of 10"
+        "bets": 293,
+        "units": 49.4,
+        "return": 0.169,
+        "seasons_up": "7 of 9"
+      },
+      "found_on": {
+        "bets": 381,
+        "units": 52.2,
+        "return": 0.137,
+        "seasons_up": "8 of 11"
       }
     }
   },
@@ -79,5 +76,23 @@
     "D1": "Bundesliga",
     "I1": "Serie A",
     "F1": "Ligue 1"
+  },
+  "elo": {
+    "what": "elofootball.com's published method: home win expectancy 1 / (10^(−d/400) + 1) with d = home rating + 100 − away rating; after the match each side moves by k × goal-difference factor × (result − expectancy), result 1 / 0.5 / 0. Goal-difference factor 1 for a margin of 0 or 1, 1.5 for 2, (11 + margin) / 8 for more. A promoted club that never played in the league starts at the average of the clubs relegated the season before; a returning club keeps its old rating. League matches only.",
+    "home_advantage": 100,
+    "k": 20,
+    "fit": {
+      "what": "Elo difference → chance, fitted on the same older seasons: logit(chance) = a + b·x + c·x², x = d / 100. The draw is what is left (at least 5%), then the three are scaled to add up to 1.",
+      "home": [
+        -0.610808,
+        0.434223,
+        0.005162
+      ],
+      "away": [
+        -0.605655,
+        -0.479086,
+        0.00217
+      ]
+    }
   }
 }
