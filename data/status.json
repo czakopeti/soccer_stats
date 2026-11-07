@@ -1,17 +1,17 @@
 {
   "ok": true,
-  "timestamp": "2026-11-06T13:47:30Z",
+  "timestamp": "2026-11-07T17:47:40Z",
   "season": "2026/27",
   "gameweek": 9,
   "no_new_round": true,
-  "summary": "GW10 starts 6 Nov 2026, 20:00 Europe/London (20:00 UTC) – no new results yet. Fixtures were checked again and the site was refreshed. This is not an error.",
+  "summary": "GW10 in progress (5 of 10 matches played) – the page will update once the round is complete. Fixtures were checked again and the site was refreshed. This is not an error.",
   "data_dates": {
     "catalogue_commit": "10f59c2aa32ac9c0b73459b3a535abc7a81d1721",
     "catalogue_exported_at": "2026-11-04T08:29:10",
-    "fpl_fetched_at": "2026-11-06T13:46:19Z",
-    "history_fetched_at": "2026-11-06T13:46:37Z",
-    "europe_fetched_at": "2026-11-06T13:46:49Z",
-    "generated_at": "2026-11-06T13:47:02Z"
+    "fpl_fetched_at": "2026-11-07T17:46:32Z",
+    "history_fetched_at": "2026-11-07T17:46:49Z",
+    "europe_fetched_at": "2026-11-07T17:46:54Z",
+    "generated_at": "2026-11-07T17:47:10Z"
   },
   "checks": [
     {
@@ -72,7 +72,7 @@
     {
       "name": "Sources were refreshed, or the pause is explained",
       "pass": true,
-      "detail": "GW10 starts 6 Nov 2026, 20:00 Europe/London (20:00 UTC) – no new results yet. Premier League fixtures were downloaded again. European fixtures were downloaded again. Historical results: 16 files."
+      "detail": "GW10 in progress (5 of 10 matches played) – the page will update once the round is complete. Premier League fixtures were downloaded again. European fixtures were downloaded again. Historical results: 16 files."
     },
     {
       "name": "Official scores match the match file",
@@ -117,7 +117,7 @@
     {
       "name": "The status line matches the fixtures",
       "pass": true,
-      "detail": "GW10 starts 6 Nov 2026, 20:00 Europe/London (20:00 UTC) – no new results yet. Fixtures were checked again and the site was refreshed. This is not an error."
+      "detail": "GW10 in progress (5 of 10 matches played) – the page will update once the round is complete. Fixtures were checked again and the site was refreshed. This is not an error."
     }
   ],
   "fixture_changes": [],
