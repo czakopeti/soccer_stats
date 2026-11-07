@@ -14,7 +14,7 @@ jobs:
       - run: |
           mkdir -p probe
           UA="PL-Xray/1.0 (+https://github.com/czakopeti/soccer_stats)"
-          for u in "http://api.clubelo.com/2026-11-07:elo_day.csv" "http://api.clubelo.com/Fixtures:elo_fixtures.csv" "http://api.clubelo.com/ManCity:elo_mancity.csv" "https://elofootball.com/:elofootball.html"; do url="${u%:*}"; f="${u##*:}"; curl -sL -m 60 -A "$UA" -o probe/$f -w "$f %{http_code} %{size_download}\n" "$url"; done | tee probe/elo_log.txt
+          for u in "https://elofootball.com/about.php:ef_about.html" "https://elofootball.com/data_coverage.php:ef_coverage.html" "https://elofootball.com/robots.txt:ef_robots.txt" "https://elofootball.com/impressum_legal_notice.php:ef_impressum.html"; do url="${u%:*}"; f="${u##*:}"; curl -sL -m 60 -A "$UA" -o probe/$f -w "$f %{http_code} %{size_download}\n" "$url"; sleep 3; done | tee probe/ef_log.txt
       - run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
