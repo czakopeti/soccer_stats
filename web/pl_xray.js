@@ -627,6 +627,15 @@ function fairOdd(p) {
   const shown = (1 / p).toFixed(2);
   return shown === "Infinity" ? "–" : shown;
 }
+// The bookmakers' average 1 · X · 2, the chances in it with the margin taken out, and our home-advantage chance minus theirs.
+function bookLines(h, a, q) {
+  const b = D.book && D.book[h + "|" + a];
+  if (!b) return "";
+  const inv = b.map(o => 1 / o), s = inv[0] + inv[1] + inv[2], bq = inv.map(v => v / s);
+  const g = [q.pw - bq[0], q.pd - bq[1], q.pl - bq[2]].map(x => `<b style="${x >= 0.05 ? "color:var(--good)" : ""}">${(Math.round(x * 1000) > 0 ? "+" : Math.round(x * 1000) < 0 ? "−" : "") + Math.abs(Math.round(x * 1000) / 10).toFixed(1)}</b>`);
+  return `<p class="mkt">Bookmakers ${b.map(o => o.toFixed(2)).join(" · ")} <span class="note">(${bq.map(pc).join(" · ")})</span></p>
+    <p class="mkt">Gap with home advantage ${g.join(" · ")} <span class="note">points</span></p>`;
+}
 function previewCard(f, R, k) {
   const [, h, a, ko, , fid] = f, p = predict(h, a, R), q = predict(h, a, ratings(S.gw, { home: true }));
   const tr = Object.fromEntries(table(S.gw).map(r => [r.t, r.rank])), real = S.gw < D.gw ? M.find(x => x.id === fid) : null;
@@ -639,6 +648,7 @@ function previewCard(f, R, k) {
     <p class="mkt"><span class="kicker">Model</span> ${ps.map(pc).join(" · ")}</p>
     <p class="mkt">Fair odds ${ps.map(fairOdd).join(" · ")}</p>
     <p class="mkt">With home advantage ${[q.pw, q.pd, q.pl].map(fairOdd).join(" · ")} <span class="note">(${nf(q.lh, 2)}–${nf(q.la, 2)})</span></p>
+    ${bookLines(h, a, q)}
     <div class="pvstats"><span><b>${pc(p.o25)}</b> over 2.5 goals</span><span><b>${pc(p.btts)}</b> both teams to score</span><span><b>${p.top.map(s => s[0] + "–" + s[1]).join(", ")}</b> most likely</span><span><b>${pc(p.csH)} / ${pc(p.csA)}</b> clean sheet, home / away</span></div>
     ${side(h)}${side(a)}
     ${real ? `<p class="verdict">What happened: <b>${real.hs}–${real.as}</b>. The model gave ${["the home win", "the draw", "the away win"][res]} a ${pc(ps[res])} chance${ps.indexOf(Math.max(...ps)) === res ? ". <b style=\"color:var(--good)\">The favourite delivered.</b>" : "."}</p>` : ""}</div>`;
@@ -700,7 +710,7 @@ function viewElozetes() {
   const ts = fx.map(f => Date.parse(f[3]));
   return `<section class="sec">${previewInsights(fx, R)}</section>${mismatchSection(fx, R)}
     <section class="sec"><div class="sechead"><h2>Gameweek ${g} preview</h2><span class="kicker">${esc(DAY.format(new Date(Math.min(...ts))))} – ${esc(DAY.format(new Date(Math.max(...ts))))}${S.gw < D.gw ? ` · as it looked after gameweek ${S.gw}` : ""}</span></div>
-    <p class="note">The bar is the model's chance of a home win, a draw and an away win. The numbers in the middle are expected goals. Form is the last five matches (W, D, L). Rest is the days since the club's previous match, including Europe. Fair odds are 1 ÷ chance with no bookmaker margin, from the tested model, which leaves home advantage out. The line below puts it back in, to compare with bookmaker prices: this season's home and away scoring, steadied by earlier seasons, gives the home side ${pc(RH.hfH - 1)} more expected goals and the away side ${pc(1 - RH.hfA)} fewer. ${S.gw === D.gw ? "Absentees come from the official Fantasy Premier League injury list. The percentage is the chance of playing." : ""}${S.gw < D.gw ? " This gameweek has been played. The actual score is on the card." : ""}</p>
+    <p class="note">The bar is the model's chance of a home win, a draw and an away win. The numbers in the middle are expected goals. Form is the last five matches (W, D, L). Rest is the days since the club's previous match, including Europe. Fair odds are 1 ÷ chance with no bookmaker margin, from the tested model, which leaves home advantage out. The line below puts it back in, to compare with bookmaker prices: this season's home and away scoring, steadied by earlier seasons, gives the home side ${pc(RH.hfH - 1)} more expected goals and the away side ${pc(1 - RH.hfA)} fewer.${D.book ? " Bookmakers is the average price across bookmakers from football-data.co.uk, collected on Tuesday for midweek games and on Friday for the weekend; in brackets, the chances in it with the margin taken out. Gap is our chance with home advantage minus the bookmakers', in percentage points, for 1 · X · 2." : ""} ${S.gw === D.gw ? "Absentees come from the official Fantasy Premier League injury list. The percentage is the chance of playing." : ""}${S.gw < D.gw ? " This gameweek has been played. The actual score is on the card." : ""}</p>
     <div class="mgrid">${fx.map((f, k) => previewCard(f, R, k)).join("")}</div></section>${modelLog()}`;
 }
 

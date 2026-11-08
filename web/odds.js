@@ -5,6 +5,15 @@ const app = document.getElementById("app");
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const odd = (p) => (p > 0 ? (1 / p).toFixed(2) : "–");
 const pc = (p) => Math.round(p * 100) + "%";
+const pp = (x) => { const r = Math.round(x * 1000) / 10; return (r > 0 ? "+" : r < 0 ? "−" : "") + Math.abs(r).toFixed(1); };
+// The bookmakers' average 1 · X · 2, the chances in it with the margin taken out, and our home-advantage chance minus theirs.
+function bookCells(m, book) {
+  const b = book && book[m.h + "|" + m.a];
+  if (!b || m.hw == null) return `<td class="mono">–</td><td class="mono">–</td><td class="mono">–</td>`;
+  const inv = b.map((o) => 1 / o), s = inv[0] + inv[1] + inv[2], q = inv.map((v) => v / s);
+  const g = [m.hw - q[0], m.hd - q[1], m.hl - q[2]].map((x) => `<span style="${x >= 0.05 ? "color:var(--good)" : ""}">${pp(x)}</span>`);
+  return `<td class="mono">${b.map((o) => o.toFixed(2)).join(" · ")}</td><td class="mono">${q.map(pc).join(" · ")}</td><td class="mono">${g.join(" · ")}</td>`;
+}
 const S = { lg: 0, r: null };
 try { const s = JSON.parse(localStorage.getItem("plx-odds") || "{}"); if (Number.isInteger(s.lg) && s.lg < D.leagues.length) S.lg = s.lg; } catch (e) { /* storage blocked */ }
 function save() { try { localStorage.setItem("plx-odds", JSON.stringify({ lg: S.lg })); } catch (e) { /* storage blocked */ } }
@@ -26,9 +35,10 @@ function render() {
     <div class="row" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px"><span class="kicker">Matches</span>
       <select id="rd" style="background:var(--panel);border:1px solid var(--faint);border-radius:8px;padding:5px 8px">${L.rounds.map((x) => `<option value="${x.r}" ${x.r === S.r ? "selected" : ""}>${span(x)}${x.r === L.next_round ? " (next)" : ""}</option>`).join("")}</select>
       ${done.length ? `<span class="note">Favourite won ${fav} of ${done.length}</span>` : ""}</div>
-    <div class="panel" style="margin-top:12px"><div class="tw"><table class="probs"><thead><tr><th class="l">Match</th><th>1</th><th>X</th><th>2</th><th>Expected goals</th><th>With home advantage 1 · X · 2</th><th>Over 2.5</th><th>Result</th></tr></thead><tbody>
-    ${R.matches.map((m) => `<tr><td class="l"><span class="note" style="display:block">${day(m.dt)}</span><b>${esc(m.h)}</b> – <b>${esc(m.a)}</b></td><td class="mono">${odd(m.pw)}</td><td class="mono">${odd(m.pd)}</td><td class="mono">${odd(m.pl)}</td><td class="mono">${m.lh.toFixed(2)}–${m.la.toFixed(2)}</td><td class="mono">${m.hw != null ? `${odd(m.hw)} · ${odd(m.hd)} · ${odd(m.hl)}<span class="note" style="display:block">${m.hlh.toFixed(2)}–${m.hla.toFixed(2)}</span>` : "–"}</td><td class="mono">${pc(m.o25)}</td><td class="mono">${m.hs != null ? m.hs + "–" + m.as + (m.fb ? "*" : "") : "–"}</td></tr>`).join("")}
+    <div class="panel" style="margin-top:12px"><div class="tw"><table class="probs"><thead><tr><th class="l">Match</th><th>1</th><th>X</th><th>2</th><th>Expected goals</th><th>With home advantage<br>1 · X · 2</th><th>Bookmakers<br>1 · X · 2</th><th>Bookmaker %<br>1 · X · 2</th><th>Gap (points)<br>1 · X · 2</th><th>Over 2.5</th><th>Result</th></tr></thead><tbody>
+    ${R.matches.map((m) => `<tr><td class="l"><span class="note" style="display:block">${day(m.dt)}</span><b>${esc(m.h)}</b> – <b>${esc(m.a)}</b></td><td class="mono">${odd(m.pw)}</td><td class="mono">${odd(m.pd)}</td><td class="mono">${odd(m.pl)}</td><td class="mono">${m.lh.toFixed(2)}–${m.la.toFixed(2)}</td><td class="mono">${m.hw != null ? `${odd(m.hw)} · ${odd(m.hd)} · ${odd(m.hl)}<span class="note" style="display:block">${m.hlh.toFixed(2)}–${m.hla.toFixed(2)}</span>` : "–"}</td>${bookCells(m, L.book)}<td class="mono">${pc(m.o25)}</td><td class="mono">${m.hs != null ? m.hs + "–" + m.as + (m.fb ? "*" : "") : "–"}</td></tr>`).join("")}
     </tbody></table></div></div>
+    <p class="note" style="margin-top:10px">Every column reads home, draw, away, like the match and the result. Bookmakers: the average price across bookmakers from football-data.co.uk, collected on Tuesday for midweek games and on Friday for the weekend. Bookmaker %: the chances in those prices with the margin taken out (1 ÷ odds, scaled to add up to 100%). Gap: our chance with home advantage minus the bookmakers', in percentage points; green from +5 points.</p>
     ${L.home_adv ? `<p class="note" style="margin-top:10px">Home advantage in ${esc(L.label)} at the moment: the home side gets ${Math.round((L.home_adv - 1) * 100)}% more expected goals and the away side ${Math.round((1 - 1 / L.home_adv) * 100)}% fewer, from this season's home and away scoring steadied by the three seasons before.</p>` : ""}
     ${L.postponed && L.postponed.length ? `<p class="note" style="margin-top:10px">Postponed, waiting for a new date: ${L.postponed.map((m) => esc(m.h) + " – " + esc(m.a)).join(", ")}.</p>` : ""}
     ${L.source && L.source.understat === "kept" ? `<p class="note" style="margin-top:10px">Understat, the usual xG source, did not answer on this update, so its last copy (results through ${esc(dayISO(L.source.through))}) is used.${L.source.filled ? ` ${L.source.filled} ${L.source.filled === 1 ? "match" : "matches"} played since then, marked *, ${L.source.filled === 1 ? "comes" : "come"} from football-data.co.uk, with xG rescaled by ${Number(L.source.scale).toFixed(2)} to Understat's level (measured on ${L.source.overlap} matches both sources have).` : ""} Understat's own data replaces this as soon as it is back.</p>` : ""}

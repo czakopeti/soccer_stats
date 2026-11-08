@@ -43,6 +43,7 @@ def _value(cfg: dict, data: dict, fetch_first: bool) -> None:
         out = value.build(ROOT, cfg, data["season"], int(data["season_start_year"]), fetch_first=fetch_first, pl_data=data, leagues=leagues)
         (ROOT / "data" / "value.json").write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
         value.write_page(ROOT, out, ROOT / "site")
+        _bookmaker_prices_on_pages(data, leagues, out.get("book") or {})
         picks = sum(1 for m in out["upcoming"] if m.get("marks"))
         print(f"Value picks: {picks} marked in the next matches, record {out['summary']}, problems {out['problems']}.")
     except Exception as exc:  # noqa: BLE001 - reported, the other pages still stand
@@ -53,6 +54,20 @@ def _value(cfg: dict, data: dict, fetch_first: bool) -> None:
                 value.write_page(ROOT, json.loads(previous.read_text(encoding="utf-8")), ROOT / "site")
             except Exception as exc2:  # noqa: BLE001 - an old file from an earlier page version
                 print(f"The previous value page could not be written either: {exc2}")
+
+
+def _bookmaker_prices_on_pages(data: dict, leagues: dict | None, book: dict) -> None:
+    """Put the bookmakers' average prices on the Premier League and fair-odds pages, next to our odds."""
+    try:
+        if book.get("Premier League"):
+            write_site(ROOT, {**data, "book": book["Premier League"]})
+        if leagues:
+            for lg in leagues.get("leagues", []):
+                lg["book"] = book.get(lg["label"], {})
+            (ROOT / "data" / "leagues.json").write_text(json.dumps(leagues, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+            write_odds_page(ROOT, leagues, ROOT / "site")
+    except Exception as exc:  # noqa: BLE001 - the pages without prices still stand
+        print(f"Bookmaker prices were not added to the pages: {exc}")
 
 
 def main() -> int:
