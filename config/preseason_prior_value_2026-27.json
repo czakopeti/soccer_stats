@@ -124,5 +124,9 @@
    }
   }
  },
- "elo_start_why": "Elo ratings at the end of the previous season, replayed from 2000/01 league results with the method in config/value_model.json. newcomer: the starting rating for a club that has never played in that league."
+ "elo_start_why": "Elo ratings at the end of the previous season, replayed from 2000/01 league results with the method in config/value_model.json. newcomer: the starting rating for a club that has never played in that league.",
+ "tracking_from_rules": {
+  "R": "2026-11-03"
+ },
+ "tracking_from_rules_why": "Rule R was picked on this season's results up to 2 November, so its real test starts the day after."
 }
