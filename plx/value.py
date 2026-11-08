@@ -135,13 +135,31 @@ def elo_chances(d: float, model: dict) -> list[float]:
     return [h / t, dr / t, a / t]
 
 
-def marks(p: list[float], avg: list[float], rules: dict, elo: list[float] | None = None) -> list[dict]:
-    """Picks on the home (1) or away (2) side."""
+def marks(p: list[float] | None, avg: list[float], rules: dict, elo: list[float] | None = None,
+          ha: list[float] | None = None) -> list[dict]:
+    """Picks on the home (1) or away (2) side.
+
+    p: the shots-and-form chances (None when a side has too few matches).
+    ha: our xG model with home advantage (the fair-odds pages), for the reverse rule:
+    when it sees an edge on the away side, the home side is bet instead.
+    """
     out = []
     q = market(avg)
+    for name, r in rules.items():
+        if r.get("kind") != "reverse":
+            continue
+        if ha is None:
+            continue
+        edge = ha[2] * avg[2] - 1
+        if edge >= r["min_away_edge"] and avg[0] < r["max_home_odds"]:
+            out.append({"rule": name, "side": "1", "edge": round(edge, 4)})
+    if p is None:
+        return out
     for i, side in ((0, "1"), (2, "2")):
         edge = p[i] * avg[i] - 1
         for name, r in rules.items():
+            if r.get("kind") == "reverse":
+                continue
             if edge < r["min_edge"]:
                 continue
             if "min_odds" in r and not (r["min_odds"] <= avg[i] < r["max_odds"]):
@@ -178,7 +196,8 @@ class Elo:
         self.r[a] -= d
 
 
-def score_league(season_rows: list[dict], fixtures: list[dict], label: str, model: dict, elo_start: dict | None = None) -> dict:
+def score_league(season_rows: list[dict], fixtures: list[dict], label: str, model: dict, elo_start: dict | None = None,
+                 ha: dict | None = None) -> dict:
     """Past matches scored from the matches before them; next matches from all played so far."""
     rules = model["rules"]
     form = Form(model["window"], model["form_window"])
@@ -203,11 +222,12 @@ def score_league(season_rows: list[dict], fixtures: list[dict], label: str, mode
             h, a = r["HomeTeam"].strip(), r["AwayTeam"].strip()
             avg = [_num(r.get(k)) for k in ("AvgH", "AvgD", "AvgA")]
             best = [_num(r.get(k)) for k in ("MaxH", "MaxD", "MaxA")]
-            x = form.inputs(h, a, model["min_matches"])
-            if x is None or not all(v and v > 1 for v in avg):
+            if not all(v and v > 1 for v in avg):
                 continue
-            p = chances(avg, x, model)
-            mk = marks(p, avg, rules, elo_chances(elo.diff(h, a), model) if elo else None)
+            x = form.inputs(h, a, model["min_matches"])
+            p = chances(avg, x, model) if x is not None else None
+            hp = (ha or {}).get((h, a))
+            mk = marks(p, avg, rules, elo_chances(elo.diff(h, a), model) if elo else None, hp)
             if not mk:
                 continue
             hg, ag = _num(r.get("FTHG")), _num(r.get("FTAG"))
@@ -217,8 +237,9 @@ def score_league(season_rows: list[dict], fixtures: list[dict], label: str, mode
             for k in mk:
                 idx = 0 if k["side"] == "1" else 2
                 price = avg[idx] if rules[k["rule"]]["paid_at"] == "average" else (best[idx] or avg[idx])
+                ours = hp if rules[k["rule"]].get("kind") == "reverse" else p
                 history.append({"lg": label, "t": _iso(t), "h": h, "a": a, "rule": k["rule"], "side": k["side"],
-                                "edge": k["edge"], "fair": round(1 / p[idx], 3), "price": price, "avg": avg[idx],
+                                "edge": k["edge"], "fair": round(1 / ours[idx], 3), "price": price, "avg": avg[idx],
                                 "hs": int(hg), "as": int(ag), "won": res == k["side"],
                                 "profit": round(price - 1, 3) if res == k["side"] else -1.0})
         for _t, r in batch:
@@ -237,17 +258,89 @@ def score_league(season_rows: list[dict], fixtures: list[dict], label: str, mode
         best = [_num(r.get(k)) for k in ("MaxH", "MaxD", "MaxA")]
         row = {"lg": label, "t": _iso(t), "h": h, "a": a, "avg": avg if all(v and v > 1 for v in avg) else None, "best": best}
         x = form.inputs(h, a, model["min_matches"]) if row["avg"] else None
-        if x is not None:
-            p = chances(row["avg"], x, model)
-            row["p"] = [round(v, 4) for v in p]
-            row["edge"] = [round(p[0] * row["avg"][0] - 1, 4), round(p[2] * row["avg"][2] - 1, 4)]
+        hp = (ha or {}).get((h, a))
+        if hp:
+            row["ha"] = [round(v, 4) for v in hp]
+        if row["avg"]:
+            p = chances(row["avg"], x, model) if x is not None else None
             e = elo_chances(elo.diff(h, a), model) if elo else None
+            if p:
+                row["p"] = [round(v, 4) for v in p]
+                row["edge"] = [round(p[0] * row["avg"][0] - 1, 4), round(p[2] * row["avg"][2] - 1, 4)]
             if e:
                 row["elo"] = [round(v, 4) for v in e]
-            row["marks"] = marks(p, row["avg"], rules, e)
+            row["marks"] = marks(p, row["avg"], rules, e, hp)
         upcoming.append(row)
     upcoming.sort(key=lambda m: m["t"])
     return {"label": label, "history": history, "upcoming": upcoming}
+
+
+def _keyed_by_fd(ours: dict, played: list[dict], fd_path: Path) -> tuple[dict, str]:
+    """Our (home, away) -> chances, re-keyed with football-data's club names (paired from results)."""
+    from plx import league_fallback as lf
+
+    fake = [{"h": {"title": m["h"]}, "a": {"title": m["a"]}, "datetime": m["dt"], "isResult": True,
+             "goals": {"h": m["hs"], "a": m["as"]}} for m in played]
+    mapping, why = lf.map_names(fake, lf.load_fd(fd_path))
+    if mapping is None:
+        return {}, why
+    return {(mapping[h], mapping[a]): v for (h, a), v in ours.items() if h in mapping and a in mapping}, ""
+
+
+def home_advantage_chances(pl_data: dict | None, leagues: dict | None, src: Path, model: dict) -> tuple[dict, list[str]]:
+    """Per division: football-data (home, away) -> [home, draw, away] from our xG model with home advantage.
+
+    Played matches use the prediction made before their round, upcoming ones the latest ratings,
+    exactly as the fair-odds pages show them.
+    """
+    out: dict[str, dict] = {}
+    problems: list[str] = []
+    labels = {v: k for k, v in model["divisions"].items()}
+    if pl_data and pl_data.get("derived"):
+        from plx.strength import predict, ratings
+
+        c, der = pl_data["cfg"], pl_data["derived"]
+        hg = {"home_factor": der["home_factor"], "away_factor": der["away_factor"]}
+        teams = list(pl_data["short"])
+        rho, mg = c["prediction"]["dixon_coles_rho"], c["prediction"]["max_goals"]
+        cache: dict[int, dict] = {}
+
+        def rt(upto: int) -> dict:
+            if upto not in cache:
+                cache[upto] = ratings(pl_data["matches"], teams, pl_data["prior"], upto, c["ratings"], c["ratings"]["goal_level_prior"], hg)
+            return cache[upto]
+
+        ours, played = {}, []
+        for m in pl_data["matches"]:
+            q = predict(m["h"], m["a"], rt(int(m["gw"]) - 1), rho, mg)
+            ours[(m["h"], m["a"])] = [q["pw"], q["pd"], q["pl"]]
+            played.append({"h": m["h"], "a": m["a"], "dt": m["date"] + " 00:00:00", "hs": m["hs"], "as": m["as"]})
+        for f in pl_data["fx"]:
+            if (f[1], f[2]) not in ours:
+                q = predict(f[1], f[2], rt(int(pl_data["gw"])), rho, mg)
+                ours[(f[1], f[2])] = [q["pw"], q["pd"], q["pl"]]
+        div = labels.get("Premier League")
+        if div:
+            out[div], why = _keyed_by_fd(ours, played, src / f"{div}.csv")
+            if why:
+                problems.append(f"Premier League home-advantage odds not matched: {why}")
+    for lg in (leagues or {}).get("leagues", []):
+        div = labels.get(lg["label"])
+        if not div:
+            continue
+        ours, played = {}, []
+        for rd in lg["rounds"]:
+            for m in rd["matches"]:
+                if m.get("hw") is None:
+                    continue
+                ours[(m["h"], m["a"])] = [m["hw"], m["hd"], m["hl"]]
+                if m.get("hs") is not None:
+                    played.append({"h": m["h"], "a": m["a"], "dt": m["dt"], "hs": m["hs"], "as": m["as"]})
+        if ours:
+            out[div], why = _keyed_by_fd(ours, played, src / f"{div}.csv")
+            if why:
+                problems.append(f"{lg['label']} home-advantage odds not matched: {why}")
+    return out, problems
 
 
 def summary(history: list[dict], rule: str, since: str | None = None) -> dict:
@@ -282,7 +375,8 @@ def fetch(root: Path, cfg: dict, start_year: int, model: dict) -> list[str]:
     return problems
 
 
-def build(root: Path, cfg: dict, season_label: str, start_year: int, fetch_first: bool) -> dict:
+def build(root: Path, cfg: dict, season_label: str, start_year: int, fetch_first: bool,
+          pl_data: dict | None = None, leagues: dict | None = None) -> dict:
     model = json.loads((root / cfg["value"]["model_file"]).read_text(encoding="utf-8"))
     season_file = root / "config" / f"preseason_prior_value_{season_label.replace('/', '-')}.json"
     if not season_file.exists():
@@ -291,28 +385,32 @@ def build(root: Path, cfg: dict, season_label: str, start_year: int, fetch_first
     problems = fetch(root, cfg, start_year, model) if fetch_first else []
     src = root / "sources" / "value"
     fixtures = _rows(src / "fixtures.csv")
+    ha, ha_problems = home_advantage_chances(pl_data, leagues, src, model)
+    problems += ha_problems
     leagues = []
     for div, label in model["divisions"].items():
         rows = _rows(src / f"{div}.csv")
         if not rows:
             problems.append(f"{label}: no season file")
             continue
-        leagues.append(score_league(rows, [r for r in fixtures if r.get("Div") == div], label, model, season.get("elo_start", {}).get(div)))
+        leagues.append(score_league(rows, [r for r in fixtures if r.get("Div") == div], label, model, season.get("elo_start", {}).get(div), ha.get(div)))
     if not leagues:
         raise ValueBuildError("No league could be scored. " + "; ".join(problems))
     history = sorted((h for L in leagues for h in L["history"]), key=lambda h: h["t"], reverse=True)
     upcoming = sorted((m for L in leagues for m in L["upcoming"]), key=lambda m: m["t"])
     since = season["tracking_from"]
+    tracking = {r: season.get("tracking_from_rules", {}).get(r, since) for r in model["rules"]}
     return {
         "updated": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
         "season": season_label,
         "tracking_from": since,
+        "tracking": tracking,
         "rules": model["rules"],
         "model": {"trained_on": model["trained_on"], "checked_on": model["checked_on"]},
         "problems": problems,
         "upcoming": upcoming,
         "history": history,
-        "summary": {r: {"test": summary(history, r, since), "season": summary(history, r)} for r in model["rules"]},
+        "summary": {r: {"test": summary(history, r, tracking[r]), "season": summary(history, r)} for r in model["rules"]},
     }
 
 

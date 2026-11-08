@@ -68,6 +68,14 @@
         "return": 0.137,
         "seasons_up": "8 of 11"
       }
+    },
+    "R": {
+      "kind": "reverse",
+      "min_away_edge": 0.1,
+      "max_home_odds": 4.0,
+      "paid_at": "average",
+      "what": "Our xG model with home advantage (the fair-odds pages) sees an edge of at least 10% on the away side against the average price, and the home price is below 4.00: bet the home side. That model rates home sides too low this season, so its away 'edges' have pointed the wrong way.",
+      "found_text": "Found on this season's matches up to 2 November: 54 bets, +14.8 units (+27.3%), up in all five leagues. It has not been checked on any other season, so treat it as a test."
     }
   },
   "divisions": {

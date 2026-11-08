@@ -78,6 +78,22 @@ class ValueModelTest(unittest.TestCase):
         self.assertEqual((s["n"], s["won"]), (1, 1))
         self.assertEqual(value.summary(out["history"], "C", since="2026-10-01")["n"], 0)
 
+    def test_rule_r_reverses_the_xg_away_edge(self):
+        rules = MODEL["rules"]
+        avg = [2.2, 3.4, 3.3]
+        ha = [0.30, 0.31, 0.39]  # away edge 0.39 * 3.3 - 1 = 28.7%
+        self.assertEqual([(k["rule"], k["side"]) for k in value.marks(None, avg, rules, None, ha)], [("R", "1")])
+        self.assertEqual(value.marks(None, avg, rules, None, [0.40, 0.29, 0.31]), [])  # away edge only 2.3%
+        self.assertEqual(value.marks(None, [4.2, 3.8, 1.8], rules, None, [0.15, 0.25, 0.60]), [])  # home price 4.00 or more
+        self.assertEqual(value.marks(None, avg, rules, None, None), [])  # no xG odds, no pick
+
+    def test_rule_r_in_the_record_is_paid_at_the_average_with_xg_fair_odds(self):
+        rows = _rows("E0,01/08/2026,15:00,A,B,2,0,8,8,3,3,2.2,3.4,3.3,2.4,3.6,3.5")
+        out = value.score_league(rows, [], "Test", MODEL, None, {("A", "B"): [0.30, 0.31, 0.39]})
+        (h,) = [h for h in out["history"] if h["rule"] == "R"]
+        self.assertEqual((h["side"], h["price"], h["won"], h["fair"]), ("1", 2.2, True, round(1 / 0.30, 3)))
+        self.assertAlmostEqual(h["profit"], 1.2)
+
     def test_kickoff_is_uk_time(self):
         self.assertEqual(value._iso(value.kickoff("07/11/2026", "17:30")), "2026-11-07T17:30Z")
         self.assertEqual(value._iso(value.kickoff("01/08/2026", "17:30")), "2026-08-01T16:30Z")

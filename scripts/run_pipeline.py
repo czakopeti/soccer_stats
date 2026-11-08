@@ -38,7 +38,9 @@ def _value(cfg: dict, data: dict, fetch_first: bool) -> None:
     from plx import value
 
     try:
-        out = value.build(ROOT, cfg, data["season"], int(data["season_start_year"]), fetch_first=fetch_first)
+        lj = ROOT / "data" / "leagues.json"
+        leagues = json.loads(lj.read_text(encoding="utf-8")) if lj.exists() else None
+        out = value.build(ROOT, cfg, data["season"], int(data["season_start_year"]), fetch_first=fetch_first, pl_data=data, leagues=leagues)
         (ROOT / "data" / "value.json").write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
         value.write_page(ROOT, out, ROOT / "site")
         picks = sum(1 for m in out["upcoming"] if m.get("marks"))
