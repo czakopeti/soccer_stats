@@ -94,6 +94,15 @@ class ValueModelTest(unittest.TestCase):
         self.assertEqual((h["side"], h["price"], h["won"], h["fair"]), ("1", 2.2, True, round(1 / 0.30, 3)))
         self.assertAlmostEqual(h["profit"], 1.2)
 
+    def test_bookmaker_prices_are_keyed_by_our_names(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            src = Path(tmp)
+            (src / "E0.csv").write_text(HEAD + "\nE0,01/08/2026,15:00,Man United,Tottenham,1,0,9,9,3,3,2.10,3.50,3.40,2.2,3.6,3.5\n", encoding="utf-8")
+            fx = _rows("E0,12/09/2026,15:00,Tottenham,Man United,,,,,,,2.50,3.40,2.80,2.6,3.5,2.9")
+            book = value.bookmaker_prices(src, fx, {"divisions": {"E0": "Premier League"}}, {"E0": {"Man Utd": "Man United", "Spurs": "Tottenham"}})
+        self.assertEqual(book, {"Premier League": {"Man Utd|Spurs": [2.1, 3.5, 3.4], "Spurs|Man Utd": [2.5, 3.4, 2.8]}})
+
     def test_kickoff_is_uk_time(self):
         self.assertEqual(value._iso(value.kickoff("07/11/2026", "17:30")), "2026-11-07T17:30Z")
         self.assertEqual(value._iso(value.kickoff("01/08/2026", "17:30")), "2026-08-01T16:30Z")

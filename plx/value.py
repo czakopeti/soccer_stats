@@ -275,7 +275,7 @@ def score_league(season_rows: list[dict], fixtures: list[dict], label: str, mode
     return {"label": label, "history": history, "upcoming": upcoming}
 
 
-def _keyed_by_fd(ours: dict, played: list[dict], fd_path: Path) -> tuple[dict, str]:
+def _keyed_by_fd(ours: dict, played: list[dict], fd_path: Path, names: dict | None = None, div: str = "") -> tuple[dict, str]:
     """Our (home, away) -> chances, re-keyed with football-data's club names (paired from results)."""
     from plx import league_fallback as lf
 
@@ -284,10 +284,13 @@ def _keyed_by_fd(ours: dict, played: list[dict], fd_path: Path) -> tuple[dict, s
     mapping, why = lf.map_names(fake, lf.load_fd(fd_path))
     if mapping is None:
         return {}, why
+    if names is not None:
+        names[div] = mapping
     return {(mapping[h], mapping[a]): v for (h, a), v in ours.items() if h in mapping and a in mapping}, ""
 
 
-def home_advantage_chances(pl_data: dict | None, leagues: dict | None, src: Path, model: dict) -> tuple[dict, list[str]]:
+def home_advantage_chances(pl_data: dict | None, leagues: dict | None, src: Path, model: dict,
+                           names: dict | None = None) -> tuple[dict, list[str]]:
     """Per division: football-data (home, away) -> [home, draw, away] from our xG model with home advantage.
 
     Played matches use the prediction made before their round, upcoming ones the latest ratings,
@@ -321,7 +324,7 @@ def home_advantage_chances(pl_data: dict | None, leagues: dict | None, src: Path
                 ours[(f[1], f[2])] = [q["pw"], q["pd"], q["pl"]]
         div = labels.get("Premier League")
         if div:
-            out[div], why = _keyed_by_fd(ours, played, src / f"{div}.csv")
+            out[div], why = _keyed_by_fd(ours, played, src / f"{div}.csv", names, div)
             if why:
                 problems.append(f"Premier League home-advantage odds not matched: {why}")
     for lg in (leagues or {}).get("leagues", []):
@@ -337,7 +340,7 @@ def home_advantage_chances(pl_data: dict | None, leagues: dict | None, src: Path
                 if m.get("hs") is not None:
                     played.append({"h": m["h"], "a": m["a"], "dt": m["dt"], "hs": m["hs"], "as": m["as"]})
         if ours:
-            out[div], why = _keyed_by_fd(ours, played, src / f"{div}.csv")
+            out[div], why = _keyed_by_fd(ours, played, src / f"{div}.csv", names, div)
             if why:
                 problems.append(f"{lg['label']} home-advantage odds not matched: {why}")
     return out, problems
@@ -385,7 +388,8 @@ def build(root: Path, cfg: dict, season_label: str, start_year: int, fetch_first
     problems = fetch(root, cfg, start_year, model) if fetch_first else []
     src = root / "sources" / "value"
     fixtures = _rows(src / "fixtures.csv")
-    ha, ha_problems = home_advantage_chances(pl_data, leagues, src, model)
+    names: dict[str, dict] = {}
+    ha, ha_problems = home_advantage_chances(pl_data, leagues, src, model, names)
     problems += ha_problems
     leagues = []
     for div, label in model["divisions"].items():
@@ -396,6 +400,7 @@ def build(root: Path, cfg: dict, season_label: str, start_year: int, fetch_first
         leagues.append(score_league(rows, [r for r in fixtures if r.get("Div") == div], label, model, season.get("elo_start", {}).get(div), ha.get(div)))
     if not leagues:
         raise ValueBuildError("No league could be scored. " + "; ".join(problems))
+    book = bookmaker_prices(src, fixtures, model, names)
     history = sorted((h for L in leagues for h in L["history"]), key=lambda h: h["t"], reverse=True)
     upcoming = sorted((m for L in leagues for m in L["upcoming"]), key=lambda m: m["t"])
     since = season["tracking_from"]
@@ -411,7 +416,29 @@ def build(root: Path, cfg: dict, season_label: str, start_year: int, fetch_first
         "upcoming": upcoming,
         "history": history,
         "summary": {r: {"test": summary(history, r, tracking[r]), "season": summary(history, r)} for r in model["rules"]},
+        "book": book,
     }
+
+
+def bookmaker_prices(src: Path, fixtures: list[dict], model: dict, names: dict) -> dict:
+    """Per league: "home|away" in our club names -> the bookmakers' average 1, X, 2 collected before the match.
+
+    Played matches come from the season files, upcoming ones from the fixtures file; the fair-odds
+    pages show them next to our own odds.
+    """
+    out: dict[str, dict] = {}
+    for div, label in model["divisions"].items():
+        back = {fd: ours for ours, fd in (names.get(div) or {}).items()}
+        if not back:
+            continue
+        prices = {}
+        for r in _rows(src / f"{div}.csv") + [r for r in fixtures if r.get("Div") == div]:
+            h, a = back.get(r.get("HomeTeam")), back.get(r.get("AwayTeam"))
+            avg = [_num(r.get(k)) for k in ("AvgH", "AvgD", "AvgA")]
+            if h and a and all(v and v > 1 for v in avg):
+                prices[f"{h}|{a}"] = [round(v, 2) for v in avg]
+        out[label] = prices
+    return out
 
 
 def write_page(root: Path, data: dict, site: Path) -> Path:
