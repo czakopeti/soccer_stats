@@ -8,10 +8,16 @@ from __future__ import annotations
 import math
 
 
-def ratings(matches: list[dict], teams: list[str], prior: dict[str, float], upto: int, rtg: dict, goal_level: float) -> dict:
-    """matches: dicts with gw, h, a, hs, as, xh, xa (played only). Mirrors ratings() in pl_xray.js."""
+def ratings(matches: list[dict], teams: list[str], prior: dict[str, float], upto: int, rtg: dict, goal_level: float,
+            home_goals: dict | None = None) -> dict:
+    """matches: dicts with gw, h, a, hs, as, xh, xa (played only). Mirrors ratings() in pl_xray.js.
+
+    home_goals switches home advantage on, as ratings(upto, {home: true}) does in the browser:
+    {"home_factor", "away_factor"} from earlier seasons, worth rtg["home_prior_matches"] matches.
+    The tested model leaves it off.
+    """
     tau, k, bl = rtg["tau_rounds"], rtg["prior_matches"], rtg["xg_blend"]
-    home = rtg.get("home_advantage", True) is not False
+    home = home_goals is not None
     ms = [m for m in matches if m["gw"] <= upto]
     w = lambda m: math.exp(-(upto - m["gw"]) / tau)
     v = lambda x, g: bl * x + (1 - bl) * g
@@ -20,8 +26,11 @@ def ratings(matches: list[dict], teams: list[str], prior: dict[str, float], upto
         q = w(m); sw += q; sh += q * v(m["xh"], m["hs"]); sa += q * v(m["xa"], m["as"])
     lg = (sh + sa) / (2 * sw) if sw else goal_level
     if home:
-        raise ValueError("home advantage is off in the tested model; the port does not support it")
-    hfh = hfa = 1.0
+        hn = rtg["home_prior_matches"]
+        ratio = (sh + hn * lg * home_goals["home_factor"]) / (sa + hn * lg * home_goals["away_factor"])
+        hfh = math.sqrt(ratio); hfa = 1 / hfh
+    else:
+        hfh = hfa = 1.0
     att = {t: 1.0 for t in teams}; de = {t: 1.0 for t in teams}; by = {t: [] for t in teams}
     for m in ms:
         q = w(m)

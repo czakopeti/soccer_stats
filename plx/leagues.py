@@ -126,6 +126,8 @@ def build_league(dates: list[dict], season_file: dict, cfg: dict) -> dict:
     rtg, pred = cfg["ratings"], cfg["prediction"]
     gl = float(season_file["goal_level"])
     cache: dict[int, dict] = {}
+    hcache: dict[int, dict] = {}
+    hg = season_file.get("home_goals")
     out_rounds: dict[int, list] = {}
     for r in sorted(rows, key=lambda r: (r["gw"], r["dt"])):
         up = r["gw"] - 1
@@ -134,6 +136,12 @@ def build_league(dates: list[dict], season_file: dict, cfg: dict) -> dict:
         p = predict(r["h"], r["a"], cache[up], pred["dixon_coles_rho"], pred["max_goals"])
         item = {"h": r["h"], "a": r["a"], "dt": r["dt"], "lh": round(p["lh"], 4), "la": round(p["la"], 4),
                 "pw": round(p["pw"], 5), "pd": round(p["pd"], 5), "pl": round(p["pl"], 5), "o25": round(p["o25"], 4)}
+        if hg:
+            # The same match with home advantage switched on, to compare with bookmaker prices.
+            if up not in hcache:
+                hcache[up] = ratings(played, teams, prior, up, rtg, gl, hg)
+            q = predict(r["h"], r["a"], hcache[up], pred["dixon_coles_rho"], pred["max_goals"])
+            item.update(hlh=round(q["lh"], 4), hla=round(q["la"], 4), hw=round(q["pw"], 5), hd=round(q["pd"], 5), hl=round(q["pl"], 5))
         if r["played"]:
             item.update(hs=r["hs"], **{"as": r["as"]})
             if r.get("fb"):
@@ -147,6 +155,7 @@ def build_league(dates: list[dict], season_file: dict, cfg: dict) -> dict:
         "played": len(played),
         "next_round": min(open_rounds) if open_rounds else None,
         "postponed": [{"h": r["h"], "a": r["a"], "dt": r["dt"]} for r in postponed],
+        "home_adv": round(hcache[max(hcache)]["hfH"], 4) if hcache else None,
         "rounds": [{"r": g, "matches": out_rounds[g]} for g in sorted(out_rounds)],
     }
 

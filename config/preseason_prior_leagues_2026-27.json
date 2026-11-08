@@ -1,5 +1,5 @@
 {
-  "documentation": "Pre-season strength and goal level for the other leagues' fair odds, season 2026/27. Strength: ClubElo snapshot (date per league, before its first match) via the xgabora/Club-Football-Match-Data mirror, relative to the league's own clubs, converted to a goal-strength ratio with the same Poisson method as the Premier League prior. Goal level: goals per team per match in the league's 2025/26 season (football-data.co.uk via the same mirror). Understat names are the keys.",
+  "documentation": "Pre-season strength and goal level for the other leagues' fair odds, season 2026/27. Strength: ClubElo snapshot (date per league, before its first match) via the xgabora/Club-Football-Match-Data mirror, relative to the league's own clubs, converted to a goal-strength ratio with the same Poisson method as the Premier League prior. Goal level: goals per team per match in the league's 2025/26 season (football-data.co.uk via the same mirror). Understat names are the keys. home_goals: home and away goals per match over the three seasons before this one (football-data.co.uk results), used only for the fair odds with home advantage, the same way as on the Premier League page.",
   "leagues": {
     "La_liga": {
       "code": "ESP",
@@ -28,6 +28,18 @@
         "Sevilla": -0.285,
         "Valencia": 0.0,
         "Villarreal": 0.45
+      },
+      "home_goals": {
+        "seasons": [
+          "2023/24",
+          "2024/25",
+          "2025/26"
+        ],
+        "matches": 1140,
+        "home_gpg": 1.5035,
+        "away_gpg": 1.1491,
+        "home_factor": 1.1336,
+        "away_factor": 0.8664
       }
     },
     "Bundesliga": {
@@ -55,6 +67,18 @@
         "Union Berlin": -0.26,
         "VfB Stuttgart": 0.355,
         "Werder Bremen": -0.305
+      },
+      "home_goals": {
+        "seasons": [
+          "2023/24",
+          "2024/25",
+          "2025/26"
+        ],
+        "matches": 918,
+        "home_gpg": 1.7397,
+        "away_gpg": 1.4564,
+        "home_factor": 1.0886,
+        "away_factor": 0.9114
       }
     },
     "Serie_A": {
@@ -84,6 +108,18 @@
         "Torino": -0.25,
         "Udinese": -0.245,
         "Venezia": -0.455
+      },
+      "home_goals": {
+        "seasons": [
+          "2023/24",
+          "2024/25",
+          "2025/26"
+        ],
+        "matches": 1140,
+        "home_gpg": 1.35,
+        "away_gpg": 1.1825,
+        "home_factor": 1.0662,
+        "away_factor": 0.9338
       }
     },
     "Ligue_1": {
@@ -111,6 +147,18 @@
         "Strasbourg": 0.19,
         "Toulouse": -0.05,
         "Troyes": -0.69
+      },
+      "home_goals": {
+        "seasons": [
+          "2023/24",
+          "2024/25",
+          "2025/26"
+        ],
+        "matches": 917,
+        "home_gpg": 1.5453,
+        "away_gpg": 1.2835,
+        "home_factor": 1.0925,
+        "away_factor": 0.9075
       }
     }
   }
