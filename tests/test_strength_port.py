@@ -25,3 +25,21 @@ class StrengthPortTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class HomeAdvantageTest(unittest.TestCase):
+    def test_home_option_raises_the_home_side(self):
+        """Home advantage on, as ratings(upto, {home: true}) in the browser: the home side's chance goes up."""
+        d = json.loads((Path(__file__).resolve().parents[1] / "data" / "pl.json").read_text(encoding="utf-8"))
+        c, der = d["cfg"], d["derived"]
+        teams = list(d["short"])
+        upto = max(1, d["gw"])
+        hg = {"home_factor": der["home_factor"], "away_factor": der["away_factor"]}
+        R0 = ratings(d["matches"], teams, d["prior"], upto, c["ratings"], c["ratings"]["goal_level_prior"])
+        R1 = ratings(d["matches"], teams, d["prior"], upto, c["ratings"], c["ratings"]["goal_level_prior"], hg)
+        self.assertEqual((R0["hfH"], R0["hfA"]), (1.0, 1.0))
+        self.assertGreater(R1["hfH"], 1.0)
+        self.assertAlmostEqual(R1["hfH"] * R1["hfA"], 1.0)
+        h, a = teams[0], teams[1]
+        rho, mg = c["prediction"]["dixon_coles_rho"], c["prediction"]["max_goals"]
+        self.assertGreater(predict(h, a, R1, rho, mg)["pw"], predict(h, a, R0, rho, mg)["pw"])
