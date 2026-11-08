@@ -628,7 +628,7 @@ function fairOdd(p) {
   return shown === "Infinity" ? "–" : shown;
 }
 function previewCard(f, R, k) {
-  const [, h, a, ko, , fid] = f, p = predict(h, a, R);
+  const [, h, a, ko, , fid] = f, p = predict(h, a, R), q = predict(h, a, ratings(S.gw, { home: true }));
   const tr = Object.fromEntries(table(S.gw).map(r => [r.t, r.rank])), real = S.gw < D.gw ? M.find(x => x.id === fid) : null;
   const res = real ? (real.hs > real.as ? 0 : real.hs === real.as ? 1 : 2) : -1, ps = [p.pw, p.pd, p.pl];
   const side = (t) => `<div class="pvside"><div class="row" style="gap:6px;justify-content:space-between;flex-wrap:nowrap"><b style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(nm(t))}</b><span class="forms">${formChips(t)}</span></div><span class="note">${restLine(t, fid)}</span>${absent(t)}</div>`;
@@ -638,6 +638,7 @@ function previewCard(f, R, k) {
     <div class="jbar"><div class="h ${res === 0 ? "act" : ""}" style="width:${p.pw * 100}%">${p.pw > .12 ? pc(p.pw) : ""}</div><div class="d ${res === 1 ? "act" : ""}" style="width:${p.pd * 100}%">${p.pd > .12 ? pc(p.pd) : ""}</div><div class="a ${res === 2 ? "act" : ""}" style="width:${p.pl * 100}%">${p.pl > .12 ? pc(p.pl) : ""}</div></div>
     <p class="mkt"><span class="kicker">Model</span> ${ps.map(pc).join(" · ")}</p>
     <p class="mkt">Fair odds ${ps.map(fairOdd).join(" · ")}</p>
+    <p class="mkt">With home advantage ${[q.pw, q.pd, q.pl].map(fairOdd).join(" · ")} <span class="note">(${nf(q.lh, 2)}–${nf(q.la, 2)})</span></p>
     <div class="pvstats"><span><b>${pc(p.o25)}</b> over 2.5 goals</span><span><b>${pc(p.btts)}</b> both teams to score</span><span><b>${p.top.map(s => s[0] + "–" + s[1]).join(", ")}</b> most likely</span><span><b>${pc(p.csH)} / ${pc(p.csA)}</b> clean sheet, home / away</span></div>
     ${side(h)}${side(a)}
     ${real ? `<p class="verdict">What happened: <b>${real.hs}–${real.as}</b>. The model gave ${["the home win", "the draw", "the away win"][res]} a ${pc(ps[res])} chance${ps.indexOf(Math.max(...ps)) === res ? ". <b style=\"color:var(--good)\">The favourite delivered.</b>" : "."}</p>` : ""}</div>`;
@@ -693,13 +694,13 @@ function mismatchSection(fx, R) {
       <span class="tag ${v.cls === "flip" ? "rob" : v.cls ? "dom" : ""}">${v.tag}</span><p class="note">${v.txt} Model: ${pc(r.p.pw)} – ${pc(r.p.pd)} – ${pc(r.p.pl)}.</p></div>`; }).join("")}</div></section>`;
 }
 function viewElozetes() {
-  const R = ratings(S.gw), g = S.gw + 1;
+  const R = ratings(S.gw), RH = ratings(S.gw, { home: true }), g = S.gw + 1;
   if (g > D.rounds) return `<section class="sec"><h2>The season is over</h2></section>`;
   const fx = FX.filter(f => f[0] === g).sort((a, b) => a[3].localeCompare(b[3]));
   const ts = fx.map(f => Date.parse(f[3]));
   return `<section class="sec">${previewInsights(fx, R)}</section>${mismatchSection(fx, R)}
     <section class="sec"><div class="sechead"><h2>Gameweek ${g} preview</h2><span class="kicker">${esc(DAY.format(new Date(Math.min(...ts))))} – ${esc(DAY.format(new Date(Math.max(...ts))))}${S.gw < D.gw ? ` · as it looked after gameweek ${S.gw}` : ""}</span></div>
-    <p class="note">The bar is the model's chance of a home win, a draw and an away win. The numbers in the middle are expected goals. Form is the last five matches (W, D, L). Rest is the days since the club's previous match, including Europe. ${S.gw === D.gw ? "Absentees come from the official Fantasy Premier League injury list. The percentage is the chance of playing." : ""}${S.gw < D.gw ? " This gameweek has been played. The actual score is on the card." : ""}</p>
+    <p class="note">The bar is the model's chance of a home win, a draw and an away win. The numbers in the middle are expected goals. Form is the last five matches (W, D, L). Rest is the days since the club's previous match, including Europe. Fair odds are 1 ÷ chance with no bookmaker margin, from the tested model, which leaves home advantage out. The line below puts it back in, to compare with bookmaker prices: this season's home and away scoring, steadied by earlier seasons, gives the home side ${pc(RH.hfH - 1)} more expected goals and the away side ${pc(1 - RH.hfA)} fewer. ${S.gw === D.gw ? "Absentees come from the official Fantasy Premier League injury list. The percentage is the chance of playing." : ""}${S.gw < D.gw ? " This gameweek has been played. The actual score is on the card." : ""}</p>
     <div class="mgrid">${fx.map((f, k) => previewCard(f, R, k)).join("")}</div></section>${modelLog()}`;
 }
 
