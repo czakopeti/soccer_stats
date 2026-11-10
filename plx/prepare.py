@@ -303,6 +303,15 @@ def prepare(root: Path, cfg: dict, previous: dict | None = None) -> tuple[dict, 
 
     # --- shots and matches ---
     shots_df = pd.read_csv(catalogue / "shots.csv")
+    # A shot the catalogue published without an xG value carries no information for the model;
+    # it is left out rather than counted as zero, and the count goes into the build notes.
+    no_xg = shots_df[pd.to_numeric(shots_df.xg, errors="coerce").isna()]
+    shots_without_xg = [
+        {k: (None if pd.isna(v) else (v if isinstance(v, str) else float(v))) for k, v in r.items() if k in ("match_id", "minute", "player", "result")}
+        for r in no_xg.to_dict("records")
+    ]
+    shots_df = shots_df.drop(no_xg.index)
+    shots_df["xg"] = shots_df.xg.astype(float)
     res_map = cfg["shot_results"]
     sit_map = cfg["shot_situations"]
     unknown_res = sorted(set(shots_df.result.dropna()) - set(res_map))
@@ -771,6 +780,7 @@ def prepare(root: Path, cfg: dict, previous: dict | None = None) -> tuple[dict, 
         "finished_missing_shots": finished_missing_shots,
         "xg_fallback": fallback_info,
         "unmapped_shots": unmapped_shots,
+        "shots_without_xg": shots_without_xg,
         "shots": len(shot_rows),
         "matches": len(matches),
         "players": len(rows),
