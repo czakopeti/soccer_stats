@@ -1,17 +1,17 @@
 {
   "ok": true,
-  "timestamp": "2026-11-08T18:22:50Z",
+  "timestamp": "2026-11-10T12:37:05Z",
   "season": "2026/27",
-  "gameweek": 9,
-  "no_new_round": true,
-  "summary": "GW10 in progress (10 of 10 matches played) – the page will update once the round is complete. Fixtures were checked again and the site was refreshed. This is not an error.",
+  "gameweek": 10,
+  "no_new_round": false,
+  "summary": "2026/27 through gameweek 10 passed every check (100 matches, 380 fixtures).",
   "data_dates": {
-    "catalogue_commit": "10f59c2aa32ac9c0b73459b3a535abc7a81d1721",
-    "catalogue_exported_at": "2026-11-04T08:29:10",
-    "fpl_fetched_at": "2026-11-08T18:20:59Z",
-    "history_fetched_at": "2026-11-08T18:21:43Z",
-    "europe_fetched_at": "2026-11-08T18:22:08Z",
-    "generated_at": "2026-11-08T18:22:26Z"
+    "catalogue_commit": "5a9d2391d8cf1879a54c8a67bc25039c454479f0",
+    "catalogue_exported_at": "2026-11-10T10:26:32",
+    "fpl_fetched_at": "2026-11-10T12:35:33Z",
+    "history_fetched_at": "2026-11-10T12:35:54Z",
+    "europe_fetched_at": "2026-11-10T12:36:17Z",
+    "generated_at": "2026-11-10T12:36:32Z"
   },
   "checks": [
     {
@@ -27,12 +27,12 @@
     {
       "name": "Finished matches have a score, xG and shots",
       "pass": true,
-      "detail": "All finished matches in this file have a score, xG and at least one shot. 10 of them have no shot list yet and use football-data.co.uk match xG and shot counts instead."
+      "detail": "All finished matches in this file have a score, xG and at least one shot."
     },
     {
       "name": "Matches without shots use football-data xG only while pl-catalogue has none",
       "pass": true,
-      "detail": "10 matches (Chelsea vs Man Utd, Bournemouth vs Leeds, Brentford vs Nott'm Forest, Coventry City vs Sunderland, Hull City vs Ipswich Town, Man City vs Brighton, Spurs vs Crystal Palace, Aston Villa vs Fulham, Liverpool vs Arsenal, Newcastle vs Everton) use football-data.co.uk xG times 1.1208, the ratio measured on 80 matches both sources have. They go back to catalogue shots on the first build after pl-catalogue publishes them."
+      "detail": "No match needed it: every finished match has catalogue shots."
     },
     {
       "name": "Shot xG adds up to the match xG",
@@ -52,7 +52,7 @@
     {
       "name": "Shots link to a player",
       "pass": true,
-      "detail": "14 of 2192 shots have no player id (0.6%). Limit 2%."
+      "detail": "14 of 2746 shots have no player id (0.5%). Limit 2%."
     },
     {
       "name": "No empty values in the required fields",
@@ -67,12 +67,12 @@
     {
       "name": "Gameweek did not go backwards",
       "pass": true,
-      "detail": "Was gameweek 9, now 9."
+      "detail": "Was gameweek 9, now 10."
     },
     {
       "name": "Sources were refreshed, or the pause is explained",
       "pass": true,
-      "detail": "GW10 in progress (10 of 10 matches played) – the page will update once the round is complete. Premier League fixtures were downloaded again. European fixtures were downloaded again. Historical results: 16 files."
+      "detail": "pl-catalogue moved to a new commit 5a9d2391. Premier League fixtures were downloaded again. European fixtures were downloaded again. Historical results: 16 files."
     },
     {
       "name": "Official scores match the match file",
@@ -97,7 +97,7 @@
     {
       "name": "Penalty xG was measured from this season's penalties",
       "pass": true,
-      "detail": "Average of 12 penalties is 0.7612."
+      "detail": "Average of 21 penalties is 0.7729."
     },
     {
       "name": "Cross-check against the Premier League feed",
@@ -117,7 +117,7 @@
     {
       "name": "The status line matches the fixtures",
       "pass": true,
-      "detail": "GW10 in progress (10 of 10 matches played) – the page will update once the round is complete. Fixtures were checked again and the site was refreshed. This is not an error."
+      "detail": "2026/27 through gameweek 10 passed every check (100 matches, 380 fixtures)."
     }
   ],
   "fixture_changes": [],
