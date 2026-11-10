@@ -1,0 +1,48 @@
+name: NaN debug
+on:
+  push:
+    branches: [nan-debug]
+jobs:
+  dbg:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Find NaN
+        run: |
+          python - <<'PY'
+          import json, math, sys
+          sys.path.insert(0, ".")
+          from pathlib import Path
+          from plx.config import load_config
+          from plx.fetch import fetch_all
+          from plx.prepare import prepare
+          ROOT = Path(".")
+          cfg = load_config()
+          prev = json.loads((ROOT / "data" / "pl.json").read_text())
+          fetch_all(ROOT, cfg)
+          data, meta = prepare(ROOT, cfg, prev)
+          hits = []
+          def walk(x, path):
+              if isinstance(x, float) and (math.isnan(x) or math.isinf(x)):
+                  hits.append(path)
+              elif isinstance(x, dict):
+                  for k, v in x.items(): walk(v, path + [k])
+              elif isinstance(x, list):
+                  for i, v in enumerate(x): walk(v, path + [i])
+          walk(data, [])
+          print("NaN count", len(hits))
+          seen = set()
+          for h in hits:
+              sig = tuple(p if isinstance(p, str) else "#" for p in h)
+              if sig in seen: continue
+              seen.add(sig)
+              print("PATH", h)
+              node = data
+              for p in h[:-1]: node = node[p]
+              print("  NODE", json.dumps(node, allow_nan=True, default=str)[:1500])
+          print("meta", json.dumps(meta, default=str)[:3000])
+          PY
