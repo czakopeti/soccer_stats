@@ -303,9 +303,12 @@ def prepare(root: Path, cfg: dict, previous: dict | None = None) -> tuple[dict, 
 
     # --- shots and matches ---
     shots_df = pd.read_csv(catalogue / "shots.csv")
-    # A shot the catalogue published without an xG value carries no information for the model;
-    # it is left out rather than counted as zero, and the count goes into the build notes.
-    no_xg = shots_df[pd.to_numeric(shots_df.xg, errors="coerce").isna()]
+    # Own goals carry no xG of their own (they never count towards a side's xG), and the catalogue
+    # has started publishing them with an empty value: they stay in, at 0, so the score still adds up.
+    # Any other shot without an xG value is left out rather than counted as zero, and listed in the build notes.
+    shots_df["xg"] = pd.to_numeric(shots_df.xg, errors="coerce")
+    shots_df.loc[(shots_df.result == "OwnGoal") & shots_df.xg.isna(), "xg"] = 0.0
+    no_xg = shots_df[shots_df.xg.isna()]
     shots_without_xg = [
         {k: (None if pd.isna(v) else (v if isinstance(v, str) else float(v))) for k, v in r.items() if k in ("match_id", "minute", "player", "result")}
         for r in no_xg.to_dict("records")
