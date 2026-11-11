@@ -1,17 +1,17 @@
 {
   "ok": true,
-  "timestamp": "2026-11-10T12:37:05Z",
+  "timestamp": "2026-11-11T12:23:03Z",
   "season": "2026/27",
   "gameweek": 10,
-  "no_new_round": false,
-  "summary": "2026/27 through gameweek 10 passed every check (100 matches, 380 fixtures).",
+  "no_new_round": true,
+  "summary": "GW11 starts 21 Nov 2026, 12:30 Europe/London (12:30 UTC) – no new results yet. Fixtures were checked again and the site was refreshed. This is not an error.",
   "data_dates": {
     "catalogue_commit": "5a9d2391d8cf1879a54c8a67bc25039c454479f0",
     "catalogue_exported_at": "2026-11-10T10:26:32",
-    "fpl_fetched_at": "2026-11-10T12:35:33Z",
-    "history_fetched_at": "2026-11-10T12:35:54Z",
-    "europe_fetched_at": "2026-11-10T12:36:17Z",
-    "generated_at": "2026-11-10T12:36:32Z"
+    "fpl_fetched_at": "2026-11-11T12:21:36Z",
+    "history_fetched_at": "2026-11-11T12:21:56Z",
+    "europe_fetched_at": "2026-11-11T12:22:18Z",
+    "generated_at": "2026-11-11T12:22:31Z"
   },
   "checks": [
     {
@@ -67,12 +67,12 @@
     {
       "name": "Gameweek did not go backwards",
       "pass": true,
-      "detail": "Was gameweek 9, now 10."
+      "detail": "Was gameweek 10, now 10."
     },
     {
       "name": "Sources were refreshed, or the pause is explained",
       "pass": true,
-      "detail": "pl-catalogue moved to a new commit 5a9d2391. Premier League fixtures were downloaded again. European fixtures were downloaded again. Historical results: 16 files."
+      "detail": "GW11 starts 21 Nov 2026, 12:30 Europe/London (12:30 UTC) – no new results yet. Premier League fixtures were downloaded again. European fixtures were downloaded again. Historical results: 16 files."
     },
     {
       "name": "Official scores match the match file",
@@ -117,7 +117,7 @@
     {
       "name": "The status line matches the fixtures",
       "pass": true,
-      "detail": "2026/27 through gameweek 10 passed every check (100 matches, 380 fixtures)."
+      "detail": "GW11 starts 21 Nov 2026, 12:30 Europe/London (12:30 UTC) – no new results yet. Fixtures were checked again and the site was refreshed. This is not an error."
     }
   ],
   "fixture_changes": [],
