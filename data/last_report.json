@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "timestamp": "2026-11-13T12:22:34Z",
+  "timestamp": "2026-11-17T12:23:09Z",
   "season": "2026/27",
   "gameweek": 10,
   "no_new_round": true,
@@ -8,10 +8,10 @@
   "data_dates": {
     "catalogue_commit": "5a9d2391d8cf1879a54c8a67bc25039c454479f0",
     "catalogue_exported_at": "2026-11-10T10:26:32",
-    "fpl_fetched_at": "2026-11-13T12:21:21Z",
-    "history_fetched_at": "2026-11-13T12:21:41Z",
-    "europe_fetched_at": "2026-11-13T12:22:03Z",
-    "generated_at": "2026-11-13T12:22:12Z"
+    "fpl_fetched_at": "2026-11-17T12:21:35Z",
+    "history_fetched_at": "2026-11-17T12:21:59Z",
+    "europe_fetched_at": "2026-11-17T12:22:23Z",
+    "generated_at": "2026-11-17T12:22:37Z"
   },
   "checks": [
     {
