@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "timestamp": "2026-11-20T12:22:43Z",
+  "timestamp": "2026-11-20T14:47:43Z",
   "season": "2026/27",
   "gameweek": 10,
   "no_new_round": true,
@@ -8,10 +8,10 @@
   "data_dates": {
     "catalogue_commit": "5a9d2391d8cf1879a54c8a67bc25039c454479f0",
     "catalogue_exported_at": "2026-11-10T10:26:32",
-    "fpl_fetched_at": "2026-11-20T12:21:23Z",
-    "history_fetched_at": "2026-11-20T12:21:47Z",
-    "europe_fetched_at": "2026-11-20T12:22:11Z",
-    "generated_at": "2026-11-20T12:22:20Z"
+    "fpl_fetched_at": "2026-11-20T14:46:30Z",
+    "history_fetched_at": "2026-11-20T14:46:47Z",
+    "europe_fetched_at": "2026-11-20T14:46:53Z",
+    "generated_at": "2026-11-20T14:47:08Z"
   },
   "checks": [
     {
@@ -82,7 +82,7 @@
     {
       "name": "Fixture changes are recorded",
       "pass": true,
-      "detail": "21 change(s) since the previous build."
+      "detail": "No kickoff or gameweek changes since the previous build."
     },
     {
       "name": "Bookmaker prices are not in the data",
@@ -120,197 +120,7 @@
       "detail": "GW11 starts 21 Nov 2026, 12:30 Europe/London (12:30 UTC) – no new results yet. Fixtures were checked again and the site was refreshed. This is not an error."
     }
   ],
-  "fixture_changes": [
-    {
-      "kind": "rescheduled",
-      "id": 205,
-      "gameweek": 21,
-      "home": "Coventry City",
-      "away": "Everton",
-      "was": "2027-01-16T15:00:00Z",
-      "now": "2027-01-16T12:30:00Z"
-    },
-    {
-      "kind": "rescheduled",
-      "id": 201,
-      "gameweek": 21,
-      "home": "Aston Villa",
-      "away": "Man Utd",
-      "was": "2027-01-16T15:00:00Z",
-      "now": "2027-01-16T17:30:00Z"
-    },
-    {
-      "kind": "rescheduled",
-      "id": 202,
-      "gameweek": 21,
-      "home": "Bournemouth",
-      "away": "Ipswich Town",
-      "was": "2027-01-16T15:00:00Z",
-      "now": "2027-01-17T14:00:00Z"
-    },
-    {
-      "kind": "rescheduled",
-      "id": 210,
-      "gameweek": 21,
-      "home": "Spurs",
-      "away": "Leeds",
-      "was": "2027-01-16T15:00:00Z",
-      "now": "2027-01-17T16:30:00Z"
-    },
-    {
-      "kind": "rescheduled",
-      "id": 203,
-      "gameweek": 21,
-      "home": "Brentford",
-      "away": "Brighton",
-      "was": "2027-01-16T15:00:00Z",
-      "now": "2027-01-18T20:00:00Z"
-    },
-    {
-      "kind": "rescheduled",
-      "id": 211,
-      "gameweek": 22,
-      "home": "Arsenal",
-      "away": "Newcastle",
-      "was": "2027-01-23T15:00:00Z",
-      "now": "2027-01-23T17:30:00Z"
-    },
-    {
-      "kind": "rescheduled",
-      "id": 212,
-      "gameweek": 22,
-      "home": "Brighton",
-      "away": "Man City",
-      "was": "2027-01-23T15:00:00Z",
-      "now": "2027-01-23T20:00:00Z"
-    },
-    {
-      "kind": "rescheduled",
-      "id": 213,
-      "gameweek": 22,
-      "home": "Crystal Palace",
-      "away": "Spurs",
-      "was": "2027-01-23T15:00:00Z",
-      "now": "2027-01-24T14:00:00Z"
-    },
-    {
-      "kind": "rescheduled",
-      "id": 214,
-      "gameweek": 22,
-      "home": "Everton",
-      "away": "Brentford",
-      "was": "2027-01-23T15:00:00Z",
-      "now": "2027-01-24T14:00:00Z"
-    },
-    {
-      "kind": "rescheduled",
-      "id": 219,
-      "gameweek": 22,
-      "home": "Nott'm Forest",
-      "away": "Bournemouth",
-      "was": "2027-01-23T15:00:00Z",
-      "now": "2027-01-24T14:00:00Z"
-    },
-    {
-      "kind": "rescheduled",
-      "id": 220,
-      "gameweek": 22,
-      "home": "Sunderland",
-      "away": "Coventry City",
-      "was": "2027-01-23T15:00:00Z",
-      "now": "2027-01-24T14:00:00Z"
-    },
-    {
-      "kind": "rescheduled",
-      "id": 218,
-      "gameweek": 22,
-      "home": "Man Utd",
-      "away": "Liverpool",
-      "was": "2027-01-23T15:00:00Z",
-      "now": "2027-01-24T16:30:00Z"
-    },
-    {
-      "kind": "rescheduled",
-      "id": 217,
-      "gameweek": 22,
-      "home": "Leeds",
-      "away": "Chelsea",
-      "was": "2027-01-23T15:00:00Z",
-      "now": "2027-01-25T20:00:00Z"
-    },
-    {
-      "kind": "rescheduled",
-      "id": 227,
-      "gameweek": 23,
-      "home": "Liverpool",
-      "away": "Everton",
-      "was": "2027-01-30T15:00:00Z",
-      "now": "2027-01-30T12:30:00Z"
-    },
-    {
-      "kind": "rescheduled",
-      "id": 224,
-      "gameweek": 23,
-      "home": "Chelsea",
-      "away": "Nott'm Forest",
-      "was": "2027-01-30T15:00:00Z",
-      "now": "2027-01-30T17:30:00Z"
-    },
-    {
-      "kind": "rescheduled",
-      "id": 222,
-      "gameweek": 23,
-      "home": "Bournemouth",
-      "away": "Fulham",
-      "was": "2027-01-30T15:00:00Z",
-      "now": "2027-01-31T14:00:00Z"
-    },
-    {
-      "kind": "rescheduled",
-      "id": 225,
-      "gameweek": 23,
-      "home": "Coventry City",
-      "away": "Leeds",
-      "was": "2027-01-30T15:00:00Z",
-      "now": "2027-01-31T14:00:00Z"
-    },
-    {
-      "kind": "rescheduled",
-      "id": 226,
-      "gameweek": 23,
-      "home": "Hull City",
-      "away": "Crystal Palace",
-      "was": "2027-01-30T15:00:00Z",
-      "now": "2027-01-31T14:00:00Z"
-    },
-    {
-      "kind": "rescheduled",
-      "id": 230,
-      "gameweek": 23,
-      "home": "Spurs",
-      "away": "Sunderland",
-      "was": "2027-01-30T15:00:00Z",
-      "now": "2027-01-31T14:00:00Z"
-    },
-    {
-      "kind": "rescheduled",
-      "id": 228,
-      "gameweek": 23,
-      "home": "Man City",
-      "away": "Arsenal",
-      "was": "2027-01-30T15:00:00Z",
-      "now": "2027-01-31T16:30:00Z"
-    },
-    {
-      "kind": "rescheduled",
-      "id": 223,
-      "gameweek": 23,
-      "home": "Brentford",
-      "away": "Man Utd",
-      "was": "2027-01-30T15:00:00Z",
-      "now": "2027-02-01T20:00:00Z"
-    }
-  ],
+  "fixture_changes": [],
   "europe": {
     "fixtures": 72,
     "teams": [
