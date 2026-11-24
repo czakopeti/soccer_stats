@@ -1,8 +1,8 @@
 {
   "season": "2026/27",
-  "gameweek": 10,
+  "gameweek": 11,
   "fpl_finished_gameweek": 10,
-  "no_new_round": true,
+  "no_new_round": false,
   "change_note": null,
   "fixture_changes": [],
   "unscheduled": [],
@@ -138,16 +138,67 @@
   "gameweek_disagreements": [],
   "finished_missing_shots": [],
   "xg_fallback": {
-    "used": [],
-    "scale": null,
-    "overlap": 0,
+    "used": [
+      {
+        "home": "Man City",
+        "away": "Fulham",
+        "gameweek": 11
+      },
+      {
+        "home": "Aston Villa",
+        "away": "Sunderland",
+        "gameweek": 11
+      },
+      {
+        "home": "Bournemouth",
+        "away": "Nott'm Forest",
+        "gameweek": 11
+      },
+      {
+        "home": "Chelsea",
+        "away": "Leeds",
+        "gameweek": 11
+      },
+      {
+        "home": "Coventry City",
+        "away": "Crystal Palace",
+        "gameweek": 11
+      },
+      {
+        "home": "Spurs",
+        "away": "Ipswich Town",
+        "gameweek": 11
+      },
+      {
+        "home": "Newcastle",
+        "away": "Arsenal",
+        "gameweek": 11
+      },
+      {
+        "home": "Hull City",
+        "away": "Brighton",
+        "gameweek": 11
+      },
+      {
+        "home": "Liverpool",
+        "away": "Man Utd",
+        "gameweek": 11
+      },
+      {
+        "home": "Brentford",
+        "away": "Everton",
+        "gameweek": 11
+      }
+    ],
+    "scale": 1.0982,
+    "overlap": 100,
     "unmatched": [],
     "skipped": []
   },
   "unmapped_shots": 14,
   "shots_without_xg": [],
   "shots": 2746,
-  "matches": 100,
+  "matches": 110,
   "players": 459,
   "missing_opta_metrics": [],
   "europe": {
@@ -299,28 +350,28 @@
     "Sunderland": -0.335
   },
   "catalogue": {
-    "commit": "5a9d2391d8cf1879a54c8a67bc25039c454479f0",
-    "committed_at": "2026-11-10T10:30:18+01:00",
+    "commit": "736996ea25270c946735b6d2f7d5d49f99cf0450",
+    "committed_at": "2026-11-20T19:41:04+01:00",
     "exported_at": "2026-11-10T10:26:32",
     "folder": "2026-27"
   },
   "fetch": {
-    "fetched_at": "2026-11-20T14:46:54Z",
+    "fetched_at": "2026-11-24T12:21:45Z",
     "season_start_year": 2026,
     "catalogue": {
-      "commit": "5a9d2391d8cf1879a54c8a67bc25039c454479f0",
-      "committed_at": "2026-11-10T10:30:18+01:00",
-      "fetched_at": "2026-11-20T14:46:30Z",
+      "commit": "736996ea25270c946735b6d2f7d5d49f99cf0450",
+      "committed_at": "2026-11-20T19:41:04+01:00",
+      "fetched_at": "2026-11-24T12:21:19Z",
       "repo": "https://github.com/oladeeayo/pl-catalogue.git"
     },
     "fpl": {
-      "fetched_at": "2026-11-20T14:46:30Z",
+      "fetched_at": "2026-11-24T12:21:20Z",
       "events": 38,
       "fixtures": 380,
-      "bootstrap_bytes": 1962322
+      "bootstrap_bytes": 1968791
     },
     "history": {
-      "fetched_at": "2026-11-20T14:46:47Z",
+      "fetched_at": "2026-11-24T12:21:36Z",
       "files": [
         "E0_2526.csv",
         "E1_2526.csv",
@@ -351,15 +402,15 @@
       ]
     },
     "europe": {
-      "fetched_at": "2026-11-20T14:46:53Z",
+      "fetched_at": "2026-11-24T12:21:44Z",
       "events": 70,
       "espn_clubs": 20
     },
     "current_season": {
-      "fetched_at": "2026-11-20T14:46:54Z",
+      "fetched_at": "2026-11-24T12:21:45Z",
       "file": "E0.csv",
       "season_code": "2627",
-      "bytes": 49046
+      "bytes": 53914
     }
   },
   "teams": 20,
