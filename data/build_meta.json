@@ -1,140 +1,13 @@
 {
   "season": "2026/27",
   "gameweek": 11,
-  "fpl_finished_gameweek": 10,
-  "no_new_round": false,
+  "fpl_finished_gameweek": 11,
+  "no_new_round": true,
   "change_note": null,
   "fixture_changes": [],
   "unscheduled": [],
   "score_disagreements": [],
-  "kickoff_disagreements": [
-    {
-      "home": "Coventry City",
-      "away": "Everton",
-      "fpl": "2027-01-16T12:30:00Z",
-      "catalogue": "2027-01-16T15:00:00Z"
-    },
-    {
-      "home": "Aston Villa",
-      "away": "Man Utd",
-      "fpl": "2027-01-16T17:30:00Z",
-      "catalogue": "2027-01-16T15:00:00Z"
-    },
-    {
-      "home": "Bournemouth",
-      "away": "Ipswich Town",
-      "fpl": "2027-01-17T14:00:00Z",
-      "catalogue": "2027-01-16T15:00:00Z"
-    },
-    {
-      "home": "Spurs",
-      "away": "Leeds",
-      "fpl": "2027-01-17T16:30:00Z",
-      "catalogue": "2027-01-16T15:00:00Z"
-    },
-    {
-      "home": "Brentford",
-      "away": "Brighton",
-      "fpl": "2027-01-18T20:00:00Z",
-      "catalogue": "2027-01-16T15:00:00Z"
-    },
-    {
-      "home": "Arsenal",
-      "away": "Newcastle",
-      "fpl": "2027-01-23T17:30:00Z",
-      "catalogue": "2027-01-23T15:00:00Z"
-    },
-    {
-      "home": "Brighton",
-      "away": "Man City",
-      "fpl": "2027-01-23T20:00:00Z",
-      "catalogue": "2027-01-23T15:00:00Z"
-    },
-    {
-      "home": "Crystal Palace",
-      "away": "Spurs",
-      "fpl": "2027-01-24T14:00:00Z",
-      "catalogue": "2027-01-23T15:00:00Z"
-    },
-    {
-      "home": "Everton",
-      "away": "Brentford",
-      "fpl": "2027-01-24T14:00:00Z",
-      "catalogue": "2027-01-23T15:00:00Z"
-    },
-    {
-      "home": "Nott'm Forest",
-      "away": "Bournemouth",
-      "fpl": "2027-01-24T14:00:00Z",
-      "catalogue": "2027-01-23T15:00:00Z"
-    },
-    {
-      "home": "Sunderland",
-      "away": "Coventry City",
-      "fpl": "2027-01-24T14:00:00Z",
-      "catalogue": "2027-01-23T15:00:00Z"
-    },
-    {
-      "home": "Man Utd",
-      "away": "Liverpool",
-      "fpl": "2027-01-24T16:30:00Z",
-      "catalogue": "2027-01-23T15:00:00Z"
-    },
-    {
-      "home": "Leeds",
-      "away": "Chelsea",
-      "fpl": "2027-01-25T20:00:00Z",
-      "catalogue": "2027-01-23T15:00:00Z"
-    },
-    {
-      "home": "Liverpool",
-      "away": "Everton",
-      "fpl": "2027-01-30T12:30:00Z",
-      "catalogue": "2027-01-30T15:00:00Z"
-    },
-    {
-      "home": "Chelsea",
-      "away": "Nott'm Forest",
-      "fpl": "2027-01-30T17:30:00Z",
-      "catalogue": "2027-01-30T15:00:00Z"
-    },
-    {
-      "home": "Bournemouth",
-      "away": "Fulham",
-      "fpl": "2027-01-31T14:00:00Z",
-      "catalogue": "2027-01-30T15:00:00Z"
-    },
-    {
-      "home": "Coventry City",
-      "away": "Leeds",
-      "fpl": "2027-01-31T14:00:00Z",
-      "catalogue": "2027-01-30T15:00:00Z"
-    },
-    {
-      "home": "Hull City",
-      "away": "Crystal Palace",
-      "fpl": "2027-01-31T14:00:00Z",
-      "catalogue": "2027-01-30T15:00:00Z"
-    },
-    {
-      "home": "Spurs",
-      "away": "Sunderland",
-      "fpl": "2027-01-31T14:00:00Z",
-      "catalogue": "2027-01-30T15:00:00Z"
-    },
-    {
-      "home": "Man City",
-      "away": "Arsenal",
-      "fpl": "2027-01-31T16:30:00Z",
-      "catalogue": "2027-01-30T15:00:00Z"
-    },
-    {
-      "home": "Brentford",
-      "away": "Man Utd",
-      "fpl": "2027-02-01T20:00:00Z",
-      "catalogue": "2027-01-30T15:00:00Z"
-    }
-  ],
+  "kickoff_disagreements": [],
   "gameweek_disagreements": [],
   "finished_missing_shots": [],
   "xg_fallback": {
@@ -199,7 +72,7 @@
   "shots_without_xg": [],
   "shots": 2746,
   "matches": 110,
-  "players": 459,
+  "players": 461,
   "missing_opta_metrics": [],
   "europe": {
     "fixtures": 72,
@@ -350,28 +223,28 @@
     "Sunderland": -0.335
   },
   "catalogue": {
-    "commit": "736996ea25270c946735b6d2f7d5d49f99cf0450",
-    "committed_at": "2026-11-20T19:41:04+01:00",
-    "exported_at": "2026-11-10T10:26:32",
+    "commit": "34243e11a6037bb8d4c84f52fdbc8995a8852d1e",
+    "committed_at": "2026-11-25T10:10:48+01:00",
+    "exported_at": "2026-11-24T23:44:43",
     "folder": "2026-27"
   },
   "fetch": {
-    "fetched_at": "2026-11-24T12:21:45Z",
+    "fetched_at": "2026-11-25T12:22:53Z",
     "season_start_year": 2026,
     "catalogue": {
-      "commit": "736996ea25270c946735b6d2f7d5d49f99cf0450",
-      "committed_at": "2026-11-20T19:41:04+01:00",
-      "fetched_at": "2026-11-24T12:21:19Z",
+      "commit": "34243e11a6037bb8d4c84f52fdbc8995a8852d1e",
+      "committed_at": "2026-11-25T10:10:48+01:00",
+      "fetched_at": "2026-11-25T12:22:10Z",
       "repo": "https://github.com/oladeeayo/pl-catalogue.git"
     },
     "fpl": {
-      "fetched_at": "2026-11-24T12:21:20Z",
+      "fetched_at": "2026-11-25T12:22:13Z",
       "events": 38,
       "fixtures": 380,
-      "bootstrap_bytes": 1968791
+      "bootstrap_bytes": 1968841
     },
     "history": {
-      "fetched_at": "2026-11-24T12:21:36Z",
+      "fetched_at": "2026-11-25T12:22:37Z",
       "files": [
         "E0_2526.csv",
         "E1_2526.csv",
@@ -402,12 +275,12 @@
       ]
     },
     "europe": {
-      "fetched_at": "2026-11-24T12:21:44Z",
+      "fetched_at": "2026-11-25T12:22:51Z",
       "events": 70,
       "espn_clubs": 20
     },
     "current_season": {
-      "fetched_at": "2026-11-24T12:21:45Z",
+      "fetched_at": "2026-11-25T12:22:53Z",
       "file": "E0.csv",
       "season_code": "2627",
       "bytes": 53914

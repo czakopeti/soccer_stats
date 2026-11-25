@@ -1,17 +1,17 @@
 {
   "ok": true,
-  "timestamp": "2026-11-24T12:22:34Z",
+  "timestamp": "2026-11-25T12:23:30Z",
   "season": "2026/27",
   "gameweek": 11,
-  "no_new_round": false,
-  "summary": "2026/27 through gameweek 11 passed every check (110 matches, 380 fixtures).",
+  "no_new_round": true,
+  "summary": "GW12 starts 27 Nov 2026, 20:00 Europe/London (20:00 UTC) – no new results yet. Fixtures were checked again and the site was refreshed. This is not an error.",
   "data_dates": {
-    "catalogue_commit": "736996ea25270c946735b6d2f7d5d49f99cf0450",
-    "catalogue_exported_at": "2026-11-10T10:26:32",
-    "fpl_fetched_at": "2026-11-24T12:21:20Z",
-    "history_fetched_at": "2026-11-24T12:21:36Z",
-    "europe_fetched_at": "2026-11-24T12:21:44Z",
-    "generated_at": "2026-11-24T12:22:00Z"
+    "catalogue_commit": "34243e11a6037bb8d4c84f52fdbc8995a8852d1e",
+    "catalogue_exported_at": "2026-11-24T23:44:43",
+    "fpl_fetched_at": "2026-11-25T12:22:13Z",
+    "history_fetched_at": "2026-11-25T12:22:37Z",
+    "europe_fetched_at": "2026-11-25T12:22:51Z",
+    "generated_at": "2026-11-25T12:23:03Z"
   },
   "checks": [
     {
@@ -67,12 +67,12 @@
     {
       "name": "Gameweek did not go backwards",
       "pass": true,
-      "detail": "Was gameweek 10, now 11."
+      "detail": "Was gameweek 11, now 11."
     },
     {
       "name": "Sources were refreshed, or the pause is explained",
       "pass": true,
-      "detail": "pl-catalogue moved to a new commit 736996ea. Premier League fixtures were downloaded again. European fixtures were downloaded again. Historical results: 16 files."
+      "detail": "pl-catalogue moved to a new commit 34243e11. Premier League fixtures were downloaded again. European fixtures were downloaded again. Historical results: 16 files. GW12 starts 27 Nov 2026, 20:00 Europe/London (20:00 UTC) – no new results yet."
     },
     {
       "name": "Official scores match the match file",
@@ -117,7 +117,7 @@
     {
       "name": "The status line matches the fixtures",
       "pass": true,
-      "detail": "2026/27 through gameweek 11 passed every check (110 matches, 380 fixtures)."
+      "detail": "GW12 starts 27 Nov 2026, 20:00 Europe/London (20:00 UTC) – no new results yet. Fixtures were checked again and the site was refreshed. This is not an error."
     }
   ],
   "fixture_changes": [],
