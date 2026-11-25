@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "timestamp": "2026-11-25T12:23:30Z",
+  "timestamp": "2026-11-25T18:33:30Z",
   "season": "2026/27",
   "gameweek": 11,
   "no_new_round": true,
@@ -8,10 +8,10 @@
   "data_dates": {
     "catalogue_commit": "34243e11a6037bb8d4c84f52fdbc8995a8852d1e",
     "catalogue_exported_at": "2026-11-24T23:44:43",
-    "fpl_fetched_at": "2026-11-25T12:22:13Z",
-    "history_fetched_at": "2026-11-25T12:22:37Z",
-    "europe_fetched_at": "2026-11-25T12:22:51Z",
-    "generated_at": "2026-11-25T12:23:03Z"
+    "fpl_fetched_at": "2026-11-25T18:32:24Z",
+    "history_fetched_at": "2026-11-25T18:32:43Z",
+    "europe_fetched_at": "2026-11-25T18:32:52Z",
+    "generated_at": "2026-11-25T18:33:03Z"
   },
   "checks": [
     {
@@ -72,7 +72,7 @@
     {
       "name": "Sources were refreshed, or the pause is explained",
       "pass": true,
-      "detail": "pl-catalogue moved to a new commit 34243e11. Premier League fixtures were downloaded again. European fixtures were downloaded again. Historical results: 16 files. GW12 starts 27 Nov 2026, 20:00 Europe/London (20:00 UTC) – no new results yet."
+      "detail": "GW12 starts 27 Nov 2026, 20:00 Europe/London (20:00 UTC) – no new results yet. Premier League fixtures were downloaded again. European fixtures were downloaded again. Historical results: 16 files."
     },
     {
       "name": "Official scores match the match file",
