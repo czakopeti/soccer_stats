@@ -54,6 +54,8 @@ def fetch(root: Path, cfg: dict, start_year: int) -> dict:
     dest.mkdir(parents=True, exist_ok=True)
     keep.mkdir(parents=True, exist_ok=True)
     problems: dict[str, str] = {}
+    if (dest / "fixtures.csv").exists():
+        (dest / "fixtures.csv").unlink()
     for code in lc["understat_codes"]:
         fresh = dest / f"{code}.json"
         if fresh.exists():
@@ -71,6 +73,12 @@ def fetch(root: Path, cfg: dict, start_year: int) -> dict:
             fresh.write_text(text, encoding="utf-8")
             (keep / f"{code}.json").write_text(text, encoding="utf-8")
         div = (lc.get("football_data_divisions") or {}).get(code)
+        if div and not (dest / "fixtures.csv").exists() and cfg.get("value", {}).get("fixtures_url"):
+            # football-data's fixture list (all leagues): real kickoff times when the kept copy is old.
+            try:
+                (dest / "fixtures.csv").write_bytes(_get(cfg["value"]["fixtures_url"], cfg["http_user_agent"], cfg["value"]["fixtures_url"], attempts=2))
+            except LeagueError as exc:
+                problems.setdefault("fixtures", str(exc)[:300])
         if div:
             fd_url = cfg["sources"]["football_data_template"].format(code=season_code(start_year), division=div)
             fd_path = dest / f"fd_{div}.csv"
@@ -200,9 +208,11 @@ def build_all(root: Path, cfg: dict, season_label: str, start_year: int, fetch_f
             div = (lc.get("football_data_divisions") or {}).get(code)
             fd = lf.load_fd(root / "sources" / "leagues" / f"fd_{div}.csv") if div else []
             dates, info = lf.fill(dates, fd, int(lc.get("fallback_min_overlap", 30)))
+            mapping = lf.map_names(dates, fd)[0] if fd else None
+            dates, moved = lf.kickoffs(dates, root / "sources" / "leagues" / "fixtures.csv", div, mapping) if div else (dates, 0)
             source = {"understat": "kept", "through": lf.cache_date(dates), "filled": info["filled"],
                       "scale": info["scale"], "overlap": info["overlap"], "note": info["note"],
-                      "problem": fetch_problems.get(code, "")}
+                      "kickoffs_from_fixtures": moved, "problem": fetch_problems.get(code, "")}
         lg = build_league(dates, season[code], cfg)
         lg["source"] = source
         problems += check(lg)

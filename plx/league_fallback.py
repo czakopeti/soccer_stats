@@ -19,7 +19,7 @@ import copy
 import csv
 import math
 from collections import Counter, defaultdict
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 from plx.elo import parse_fd_date
@@ -133,6 +133,42 @@ def fill(dates: list[dict], fd: list[dict], min_overlap: int) -> tuple[list[dict
         m["src"] = "fd"
         info["filled"] += 1
     return out, info
+
+
+def kickoffs(dates: list[dict], fixtures: Path, div: str, mapping: dict[str, str] | None) -> tuple[list[dict], int]:
+    """Kickoff times of the coming matches from football-data's fixtures.csv.
+
+    The kept Understat copy can hold provisional dates for rounds that were not yet scheduled when it
+    was saved (La Liga lists them all on Sunday at 16:00 UTC). football-data's fixture list for the next
+    days has the real date and time (UK time), so those replace the copy's for unplayed matches.
+    """
+    if not mapping or not fixtures.is_file():
+        return dates, 0
+    from zoneinfo import ZoneInfo
+
+    uk, utc = ZoneInfo("Europe/London"), ZoneInfo("UTC")
+    ours = {v: k for k, v in mapping.items()}
+    when: dict[tuple, str] = {}
+    with fixtures.open(encoding="utf-8-sig", newline="") as fh:
+        for rec in csv.DictReader(fh):
+            if (rec.get("Div") or "").strip() != div or not rec.get("Date") or not rec.get("HomeTeam"):
+                continue
+            h, a = ours.get(rec["HomeTeam"].strip()), ours.get(rec["AwayTeam"].strip())
+            if not h or not a:
+                continue
+            try:
+                d = parse_fd_date(rec["Date"]).date()
+                hh, mm = (int(x) for x in (rec.get("Time") or "").strip().split(":")[:2])
+            except Exception:  # noqa: BLE001 - an unreadable row is skipped, not guessed
+                continue
+            t = datetime(d.year, d.month, d.day, hh, mm, tzinfo=uk).astimezone(utc)
+            when[(h, a)] = t.strftime("%Y-%m-%d %H:%M:%S")
+    out, n = copy.deepcopy(dates), 0
+    for m in out:
+        t = when.get((m["h"]["title"], m["a"]["title"]))
+        if t and not m.get("isResult") and m["datetime"] != t:
+            m["datetime"], n = t, n + 1
+    return out, n
 
 
 def cache_date(dates: list[dict]) -> str | None:
