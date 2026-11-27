@@ -229,22 +229,22 @@
     "folder": "2026-27"
   },
   "fetch": {
-    "fetched_at": "2026-11-27T12:32:17Z",
+    "fetched_at": "2026-11-27T14:44:09Z",
     "season_start_year": 2026,
     "catalogue": {
       "commit": "34243e11a6037bb8d4c84f52fdbc8995a8852d1e",
       "committed_at": "2026-11-25T10:10:48+01:00",
-      "fetched_at": "2026-11-27T12:31:52Z",
+      "fetched_at": "2026-11-27T14:43:33Z",
       "repo": "https://github.com/oladeeayo/pl-catalogue.git"
     },
     "fpl": {
-      "fetched_at": "2026-11-27T12:31:53Z",
+      "fetched_at": "2026-11-27T14:43:34Z",
       "events": 38,
       "fixtures": 380,
-      "bootstrap_bytes": 1969842
+      "bootstrap_bytes": 1970527
     },
     "history": {
-      "fetched_at": "2026-11-27T12:32:12Z",
+      "fetched_at": "2026-11-27T14:43:52Z",
       "files": [
         "E0_2526.csv",
         "E1_2526.csv",
@@ -275,12 +275,12 @@
       ]
     },
     "europe": {
-      "fetched_at": "2026-11-27T12:32:16Z",
+      "fetched_at": "2026-11-27T14:44:08Z",
       "events": 70,
       "espn_clubs": 20
     },
     "current_season": {
-      "fetched_at": "2026-11-27T12:32:17Z",
+      "fetched_at": "2026-11-27T14:44:09Z",
       "file": "E0.csv",
       "season_code": "2627",
       "bytes": 53914
